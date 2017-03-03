@@ -10,10 +10,19 @@ import android.content.Intent;
 public class MainActivity extends AppCompatActivity {
 
     //Button viewButton;
+    public Button loginButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        loginButton = (Button) findViewById(R.id.loginButton);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent jumpToLogin = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(jumpToLogin);
+            }
+        });
 
     }
 
@@ -24,4 +33,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
         return;
     }
+
+
 }
