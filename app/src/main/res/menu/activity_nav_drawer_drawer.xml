@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_available_lifts"
+            android:title="Available Lifts" />
+        <item
+            android:id="@+id/nav_lifts_on"
+            android:title="Lifts You Are On" />
+        <item
+            android:id="@+id/nav_offer_lift"
+            android:title="Offer Lift" />
+        <item
+            android:id="@+id/nav_lifts_offering"
+            android:title="Lifts You Are Offering" />
+    </group>
+
+    <item android:title="Account">
+        <menu>
+            <item
+                android:id="@+id/nav_manage_account"
+                android:title="Manage Account" />
+            <item
+                android:id="@+id/nav_logout"
+                android:title="Logout" />
+            <item
+                android:id="@+id/nav_exit"
+                android:title="Exit" />
+        </menu>
+    </item>
+
+</menu>
