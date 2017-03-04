@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SurfSharingMobileApp</string>
+    <string name="app_name">Surf Sharing</string>
     <string name="title_activity_view_lifts">Available Lifts</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -111,4 +111,5 @@
         completions."
     </string>
     <string name="Password">Password</string>
+    <string name="title_activity_nav_drawer">NavDrawer</string>
 </resources>
