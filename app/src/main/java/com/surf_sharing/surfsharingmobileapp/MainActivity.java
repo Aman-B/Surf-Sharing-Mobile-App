@@ -10,7 +10,7 @@ import android.content.Intent;
 public class MainActivity extends AppCompatActivity {
 
     //Button viewButton;
-    public Button loginButton;
+    public Button loginButton, navDrawerButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +24,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        navDrawerButton = (Button) findViewById(R.id.navDrawerButton);
+        navDrawerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, NavDrawer.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void ViewLifts(View v){
