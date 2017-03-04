@@ -24,4 +24,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
         return;
     }
+
+    public void CreateLifts( View v ){
+        Toast myToast = Toast.makeText(getApplicationContext(), "create lifts now", Toast.LENGTH_LONG);
+        myToast.show();
+        Intent i = new Intent(MainActivity.this, CreateLift.class);
+        startActivity(i);
+        return;
+    }
 }

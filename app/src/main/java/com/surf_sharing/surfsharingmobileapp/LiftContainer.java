@@ -1,5 +1,7 @@
 package com.surf_sharing.surfsharingmobileapp;
 
+
+
 import java.util.ArrayList;
 
 /**
@@ -18,5 +20,16 @@ public class LiftContainer {
 
     public void removeLift(int id){
         // remove lift from arraylist using id
+    }
+
+    public String[] getLiftsAsStrings(){
+        String[] asStrings;
+        Lift[] allLifts;
+        allLifts = this.lifts.toArray(new Lift[lifts.size()]);;
+        asStrings = new String[allLifts.length];
+        for(int i = 0 ; i < allLifts.length ; i++){
+            asStrings[i] = allLifts[i].destination;
+        }
+        return asStrings;
     }
 }

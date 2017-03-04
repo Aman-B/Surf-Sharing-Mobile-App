@@ -14,6 +14,7 @@ public class ViewLifts extends AppCompatActivity {
     ListView viewLifts;
     User currentUser, driver;
     Lift testLift;
+    LiftContainer testCont;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,11 +24,18 @@ public class ViewLifts extends AppCompatActivity {
         driver = new User(54321, "Driver", "drive@example.com");
         testLift = new Lift(driver, "Bundoran", 4, 1);
         viewLifts = (ListView) findViewById(R.id.liftList);
+        testCont = new LiftContainer();
+        testCont.addLift(testLift);
+        testLift = new Lift(driver, "Bray", 4, 1);
+        testCont.addLift(testLift);
+        testLift = new Lift(driver, "Mayo", 4, 1);
+        testCont.addLift(testLift);
         String[] liftStrings = {"lift1", "lift2", "Lift3",
                                 "lift4", "lift5", "Lift6",
                                 "lift7", "lift8", "Lift9",
                                 "lift10", "lift11", "Lift12",
                                 "lift13", "lift14", "Lift15"};
+        liftStrings = testCont.getLiftsAsStrings();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, liftStrings);
         viewLifts.setAdapter(adapter);
 
