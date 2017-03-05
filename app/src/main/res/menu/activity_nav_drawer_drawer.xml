@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/top_nav_menu"
+        android:checkableBehavior="none">
         <item
             android:id="@+id/nav_available_lifts"
             android:title="Available Lifts" />
@@ -16,18 +18,15 @@
             android:title="Lifts You Are Offering" />
     </group>
 
-    <item android:title="Account">
-        <menu>
-            <item
-                android:id="@+id/nav_manage_account"
-                android:title="Manage Account" />
-            <item
-                android:id="@+id/nav_logout"
-                android:title="Logout" />
-            <item
-                android:id="@+id/nav_exit"
-                android:title="Exit" />
-        </menu>
-    </item>
+    <group
+        android:id="@+id/bottom_nav_menu"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_manage_account"
+            android:title="Manage Account" />
+        <item
+            android:id="@+id/nav_logout"
+            android:title="Logout" />
+    </group>
 
 </menu>

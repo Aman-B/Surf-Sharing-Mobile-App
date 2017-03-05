@@ -112,4 +112,6 @@
     </string>
     <string name="Password">Password</string>
     <string name="title_activity_nav_drawer">NavDrawer</string>
+    <string name="title_offer_lift">Offer Lift</string>
+    <string name="title_manage_account">Manage Account</string>
 </resources>

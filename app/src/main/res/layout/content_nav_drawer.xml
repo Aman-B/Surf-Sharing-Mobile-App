@@ -8,4 +8,10 @@
     tools:context="com.surf_sharing.surfsharingmobileapp.NavDrawer"
     tools:showIn="@layout/app_bar_nav_drawer">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/nav_drawer_content">
+
+    </FrameLayout>
 </android.support.constraint.ConstraintLayout>
