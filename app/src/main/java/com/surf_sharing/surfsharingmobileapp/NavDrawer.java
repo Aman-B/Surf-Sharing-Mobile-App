@@ -1,8 +1,9 @@
 package com.surf_sharing.surfsharingmobileapp;
 
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,8 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.surf_sharing.surfsharingmobileapp.screens.ManageAccount;
+import com.surf_sharing.surfsharingmobileapp.screens.OfferLift;
+
 public class NavDrawer extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,24 +75,39 @@ public class NavDrawer extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_available_lifts) {
-            // Handle the available lifts action
-        } else if (id == R.id.nav_lifts_offering) {
-
-        } else if (id == R.id.nav_offer_lift) {
-
-        } else if (id == R.id.nav_lifts_offering) {
-
-        } else if (id == R.id.nav_manage_account) {
-
-        } else if (id == R.id.nav_logout) {
-
-        } else if (id == R.id.nav_exit) {
-
+        Fragment fragment = null;
+        switch (id) {
+            case R.id.nav_available_lifts:
+                break;
+            case R.id.nav_lifts_on:
+                break;
+            case R.id.nav_offer_lift:
+                fragment = OfferLift.newInstance();
+                break;
+            case R.id.nav_lifts_offering:
+                break;
+            case R.id.nav_manage_account:
+                fragment = ManageAccount.newInstance();
+                break;
+            case R.id.nav_logout:
+                break;
         }
+        if (fragment != null) replaceContent(fragment);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * Replace the main content with the passed fragment
+     * @param fragment the fragment to be used as the new content
+     */
+    public void replaceContent(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.nav_drawer_content, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 }
