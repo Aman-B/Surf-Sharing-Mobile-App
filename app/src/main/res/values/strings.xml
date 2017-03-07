@@ -114,4 +114,8 @@
     <string name="title_activity_nav_drawer">NavDrawer</string>
     <string name="title_offer_lift">Offer Lift</string>
     <string name="title_manage_account">Manage Account</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_available_lift">Available Lifts</string>
 </resources>

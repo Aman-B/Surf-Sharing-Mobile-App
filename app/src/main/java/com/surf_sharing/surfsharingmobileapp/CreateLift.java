@@ -22,27 +22,35 @@ public class CreateLift extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_lift2);
-        /*globs = (Globals)getApplication();
+        //this.globs = (Globals)getApplication();
         destination = (EditText) findViewById(R.id.editText);
         seats = (EditText) findViewById(R.id.editText2);
-        Ok = (Button) findViewById(R.id.button2);
-        Ok.setOnClickListener(new View.OnClickListener() {
+        //Ok = (Button) findViewById(R.id.button2);
+        /*Ok.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Ok.setVisibility(View.INVISIBLE);
+                //Ok.setVisibility(View.INVISIBLE);
                 dest = destination.getText().toString();
                 seatsInt = Integer.parseInt(seats.getText().toString());
                 globs.getLifts().addLift(new Lift(globs.testDriver, dest, seatsInt, 0));
 
-                Ok.setVisibility(View.VISIBLE);
+                //Ok.setVisibility(View.VISIBLE);
             } });*/
     }
 
     public void CreateLifts( View v ){
-        Toast myToast = Toast.makeText(getApplicationContext(), "create lifts now", Toast.LENGTH_LONG);
-        myToast.show();
-        // create new lift
 
+        // create new lift
+        //Ok.setVisibility(View.INVISIBLE);
+        dest = destination.getText().toString();
+        seatsInt = Integer.parseInt(seats.getText().toString());
+        Toast myToast = Toast.makeText(getApplicationContext(), "create lifts now "+dest+" "+seatsInt, Toast.LENGTH_LONG);
+        myToast.show();
+        //this.globs.getLifts().addLift(new Lift(globs.testDriver, dest, seatsInt, 0));
+
+        // create lift using entered details and add it to List.
+
+        //Ok.setVisibility(View.VISIBLE);
         Intent i = new Intent(CreateLift.this, ViewLifts.class);
         startActivity(i);
         return;

@@ -1,19 +1,17 @@
 package com.surf_sharing.surfsharingmobileapp;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
+import com.surf_sharing.surfsharingmobileapp.screens.AvailableLifts;
 import com.surf_sharing.surfsharingmobileapp.screens.ManageAccount;
 import com.surf_sharing.surfsharingmobileapp.screens.OfferLift;
 
@@ -78,6 +76,7 @@ public class NavDrawer extends AppCompatActivity
         Fragment fragment = null;
         switch (id) {
             case R.id.nav_available_lifts:
+                fragment = AvailableLifts.newInstance();
                 break;
             case R.id.nav_lifts_on:
                 break;
