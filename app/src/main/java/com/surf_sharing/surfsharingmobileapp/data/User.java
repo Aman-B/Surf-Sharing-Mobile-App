@@ -10,7 +10,7 @@ public class User {
     int id;
     String type, email;
     ArrayList<Lift> lifts;
-    User(int id, String type, String email){
+    public User(int id, String type, String email){
         this.id = id;
         this.type = type;
         this.email = email;

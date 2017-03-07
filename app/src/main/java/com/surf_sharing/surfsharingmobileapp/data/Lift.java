@@ -11,7 +11,7 @@ public class Lift {
     User driver;
     int id;
     ArrayList<User> passengers;
-    Lift(User driver, String destination, int seatsAvailable, int id){
+    public Lift(User driver, String destination, int seatsAvailable, int id){
         this.destination = destination;
         this.seatsAvailable = seatsAvailable;
         this.driver = driver;
