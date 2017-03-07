@@ -7,4 +7,15 @@ package com.surf_sharing.surfsharingmobileapp.data;
  */
 public class Database {
 
+    /**
+     * Function to post a new lift to the database
+     *
+     * @param lift the lift information to be posted
+     * @return return whether the post succeeded or failed
+     */
+    public static boolean postLift(Lift lift) {
+        // TODO: write data in lift object to remote database
+        return false;
+    }
+
 }
