@@ -14,7 +14,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Button navDrawerButton = (Button) findViewById(R.id.navDrawerButton);
+        navDrawerButton.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Intent intent = new Intent(MainActivity.this, NavDrawer.class);
+                 startActivity(intent);
+             }
+         });
     }
 
     public void ViewLifts(View v){
