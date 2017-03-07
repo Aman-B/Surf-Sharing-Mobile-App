@@ -1,13 +1,14 @@
 package com.surf_sharing.surfsharingmobileapp;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.*;
 import android.widget.*;
 import android.widget.AdapterView.*;
+
+import com.surf_sharing.surfsharingmobileapp.data.Lift;
+import com.surf_sharing.surfsharingmobileapp.data.LiftContainer;
+import com.surf_sharing.surfsharingmobileapp.data.User;
 
 public class ViewLifts extends AppCompatActivity {
 

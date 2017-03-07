@@ -1,6 +1,9 @@
-package com.surf_sharing.surfsharingmobileapp;
+package com.surf_sharing.surfsharingmobileapp.temp;
 
 import android.app.Application;
+
+import com.surf_sharing.surfsharingmobileapp.data.LiftContainer;
+import com.surf_sharing.surfsharingmobileapp.data.User;
 
 /**
  * Created by Sean on 28/02/2017.

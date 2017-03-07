@@ -1,4 +1,4 @@
-package com.surf_sharing.surfsharingmobileapp;
+package com.surf_sharing.surfsharingmobileapp.data;
 
 
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class LiftContainer {
     ArrayList<Lift> lifts;
-    LiftContainer(){
+    public LiftContainer() {
         lifts = new ArrayList<Lift>();
         lifts.clear();
     }

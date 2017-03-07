@@ -1,4 +1,4 @@
-package com.surf_sharing.surfsharingmobileapp;
+package com.surf_sharing.surfsharingmobileapp.data;
 
 import java.util.ArrayList;
 import java.util.Scanner;
