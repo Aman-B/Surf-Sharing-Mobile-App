@@ -1,5 +1,7 @@
 package com.surf_sharing.surfsharingmobileapp.data;
 
+import java.util.ArrayList;
+
 /**
  * Created by aran on 07/03/17.
  *
@@ -16,6 +18,16 @@ public class Database {
     public static boolean postLift(Lift lift) {
         // TODO: write data in lift object to remote database
         return false;
+    }
+
+    /**
+     * Function to get a lift of all available lifts
+     *
+     * @return list of all available Lifts
+     */
+    public static ArrayList<Lift> getAllLifts() {
+        // TODO: create list of lifts pulled from the database
+        return null;
     }
 
 }
