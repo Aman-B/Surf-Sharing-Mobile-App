@@ -16,12 +16,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button navDrawerButton = (Button) findViewById(R.id.navDrawerButton);
         navDrawerButton.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                 Intent intent = new Intent(MainActivity.this, NavDrawer.class);
-                 startActivity(intent);
-             }
-         });
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, NavDrawer.class);
+                startActivity(intent);
+            }
+        });
+
+        Button registerButton = (Button) findViewById(R.id.registerButton);
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void ViewLifts(View v){
