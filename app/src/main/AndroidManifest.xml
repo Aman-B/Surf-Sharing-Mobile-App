@@ -36,7 +36,8 @@
         <activity
             android:name=".NavDrawer"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".temp.DatabaseTestActivity"></activity>
     </application>
 
 </manifest>

@@ -48,12 +48,27 @@
             android:layout_gravity="center"
             android:text="Nav Drawer" />
 
-            <Button
-                android:id="@+id/registerButton"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Register Button" />
+        <Button
+            android:id="@+id/registerButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Register Button" />
+
+        <Button
+            android:id="@+id/databaseTestButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Database Test" />
+
+        <Button
+            android:id="@+id/showUserIdButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Show User ID"
+            android:onClick="ShowUserId"/>
 
     </LinearLayout>
 

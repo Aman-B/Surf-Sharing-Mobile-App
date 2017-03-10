@@ -7,6 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.surf_sharing.surfsharingmobileapp.temp.DatabaseTestActivity;
+import com.surf_sharing.surfsharingmobileapp.utils.Display;
+
 public class MainActivity extends AppCompatActivity {
 
     //Button viewButton;
@@ -31,6 +35,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button databaseTestButton = (Button) findViewById(R.id.databaseTestButton);
+        databaseTestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, DatabaseTestActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void ViewLifts(View v){
@@ -47,5 +60,9 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(MainActivity.this, CreateLift.class);
         startActivity(i);
         return;
+    }
+
+    public void ShowUserId(View v) {
+        Display.popup(this, FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 }
