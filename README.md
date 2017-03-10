@@ -10,7 +10,7 @@ To clone this repository in Android Studio do `File > New > Project From Version
 
 **Firebase:**
 
-The app uses [Google Firebase](https://firebase.google.com/). For the project to correctly build, the following steps should be followed:
+The app uses [Google Firebase](https://firebase.google.com/). For the project to correctly build, the following steps should be taken:
 * Go to Tools > Android > SDK Manager
 * Go to the SDK Tools tab
 * Ensure that the following are installed and up to date:
