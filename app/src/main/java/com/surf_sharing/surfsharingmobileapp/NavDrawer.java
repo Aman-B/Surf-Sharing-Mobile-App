@@ -1,5 +1,6 @@
 package com.surf_sharing.surfsharingmobileapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,9 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.surf_sharing.surfsharingmobileapp.screens.AvailableLifts;
 import com.surf_sharing.surfsharingmobileapp.screens.ManageAccount;
 import com.surf_sharing.surfsharingmobileapp.screens.OfferLift;
+import com.surf_sharing.surfsharingmobileapp.utils.Display;
 
 public class NavDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -89,6 +92,10 @@ public class NavDrawer extends AppCompatActivity
                 fragment = ManageAccount.newInstance();
                 break;
             case R.id.nav_logout:
+                Display.popup(this, "Logging out");
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
                 break;
         }
         if (fragment != null) replaceContent(fragment);
