@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -46,33 +47,39 @@ public class DatabaseTestActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // on screen spinner:
-                progressDialog.show();
 
-                // get user input:
-                EditText nameInput = (EditText) findViewById(R.id.database_test_submit_name);
-                EditText ageInput = (EditText) findViewById(R.id.database_test_submit_age);
-                String name = nameInput.getText().toString();
-                String age = ageInput.getText().toString();
+                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                if (currentUser == null) {
+                    popup(DatabaseTestActivity.this, "Please sign in to use this feature");
+                } else {
+                    // on screen spinner:
+                    progressDialog.show();
 
-                // post data to database:
-                // get ID of current user
-                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                // location to write to
-                ref = database.getReference("user_test/" + userId);
-                // set (overwrite) the data at ref location
-                ref.setValue(new TestUser(name, age), new DatabaseReference.CompletionListener() {
-                    @Override
-                    // close spinner
-                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                        progressDialog.dismiss();
-                        if (databaseError == null) {
-                            popup(DatabaseTestActivity.this, "Added!");
-                        } else {
-                            popup(DatabaseTestActivity.this, "Failed: " + databaseError.getDetails());
+                    // get user input:
+                    EditText nameInput = (EditText) findViewById(R.id.database_test_submit_name);
+                    EditText ageInput = (EditText) findViewById(R.id.database_test_submit_age);
+                    String name = nameInput.getText().toString();
+                    String age = ageInput.getText().toString();
+
+                    // get ID of current user
+                    String userId = currentUser.getUid();
+                    // post data to database:
+                    // location to write to
+                    ref = database.getReference("user_test/" + userId);
+                    // set (overwrite) the data at ref location
+                    ref.setValue(new TestUser(name, age), new DatabaseReference.CompletionListener() {
+                        @Override
+                        // close spinner
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            progressDialog.dismiss();
+                            if (databaseError == null) {
+                                popup(DatabaseTestActivity.this, "Added!");
+                            } else {
+                                popup(DatabaseTestActivity.this, "Failed: " + databaseError.getDetails());
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         });
     }
