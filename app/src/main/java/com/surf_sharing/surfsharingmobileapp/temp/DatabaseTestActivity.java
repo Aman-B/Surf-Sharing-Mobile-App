@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -30,7 +31,7 @@ import static com.surf_sharing.surfsharingmobileapp.utils.Display.popup;
 public class DatabaseTestActivity extends AppCompatActivity {
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference ref = database.getReference("tests/test1");
+    private DatabaseReference ref;
 
     private ProgressDialog progressDialog;
 
@@ -45,17 +46,24 @@ public class DatabaseTestActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // on screen spinner:
                 progressDialog.show();
 
+                // get user input:
                 EditText nameInput = (EditText) findViewById(R.id.database_test_submit_name);
                 EditText ageInput = (EditText) findViewById(R.id.database_test_submit_age);
                 String name = nameInput.getText().toString();
                 String age = ageInput.getText().toString();
 
-                Map<String, TestUser > m = new HashMap();
-                m.put("user1", new TestUser (name, age));
-                ref.setValue(m, new DatabaseReference.CompletionListener() {
+                // post data to database:
+                // get ID of current user
+                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                // location to write to
+                ref = database.getReference("user_test/" + userId);
+                // set (overwrite) the data at ref location
+                ref.setValue(new TestUser(name, age), new DatabaseReference.CompletionListener() {
                     @Override
+                    // close spinner
                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                         progressDialog.dismiss();
                         if (databaseError == null) {
