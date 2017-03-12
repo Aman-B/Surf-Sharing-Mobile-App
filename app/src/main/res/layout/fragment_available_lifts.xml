@@ -5,9 +5,16 @@
     tools:context="com.surf_sharing.surfsharingmobileapp.screens.AvailableLifts">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/liftList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </FrameLayout>

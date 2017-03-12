@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.temp.Globals;
 
 public class CreateLift extends AppCompatActivity {
@@ -21,7 +22,7 @@ public class CreateLift extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_lift2);
-        //this.globs = (Globals)getApplication();
+        globs = (Globals)getApplication();
         destination = (EditText) findViewById(R.id.editText);
         seats = (EditText) findViewById(R.id.editText2);
         //Ok = (Button) findViewById(R.id.button2);
@@ -45,7 +46,7 @@ public class CreateLift extends AppCompatActivity {
         seatsInt = Integer.parseInt(seats.getText().toString());
         Toast myToast = Toast.makeText(getApplicationContext(), "create lifts now "+dest+" "+seatsInt, Toast.LENGTH_LONG);
         myToast.show();
-        //this.globs.getLifts().addLift(new Lift(globs.testDriver, dest, seatsInt, 0));
+        globs.getLifts().addLift(new Lift(globs.testDriver, dest, seatsInt, 0));
 
         // create lift using entered details and add it to List.
 
