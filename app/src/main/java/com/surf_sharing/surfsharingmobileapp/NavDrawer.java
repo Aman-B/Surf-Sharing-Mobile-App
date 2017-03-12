@@ -37,6 +37,9 @@ public class NavDrawer extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Display available lifts as default fragment
+        replaceContent(AvailableLifts.newInstance());
     }
 
     @Override

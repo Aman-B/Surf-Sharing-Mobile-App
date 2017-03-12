@@ -167,6 +167,7 @@ public class LoginActivity extends AppCompatActivity {
                                         case FirebaseError.INVALID_EMAIL:
                                             mEmailView.setError(getString(R.string.error_invalid_email));
                                             mEmailView.requestFocus();
+                                            break;
                                         case FirebaseError.USER_NOT_FOUND:
                                             mEmailView.setError(getString(R.string.error_user_not_found));
                                             mEmailView.requestFocus();

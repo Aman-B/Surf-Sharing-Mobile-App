@@ -26,6 +26,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
+import com.surf_sharing.surfsharingmobileapp.utils.Display;
+import com.surf_sharing.surfsharingmobileapp.utils.FirebaseError;
 
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
@@ -83,10 +85,30 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         if(task.isSuccessful()) {
                             //user is registered
                             Toast.makeText(RegisterActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(RegisterActivity.this, NavDrawer.class);
+                            startActivity(intent);
                         }
                         else{
                             Toast.makeText(RegisterActivity.this, "Failed to Register", Toast.LENGTH_SHORT).show();
-
+                            if(!task.isSuccessful()) {
+                                FirebaseAuthException e = (FirebaseAuthException) task.getException();
+                                switch (e.getErrorCode()) {
+                                    case FirebaseError.INVALID_EMAIL:
+                                        editTextEmail.setError(getString(R.string.error_invalid_email));
+                                        editTextEmail.requestFocus();
+                                        break;
+                                    case FirebaseError.EMAIL_ALREADY_IN_USE:
+                                        editTextEmail.setError(getString(R.string.error_user_exists));
+                                        editTextEmail.requestFocus();
+                                        break;
+                                    case FirebaseError.WEAK_PASSWORD:
+                                        editTextPassword.setError(getString(R.string.error_invalid_password));
+                                        editTextPassword.requestFocus();
+                                        break;
+                                    default:
+                                        Display.popup(RegisterActivity.this,e.getMessage());
+                                }
+                            }
                         }
                         progressDialog.dismiss();
                     }
