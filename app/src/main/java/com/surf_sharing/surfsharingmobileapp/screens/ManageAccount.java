@@ -36,8 +36,6 @@ import com.surf_sharing.surfsharingmobileapp.data.Lift;
  * create an instance of this fragment.
  */
 public class ManageAccount extends Fragment {
-
-    Database database = new Database();
     private DatabaseReference ref;
 
     public ManageAccount() {
@@ -74,7 +72,7 @@ public class ManageAccount extends Fragment {
         View view = inflater.inflate(R.layout.fragment_manage_account, container, false);
 
         //FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        User currentUser = database.getCurrentUser();
+        User currentUser = Database.getCurrentUser();
 
         if (currentUser == null) {
             popup(new AppCompatActivity(), "Please sign in to use this feature");
@@ -152,7 +150,7 @@ public class ManageAccount extends Fragment {
 
                     User updatedUser = new User(userID, userType, newEmail);
 
-                    database.setUserValue(userID, updatedUser);
+                    Database.setUserValue(userID, updatedUser);
 
                     /*ref = database.getReference("user_test/" + userID);
 

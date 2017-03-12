@@ -47,7 +47,7 @@ public class Database {
      * to retrieve and return the User
      * @return User
      */
-    public User getCurrentUser() {
+    public static User getCurrentUser() {
 
         User user = new User(1, "passenger", "user1@example.com");
         return user;
@@ -58,7 +58,7 @@ public class Database {
      * the return type from 'void' to some relevant return type e.g.
      * 'DatabaseError'
      */
-    public void setUserValue(int userID, User newUserValue) {
+    public static void setUserValue(int userID, User newUserValue) {
         // get ID of current user
 
     }
