@@ -14,10 +14,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <application android:name=".Globals"></application>
 
-        <application android:name=".Globals">
-
-        </application>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,10 +39,7 @@
             android:name=".NavDrawer"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".temp.DatabaseTestActivity"></activity>
+        <activity android:name=".temp.DatabaseTestActivity" />
     </application>
-
-
-
 
 </manifest>
