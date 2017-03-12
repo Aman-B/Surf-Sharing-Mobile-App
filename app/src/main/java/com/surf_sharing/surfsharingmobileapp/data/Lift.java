@@ -12,7 +12,7 @@ public class Lift {
     int id;
     // car, time, date
     ArrayList<User> passengers;
-    public Lift(User driver, String destination, int seatsAvailable, int id){
+    public Lift(User driver, String destination, int seatsAvailable, int id/*, String car, String time, String date*/){
         this.destination = destination;
         this.seatsAvailable = seatsAvailable;
         this.driver = driver;
