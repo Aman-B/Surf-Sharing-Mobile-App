@@ -7,8 +7,8 @@ import java.util.Scanner;
  * Created by Sean on 27/02/2017.
  */
 public class User {
-    int id;
-    String type, email;
+    int id, age;
+    String type, name, gender, email, phone, bio;
     ArrayList<Lift> lifts;
     public User(int id, String type, String email){
         this.id = id;
@@ -34,4 +34,39 @@ public class User {
         // accept request and add user to lift
     }
 
+    public ArrayList<Lift> getUserLifts() {
+        return this.lifts;
+    }
+
+    public int getUserId() {
+        return this.id;
+    }
+
+    public String getUserType() {
+        return this.type;
+    }
+
+    public String getUserName() {
+        return this.name;
+    }
+
+    public String getUserEmail() {
+        return this.email;
+    }
+
+    public String getUserPhone() {
+        return this.phone;
+    }
+
+    public int getUserAge() {
+        return this.age;
+    }
+
+    public String getUserGender() {
+        return this.gender;
+    }
+
+    public String getUserBio() {
+        return this.bio;
+    }
 }
