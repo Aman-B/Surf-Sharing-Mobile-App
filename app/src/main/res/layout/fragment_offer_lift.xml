@@ -9,6 +9,28 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <EditText
+            android:id="@+id/destEnter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="destination"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/seatsEnter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="seats available"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/buttonEnter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enter" />
+
         <Button
             android:id="@+id/offer_lift_test_button"
             android:layout_width="match_parent"

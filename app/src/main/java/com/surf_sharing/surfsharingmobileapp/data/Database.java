@@ -21,7 +21,7 @@ public class Database {
     }
 
     /**
-     * Function to get a lift of all available lifts
+     * Function to get a list of all available lifts
      *
      * @return list of all available Lifts
      */

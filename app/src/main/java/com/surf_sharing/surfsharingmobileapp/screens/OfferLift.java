@@ -4,13 +4,21 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.surf_sharing.surfsharingmobileapp.NavDrawer;
 import com.surf_sharing.surfsharingmobileapp.R;
+import com.surf_sharing.surfsharingmobileapp.data.Database;
+import com.surf_sharing.surfsharingmobileapp.data.Lift;
+import com.surf_sharing.surfsharingmobileapp.data.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,8 +26,13 @@ import com.surf_sharing.surfsharingmobileapp.R;
  * Use the {@link OfferLift#newInstance} factory method to
  * create an instance of this fragment.
  */
+
+// create a lift object containing the info that will be passed to the database
 public class OfferLift extends Fragment {
 
+    //EditText dest;
+    //EditText seats;
+    //Database database;
     public OfferLift() {
         // Required empty public constructor
     }
@@ -60,6 +73,29 @@ public class OfferLift extends Fragment {
             public void onClick(View view) {
                 NavDrawer nd = (NavDrawer) getActivity();
                 nd.replaceContent(ManageAccount.newInstance());
+            }
+        });
+
+
+        Button enterButton = (Button) view.findViewById(R.id.buttonEnter);
+        enterButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                // create Lift object
+                EditText dest = (EditText) view.findViewById(R.id.destEnter);
+                EditText seats = (EditText) view.findViewById(R.id.seatsEnter);
+                Log.d("crash", "test crash");
+                //dest = (EditText) view.findViewById(R.id.destEnter);
+                Log.d("tag", "dest safe");
+                //seats = (EditText) view.findViewById(R.id.seatsEnter);
+
+                // right now this just sends a test lift to Database.postLift()
+                User testDriver = new User(1, "driver", "x@gmail.com");
+                Lift l = new Lift(testDriver, "bray", 5, 1);
+                Log.d("postlift", ""+Database.postLift(l));
+                Toast.makeText(getActivity(),
+                        "postlift "+Database.postLift(l), Toast.LENGTH_LONG)
+                        .show();
             }
         });
 

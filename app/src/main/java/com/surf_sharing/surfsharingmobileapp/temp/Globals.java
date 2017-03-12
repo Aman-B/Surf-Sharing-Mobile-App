@@ -10,15 +10,15 @@ import com.surf_sharing.surfsharingmobileapp.data.User;
  */
 
 public class Globals extends Application {
-    LiftContainer lifts = new LiftContainer();
-    User testDriver = new User(1, "driver", "x@gmail.com");
-    int liftId = 0;
+    public LiftContainer lifts = new LiftContainer();
+    public User testDriver = new User(1, "driver", "x@gmail.com");
+    public int liftId = 0;
 
-    LiftContainer getLifts(){
+    public LiftContainer getLifts(){
         return this.lifts;
     }
 
-    int getLiftId(){
+    public int getLiftId(){
         return liftId++;
     }
 

@@ -6,10 +6,11 @@ import java.util.ArrayList;
  * Created by Sean on 27/02/2017.
  */
 public class Lift {
-    String destination;
+    String destination, car, time, date;
     int seatsAvailable;
     User driver;
     int id;
+    // car, time, date
     ArrayList<User> passengers;
     public Lift(User driver, String destination, int seatsAvailable, int id){
         this.destination = destination;
@@ -27,6 +28,12 @@ public class Lift {
         }
         return 0;
 
+    }
+
+    public String toString(){
+        String s;
+        s = destination+", "+seatsAvailable+" seats";
+        return s;
     }
 }
 
