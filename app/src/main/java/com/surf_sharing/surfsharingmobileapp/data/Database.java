@@ -27,7 +27,12 @@ public class Database {
      */
     public static ArrayList<Lift> getAllLifts() {
         // TODO: create list of lifts pulled from the database
-        return null;
+        // so far it just returns a dummy list with one lift
+        User testUser = new User(1, "driver", "email");
+        Lift dummy = new Lift(testUser, "bray", 5, 1);
+        ArrayList<Lift> list = new ArrayList<>();
+        list.add(dummy);
+        return list;
     }
 
 }
