@@ -72,24 +72,9 @@ public class AvailableLifts extends Fragment {
 
         ListView liftList = (ListView) view.findViewById(R.id.liftList);
         ArrayList<Lift> lifts_list = Database.getAllLifts();
-       // Lift[] lifts_list_array = lifts_list.toArray(new Lift[lifts_list.size()]);
-       // if(lifts_list != null){
 
-       // }
-      //  else{
-            //ArrayAdapter adapter = new ArrayAdapter(getActivity(), view.findViewById(R.id.liftList), lifts_list);
-      //  }
-        /*
-            I AM CURRENTLY STILL WORKING ON THIS
-         */
-        //Object[] o = lifts_list.toArray(new Object[lifts_list.size()]);
-        //String[] lifts = {"bray", "bundoran"};
-        //User testDriver = new User(1, "driver", "x@gmail.com");
-        //Lift l = new Lift(testDriver, "bray", 5, 1);
-        //ArrayAdapter<Lift> adapter = new ArrayAdapter<String>(/*getActivity().getApplicationContext(), view.findViewById(R.id.liftList*/), lifts));
-        //liftList.setAdapter(adapter);
-        //liftList.getAdapter();
-
+        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, lifts_list);
+        liftList.setAdapter(adapter);
         return view;
     }
 

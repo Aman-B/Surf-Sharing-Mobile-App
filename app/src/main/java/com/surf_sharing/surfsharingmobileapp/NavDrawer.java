@@ -13,13 +13,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.screens.AvailableLifts;
 import com.surf_sharing.surfsharingmobileapp.screens.ManageAccount;
 import com.surf_sharing.surfsharingmobileapp.screens.OfferLift;
 import com.surf_sharing.surfsharingmobileapp.utils.Display;
+
+import java.util.ArrayList;
 
 public class NavDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -140,6 +145,14 @@ public class NavDrawer extends AppCompatActivity
                 .replace(R.id.nav_drawer_content, fragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    // retrieves text values from editTexts in offerlift
+    public String[] getTextValues(){
+        EditText dest = (EditText) this.findViewById(R.id.destEnter);
+        EditText seats = (EditText) this.findViewById(R.id.seatsEnter);
+        String[] s = {dest.getText().toString(), seats.getText().toString()};
+        return s;
     }
 
     @Override
