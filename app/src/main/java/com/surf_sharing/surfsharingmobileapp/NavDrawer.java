@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.surf_sharing.surfsharingmobileapp.screens.AvailableLifts;
@@ -115,5 +116,12 @@ public class NavDrawer extends AppCompatActivity
                 .replace(R.id.nav_drawer_content, fragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public String[] getTextValues(){
+        EditText dest = (EditText) this.findViewById(R.id.destEnter);
+        EditText seats = (EditText) this.findViewById(R.id.seatsEnter);
+        String[] s = {dest.getText().toString(), seats.getText().toString()};
+        return s;
     }
 }

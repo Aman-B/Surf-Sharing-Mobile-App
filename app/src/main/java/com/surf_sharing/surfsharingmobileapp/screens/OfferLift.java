@@ -88,13 +88,14 @@ public class OfferLift extends Fragment {
                 //dest = (EditText) view.findViewById(R.id.destEnter);
                 Log.d("tag", "dest safe");
                 //seats = (EditText) view.findViewById(R.id.seatsEnter);
-
+                NavDrawer nd = (NavDrawer) getActivity();
+                String[] fields = nd.getTextValues();
                 // right now this just sends a test lift to Database.postLift()
                 User testDriver = new User(1, "driver", "x@gmail.com");
-                Lift l = new Lift(testDriver, "bray", 5, 1);
-                Log.d("postlift", ""+Database.postLift(l));
+                Lift l = new Lift(testDriver, fields[0], Integer.parseInt(fields[1]), 1);
+                Log.d("postlift", ""+Database.postLift(l)+"\nvals: "+fields[0]+", "+fields[1]);
                 Toast.makeText(getActivity(),
-                        "postlift "+Database.postLift(l), Toast.LENGTH_LONG)
+                        "postlift "+Database.postLift(l)+"\nvals: "+fields[0]+", "+fields[1], Toast.LENGTH_LONG)
                         .show();
             }
         });
