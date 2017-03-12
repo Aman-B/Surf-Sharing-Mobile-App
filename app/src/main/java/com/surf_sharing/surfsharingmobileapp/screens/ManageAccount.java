@@ -104,7 +104,7 @@ public class ManageAccount extends Fragment {
             genderText.setText(userGender);
 
             EditText ageText = (EditText) view.findViewById(R.id.edit_text_age);
-            ageText.setText(userAge);
+            ageText.setText(Integer.toString(userAge));
 
             EditText phoneText = (EditText) view.findViewById(R.id.edit_text_phone);
             phoneText.setText(userPhone);
