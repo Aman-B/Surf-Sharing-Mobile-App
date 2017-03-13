@@ -1,13 +1,23 @@
 package com.surf_sharing.surfsharingmobileapp.data;
 
+import android.widget.Toast;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.surf_sharing.surfsharingmobileapp.temp.DatabaseTestActivity;
 
 import static com.surf_sharing.surfsharingmobileapp.utils.Display.popup;
@@ -17,7 +27,14 @@ import static com.surf_sharing.surfsharingmobileapp.utils.Display.popup;
  *
  * Contains functions for interacting with the Firebase realtime databases
  */
+
+
+
 public class Database {
+
+    public static ArrayList<Lift> liftList;
+
+    public static DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
 
     /**
      * Function to post a new lift to the database
@@ -67,5 +84,133 @@ public class Database {
         // get ID of current user
 
     }
+
+    //-------------------------------------------------------------------------------------------------------------------------------
+
+    public static boolean createUser_(User user) {
+
+        DatabaseReference usersRef = root.child("users");
+
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("" + user.id, "");
+        usersRef.updateChildren(map);
+
+        DatabaseReference usersRefChild = usersRef.child("" + user.id);
+
+        Map<String,Object> mapChild = new HashMap<String, Object>();
+        mapChild.put("name", "" + user.name);
+        mapChild.put("age", "" + user.age);
+        mapChild.put("gender", "" + user.gender);
+        mapChild.put("email", "" + user.email);
+        mapChild.put("type", "" + user.type);
+        mapChild.put("phone", "" + user.phone);
+        mapChild.put("bio", "" + user.bio);
+        usersRefChild.updateChildren(mapChild);
+
+        return false;
+    }
+
+    public static boolean postLift_(Lift lift) {
+
+        DatabaseReference usersRef = root.child("lifts");
+
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("" + lift.id, "");
+        usersRef.updateChildren(map);
+
+        DatabaseReference usersRefChild = usersRef.child("" + lift.id);
+
+        Map<String,Object> mapChild = new HashMap<String, Object>();
+        mapChild.put("driverId", "" + lift.driver.id);
+        mapChild.put("car", "" + lift.car);
+        mapChild.put("seatsAvailable", "" + lift.seatsAvailable);
+        mapChild.put("destination", "" + lift.destination);
+        mapChild.put("date", "" + lift.date);
+        mapChild.put("time", "" + lift.time);
+        usersRefChild.updateChildren(mapChild);
+
+        return false;
+    }
+
+    public static String lifts;
+    public static ArrayList<Lift> getAllLifts_() {
+
+        DatabaseReference usersRef = root.child("lifts");
+
+        usersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                String x = "";
+
+                ArrayList<Lift> list = new ArrayList<>();
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
+                    int id = Integer.parseInt((String) postSnapshot.getKey());
+                    int driverId = Integer.parseInt((String) postSnapshot.child("driverId").getValue());
+                    int seatsAvailable = Integer.parseInt((String) postSnapshot.child("seatsAvailable").getValue());
+                    String car = (String) postSnapshot.child("car").getValue();
+                    String destination = (String) postSnapshot.child("destination").getValue();
+                    String date = (String) postSnapshot.child("date").getValue();
+                    String time = (String) postSnapshot.child("time").getValue();
+
+                    User driver = new User(driverId, "", "");
+
+                    Lift lift = new Lift(driver, destination, seatsAvailable, id);
+                    lift.car = car;
+                    lift.date = date;
+                    lift.time = time;
+
+                    list.add(lift);
+                }
+
+                liftList = list;
+
+                DatabaseTestActivity.text.setText("" + liftList.size());
+
+
+/*                Set<String> set = new HashSet<String>();
+                Iterator i = dataSnapshot.getChildren().iterator();
+
+                while (i.hasNext())
+                {
+                    set.add(((DataSnapshot)i.next()).getKey());
+                }
+
+                DatabaseTestActivity.text.setText(set.toString());
+                lifts = set.toString();
+
+                liftList.addAll(set);
+
+                //showText.setText("" + set.toString());*/
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        /*
+
+        //DataSnapshot dataSnapshot = root.
+
+        Set<String> set = new HashSet<String>();
+        Iterator i = dataSnapshot.getChildren().iterator();
+
+        while (i.hasNext())
+        {
+             set.add(((DataSnapshot)i.next()).getKey());
+        }
+
+*/
+        User testUser = new User(1, "driver", "email");
+        Lift dummy = new Lift(testUser, "bray", 5, 1);
+        ArrayList<Lift> list = new ArrayList<>();
+        list.add(dummy);
+        return list;
+    }
+
+
 
 }

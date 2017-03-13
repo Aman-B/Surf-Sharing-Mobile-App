@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,6 +18,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.surf_sharing.surfsharingmobileapp.R;
+import com.surf_sharing.surfsharingmobileapp.data.Database;
+import com.surf_sharing.surfsharingmobileapp.data.Lift;
+import com.surf_sharing.surfsharingmobileapp.data.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +40,8 @@ public class DatabaseTestActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
 
+    public static TextView text;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +53,7 @@ public class DatabaseTestActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+        /*
                 FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                 if (currentUser == null) {
                     popup(DatabaseTestActivity.this, "Please sign in to use this feature");
@@ -79,7 +85,30 @@ public class DatabaseTestActivity extends AppCompatActivity {
                             }
                         }
                     });
-                }
+                }*/
+
+                text = (TextView) findViewById(R.id.textView3);
+
+                //Database.postLift_(new Lift(new User(0, "type", "email"), "a", 5, 1));
+                //Database.createUser_(new User(0, "type", "email"));
+                Database.getAllLifts_();
+
+                //text.setText(Database.lifts);
+
+            }
+        });
+
+
+        Button create = (Button) findViewById(R.id.button3);
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //EditText ageInput = (EditText) findViewById(R.id.database_test_submit_age);
+                //int id = Integer.parseInt(ageInput.getText().toString());
+
+                Database.postLift_(new Lift(new User(7, "type", "email"), "a", 5, 8));
+                //Database.createUser_(new User(3, "type", "email"));
             }
         });
     }
