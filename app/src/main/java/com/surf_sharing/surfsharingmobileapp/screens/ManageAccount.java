@@ -6,6 +6,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -167,6 +168,19 @@ public class ManageAccount extends Fragment {
                             }
                         }
                     });*/
+                }
+            });
+
+            Button cancelButton = (Button) view.findViewById(R.id.cancel_btn);
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                // Cancel any changes made to the Account and go back
+                // to previous fragment
+
+                @Override
+                public void onClick(View view) {
+
+                    //FragmentManager fm = getActivity().getSupportFragmentManager();
+                    //fm.popBackStack();
                 }
             });
 
