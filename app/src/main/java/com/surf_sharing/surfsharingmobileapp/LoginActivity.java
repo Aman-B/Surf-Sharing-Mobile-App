@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private ProgressDialog progressDialog;
     private View mLoginFormView;
-
+    private Button passangerAccButon,driverAccButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +103,23 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         progressDialog = new ProgressDialog(this);
+
+        passangerAccButon = (Button) findViewById(R.id.passangerAccButon);
+        passangerAccButon.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+        driverAccButton = (Button) findViewById(R.id.driverAccButton);
+        driverAccButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
