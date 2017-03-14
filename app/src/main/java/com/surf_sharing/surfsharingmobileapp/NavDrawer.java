@@ -22,6 +22,7 @@ import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.screens.AvailableLifts;
 import com.surf_sharing.surfsharingmobileapp.screens.ManageAccount;
 import com.surf_sharing.surfsharingmobileapp.screens.OfferLift;
+import com.surf_sharing.surfsharingmobileapp.screens.ProfileScreen;
 import com.surf_sharing.surfsharingmobileapp.utils.Display;
 
 import java.util.ArrayList;
@@ -113,6 +114,9 @@ public class NavDrawer extends AppCompatActivity
                 fragment = OfferLift.newInstance();
                 break;
             case R.id.nav_lifts_offering:
+                break;
+            case R.id.nav_profile:
+                fragment = ProfileScreen.newInstance();
                 break;
             case R.id.nav_manage_account:
                 fragment = ManageAccount.newInstance();

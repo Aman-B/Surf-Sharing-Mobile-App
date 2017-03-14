@@ -46,9 +46,9 @@ public class ProfileScreen extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // change the title of the activity
-        getActivity().setTitle(R.string.title_available_lift);
+        getActivity().setTitle(R.string.title_profile);
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_available_lifts, container, false);
+        View view =  inflater.inflate(R.layout.fragment_profile, container, false);
 
         // example of a button that replaces the current fragment with another
         /*Button testButton = (Button) view.findViewById(R.id.offer_lift_test_button);
