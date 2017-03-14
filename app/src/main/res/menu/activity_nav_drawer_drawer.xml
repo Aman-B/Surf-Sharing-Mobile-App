@@ -22,6 +22,9 @@
         android:id="@+id/bottom_nav_menu"
         android:checkableBehavior="none">
         <item
+            android:id="@+id/nav_profile"
+            android:title="Profile" />
+        <item
             android:id="@+id/nav_manage_account"
             android:title="Manage Account" />
         <item

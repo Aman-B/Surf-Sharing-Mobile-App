@@ -112,7 +112,7 @@
             android:layout_height="116dp"
             android:layout_marginLeft="37dp"
             android:layout_marginTop="183dp"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. "
+            android:text="@string/loremipsum"
             android:textColor="@android:color/black"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -147,7 +147,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna  "
+                        android:text="@string/shortIpsum"
                         android:textSize="10sp" />
 
                 </LinearLayout>
@@ -168,7 +168,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna  "
+                        android:text="@string/shortIpsum"
                         android:textSize="10sp" />
 
                 </LinearLayout>
@@ -189,7 +189,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna  "
+                        android:text="@string/shortIpsum"
                         android:textSize="10sp" />
 
                 </LinearLayout>
