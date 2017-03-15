@@ -79,11 +79,11 @@ public class ManageAccount extends Fragment {
             popup(new AppCompatActivity(), "Please sign in to use this feature");
         } else {
 
-            final int userID = currentUser.getUserId();
+            final String userID = currentUser.getUserId();
             final String userType = currentUser.getUserType();
             String userName = currentUser.getUserName();
             String userGender = currentUser.getUserGender();
-            int userAge = currentUser.getUserAge();
+            String userAge = currentUser.getUserAge();
             String userPhone = currentUser.getUserPhone();
             String userEmail = currentUser.getUserEmail();
             String userBio = currentUser.getUserBio();
@@ -105,7 +105,7 @@ public class ManageAccount extends Fragment {
             genderText.setText(userGender);
 
             EditText ageText = (EditText) view.findViewById(R.id.edit_text_age);
-            ageText.setText(Integer.toString(userAge));
+            ageText.setText(userAge);
 
             EditText phoneText = (EditText) view.findViewById(R.id.edit_text_phone);
             phoneText.setText(userPhone);
@@ -151,7 +151,7 @@ public class ManageAccount extends Fragment {
 
                     User updatedUser = new User(userID, userType, newEmail);
 
-                    Database.setUserValue(userID, updatedUser);
+                    Database.setUserValue(updatedUser);
 
                     /*ref = database.getReference("user_test/" + userID);
 

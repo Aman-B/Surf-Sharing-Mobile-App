@@ -46,7 +46,7 @@ public class CreateLift extends AppCompatActivity {
         seatsInt = Integer.parseInt(seats.getText().toString());
         Toast myToast = Toast.makeText(getApplicationContext(), "create lifts now "+dest+" "+seatsInt, Toast.LENGTH_LONG);
         myToast.show();
-        globs.getLifts().addLift(new Lift(globs.testDriver, dest, seatsInt, 0));
+        globs.getLifts().addLift(new Lift(globs.testDriver, dest, seatsInt, "" + 0));
 
         // create lift using entered details and add it to List.
 
