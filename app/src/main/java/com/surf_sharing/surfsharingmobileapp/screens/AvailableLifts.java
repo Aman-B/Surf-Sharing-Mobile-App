@@ -34,6 +34,7 @@ import java.util.ArrayList;
 public class AvailableLifts extends Fragment {
 
     ListView liftList;
+    ArrayList<Lift> lifts_list;
 
     //Globals glob;
     public AvailableLifts() {
@@ -75,11 +76,13 @@ public class AvailableLifts extends Fragment {
         // populate list with lifts
 
         liftList = (ListView) view.findViewById(R.id.liftList);
-        final ArrayList<Lift> lifts_list = new ArrayList<Lift>();
+        lifts_list = new ArrayList<Lift>();
 
         Database.liftRoot.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                lifts_list = new ArrayList<Lift>();
 
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 

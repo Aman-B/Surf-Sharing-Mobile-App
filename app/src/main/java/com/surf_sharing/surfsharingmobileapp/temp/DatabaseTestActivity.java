@@ -125,8 +125,8 @@ public class DatabaseTestActivity extends AppCompatActivity {
                 //EditText ageInput = (EditText) findViewById(R.id.database_test_submit_age);
                 //int id = Integer.parseInt(ageInput.getText().toString());
 
-         //       Database.postLift(new Lift(new User("77", "type", "email"), "a", 5, "" + 8));
-                Database.setUserValue(new User("" + 3, "type2", "email"));
+               Database.postLift(new Lift(new User("77", "type", "email"), "a", 5, "" + 8));
+              //  Database.setUserValue(new User("" + 3, "type2", "email"));
 
                 /*User user = Database.getCurrentUser_();
 
