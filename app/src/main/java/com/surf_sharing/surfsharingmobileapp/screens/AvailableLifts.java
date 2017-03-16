@@ -131,7 +131,14 @@ public class AvailableLifts extends Fragment {
                     }
                 }
 
-                setListView(lifts_list);
+                try
+                {
+                    ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, lifts_list);
+                    liftList.setAdapter(adapter);
+                }
+                catch (Exception e)
+                { }
+
             }
 
             public void removeListener() {
@@ -145,10 +152,6 @@ public class AvailableLifts extends Fragment {
         };
 
         liftRoot.addValueEventListener(liftListener);
-
-        ArrayList<Lift>  empty = new ArrayList<Lift>();
-        setListView(empty);
-
 
         return view;
     }
@@ -164,10 +167,4 @@ public class AvailableLifts extends Fragment {
         liftRoot.removeEventListener(liftListener);
     }
 
-
-    public void setListView(ArrayList<Lift>  lifts_list) {
-
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, lifts_list);
-        liftList.setAdapter(adapter);
-    }
 }
