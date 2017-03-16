@@ -15,6 +15,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/upgrade_btn"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:text="Become a Driver"
+                        android:textSize="12sp"
+                        android:textAllCaps="false" />
+            </RelativeLayout>
 
             <ImageView
                 android:layout_width="120dp"
@@ -29,43 +43,157 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
+                android:layout_marginLeft="4dp"
                 android:text="Personal Profile"/>
-            <EditText
-                android:id="@+id/edit_text_name"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="Name"/>
-            <EditText
-                android:id="@+id/edit_text_gender"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+                <TextView
+                    android:id="@+id/text_view_name"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="4dp"
+                    android:text="Name:"
+                    android:textSize="18sp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    />
+
+                <EditText
+                    android:id="@+id/edit_text_name"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="315dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="Name"/>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="Gender"/>
-            <EditText
-                android:id="@+id/edit_text_age"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+                <TextView
+                    android:id="@+id/text_view_gender"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="4dp"
+                    android:text="Gender:"
+                    android:textSize="18sp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    />
+
+                <EditText
+                    android:id="@+id/edit_text_gender"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="315dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="Gender"/>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="Age"/>
-            <EditText
-                android:id="@+id/edit_text_phone"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+                <TextView
+                    android:id="@+id/text_view_age"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="4dp"
+                    android:text="Age:"
+                    android:textSize="18sp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    />
+
+                <EditText
+                    android:id="@+id/edit_text_age"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="315dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="Age"/>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="phone"
-                android:hint="Phone number"/>
-            <EditText
-                android:id="@+id/edit_text_email"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+                <TextView
+                    android:id="@+id/text_view_phone"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="4dp"
+                    android:text="Phone:"
+                    android:textSize="18sp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    />
+
+                <EditText
+                    android:id="@+id/edit_text_phone"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="315dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:hint="Phone number"/>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:hint="Email"/>
-            <EditText
-                android:id="@+id/edit_text_bio"
+                android:layout_height="50dp"
+                android:orientation="horizontal" >
+                <TextView
+                    android:id="@+id/text_view_email"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="4dp"
+                    android:text="Email:"
+                    android:textSize="18sp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    />
+
+                <EditText
+                    android:id="@+id/edit_text_email"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="315dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:hint="Email"/>
+            </RelativeLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="Brief Bio"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+                <TextView
+                    android:id="@+id/text_view_bio"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="100dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
+                    android:text="Brief Bio:"
+                    android:textSize="18sp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    />
+
+                <EditText
+                    android:id="@+id/edit_text_bio"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:inputType="text"
+                    android:hint="Brief Bio"/>
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/text_view_lifts"
                 android:layout_width="wrap_content"

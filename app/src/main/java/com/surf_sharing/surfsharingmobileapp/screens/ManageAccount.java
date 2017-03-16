@@ -120,6 +120,17 @@ public class ManageAccount extends Fragment {
             liftViewText.setText(liftDetails);
 
 
+            Button upgradeButton = (Button) view.findViewById(R.id.upgrade_btn);
+            upgradeButton.setOnClickListener(new View.OnClickListener() {
+               @Override
+                public void onClick(View view) {
+                    // Begin process of upgrading the User Account
+                   // to a Driver Account:
+
+
+               }
+            });
+
             Button okButton = (Button) view.findViewById(R.id.ok_btn);
             okButton.setOnClickListener(new View.OnClickListener() {
                 @Override
