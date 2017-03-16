@@ -14,6 +14,8 @@ import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
@@ -35,6 +37,9 @@ public class AvailableLifts extends Fragment {
 
     ListView liftList;
     ArrayList<Lift> lifts_list;
+
+    private DatabaseReference liftRoot;
+    private ValueEventListener liftListener;
 
     //Globals glob;
     public AvailableLifts() {
@@ -64,6 +69,7 @@ public class AvailableLifts extends Fragment {
             // handle bundle arguments
             
         }
+        liftRoot = FirebaseDatabase.getInstance().getReference().getRoot().child("lifts");
     }
 
     @Override
@@ -78,7 +84,7 @@ public class AvailableLifts extends Fragment {
         liftList = (ListView) view.findViewById(R.id.liftList);
         lifts_list = new ArrayList<Lift>();
 
-        Database.liftRoot.addValueEventListener(new ValueEventListener() {
+        liftListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -128,11 +134,17 @@ public class AvailableLifts extends Fragment {
                 setListView(lifts_list);
             }
 
+            public void removeListener() {
+
+            }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        };
+
+        liftRoot.addValueEventListener(liftListener);
 
         ArrayList<Lift>  empty = new ArrayList<Lift>();
         setListView(empty);
@@ -149,6 +161,7 @@ public class AvailableLifts extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        liftRoot.removeEventListener(liftListener);
     }
 
 
