@@ -6,13 +6,13 @@ import java.util.ArrayList;
  * Created by Sean on 27/02/2017.
  */
 public class Lift {
-    String destination, car, time, date;
-    int seatsAvailable;
-    User driver;
-    int id;
+    public String id, destination, car, time, date;
+    public int seatsAvailable;
+    public User driver;
+
     // car, time, date
     ArrayList<User> passengers;
-    public Lift(User driver, String destination, int seatsAvailable, int id/*, String car, String time, String date*/){
+    public Lift(User driver, String destination, int seatsAvailable, String id/*, String car, String time, String date*/){
         this.destination = destination;
         this.seatsAvailable = seatsAvailable;
         this.driver = driver;

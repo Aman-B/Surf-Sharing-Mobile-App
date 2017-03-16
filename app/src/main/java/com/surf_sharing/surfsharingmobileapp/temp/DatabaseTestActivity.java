@@ -21,6 +21,7 @@ import com.surf_sharing.surfsharingmobileapp.R;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.data.User;
+import com.surf_sharing.surfsharingmobileapp.utils.Display;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,15 +50,32 @@ public class DatabaseTestActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
 
+        text = (TextView) findViewById(R.id.textView3);
+
         Button submit = (Button) findViewById(R.id.database_test_submit_button);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-        /*
-                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                if (currentUser == null) {
+
+                EditText nameInput = (EditText) findViewById(R.id.database_test_submit_name);
+                EditText ageInput = (EditText) findViewById(R.id.database_test_submit_age);
+                String name = nameInput.getText().toString();
+                String age = ageInput.getText().toString();
+
+                //Database.setUserValue(name, age, "gender", "email", "type", "phone", "bio");
+
+                //Toast.makeText(getApplicationContext(),x , Toast.LENGTH_LONG).show();
+
+                /* FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                if (currentUser == null)
+                {
                     popup(DatabaseTestActivity.this, "Please sign in to use this feature");
-                } else {
+                }
+                else
+                {
+
+
+
                     // on screen spinner:
                     progressDialog.show();
 
@@ -87,13 +105,13 @@ public class DatabaseTestActivity extends AppCompatActivity {
                     });
                 }*/
 
-                text = (TextView) findViewById(R.id.textView3);
+
 
                 //Database.postLift_(new Lift(new User(0, "type", "email"), "a", 5, 1));
                 //Database.createUser_(new User(0, "type", "email"));
-                Database.getAllLifts_();
+                //Database.getAllLifts_();
 
-                //text.setText(Database.lifts);
+                //text.setText(Database.lifts);*/
 
             }
         });
@@ -107,8 +125,19 @@ public class DatabaseTestActivity extends AppCompatActivity {
                 //EditText ageInput = (EditText) findViewById(R.id.database_test_submit_age);
                 //int id = Integer.parseInt(ageInput.getText().toString());
 
-                Database.postLift_(new Lift(new User(7, "type", "email"), "a", 5, 8));
-                //Database.createUser_(new User(3, "type", "email"));
+               Database.postLift(new Lift(new User("77", "type", "email"), "a", 5, "" + 8));
+              //  Database.setUserValue(new User("" + 3, "type2", "email"));
+
+                /*User user = Database.getCurrentUser_();
+
+                if (user != null)
+                {
+                    popup(DatabaseTestActivity.this, user.getUserType());
+                }
+                else
+                {
+                    popup(DatabaseTestActivity.this, "null");
+                }*/
             }
         });
     }

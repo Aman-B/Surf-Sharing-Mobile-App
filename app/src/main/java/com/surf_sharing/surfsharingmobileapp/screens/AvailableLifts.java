@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.data.User;
@@ -29,6 +32,9 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class AvailableLifts extends Fragment {
+
+    ListView liftList;
+    ArrayList<Lift> lifts_list;
 
     //Globals glob;
     public AvailableLifts() {
@@ -61,20 +67,77 @@ public class AvailableLifts extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // change the title of the activity
         getActivity().setTitle(R.string.title_available_lift);
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_available_lifts, container, false);
+        final View view =  inflater.inflate(R.layout.fragment_available_lifts, container, false);
 
         // populate list with lifts
 
-        ListView liftList = (ListView) view.findViewById(R.id.liftList);
-        ArrayList<Lift> lifts_list = Database.getAllLifts();
+        liftList = (ListView) view.findViewById(R.id.liftList);
+        lifts_list = new ArrayList<Lift>();
 
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, lifts_list);
-        liftList.setAdapter(adapter);
+        Database.liftRoot.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                lifts_list = new ArrayList<Lift>();
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
+                    try
+                    {
+                        String id = postSnapshot.getKey();
+                        int seatsAvailable = Integer.parseInt((String) postSnapshot.child("seatsAvailable").getValue());
+                        String car = (String) postSnapshot.child("car").getValue();
+                        String destination = (String) postSnapshot.child("destination").getValue();
+                        String date = (String) postSnapshot.child("date").getValue();
+                        String time = (String) postSnapshot.child("time").getValue();
+
+                        DataSnapshot driverRef = postSnapshot.child("driverId");
+                        String driverId = (String) driverRef.child("id").getValue();
+                        String driverName = (String) driverRef.child("name").getValue();
+                        String driverAge = (String) driverRef.child("age").getValue();
+                        String driverGender = (String) driverRef.child("gender").getValue();
+                        String driverEmail = (String) driverRef.child("email").getValue();
+                        String driverType = (String) driverRef.child("type").getValue();
+                        String driverPhone = (String) driverRef.child("phone").getValue();
+                        String driverBio = (String) driverRef.child("bio").getValue();
+
+                        User driver = new User(driverId, driverType, driverEmail);
+                        driver.name = driverName;
+                        driver.age = driverAge;
+                        driver.gender = driverGender;
+                        driver.phone = driverPhone;
+                        driver.bio = driverBio;
+
+                        Lift lift = new Lift(driver, destination, seatsAvailable, id);
+                        lift.car = car;
+                        lift.date = date;
+                        lift.time = time;
+
+                        lifts_list.add(lift);
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                }
+
+                setListView(lifts_list);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        ArrayList<Lift>  empty = new ArrayList<Lift>();
+        setListView(empty);
+
+
         return view;
     }
 
@@ -86,5 +149,12 @@ public class AvailableLifts extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+
+    public void setListView(ArrayList<Lift>  lifts_list) {
+
+        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, lifts_list);
+        liftList.setAdapter(adapter);
     }
 }

@@ -7,10 +7,11 @@ import java.util.Scanner;
  * Created by Sean on 27/02/2017.
  */
 public class User {
-    int id, age;
-    String type, name, gender, email, phone, bio;
+
+    public String id, type, name, gender, email, phone, bio, age;
+
     ArrayList<Lift> lifts;
-    public User(int id, String type, String email){
+    public User(String id, String type, String email){
         this.id = id;
         this.type = type;
         this.email = email;
@@ -38,7 +39,7 @@ public class User {
         return this.lifts;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return this.id;
     }
 
@@ -58,7 +59,7 @@ public class User {
         return this.phone;
     }
 
-    public int getUserAge() {
+    public String getUserAge() {
         return this.age;
     }
 

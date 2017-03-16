@@ -11,7 +11,7 @@ import com.surf_sharing.surfsharingmobileapp.data.User;
 
 public class Globals extends Application {
     public LiftContainer lifts = new LiftContainer();
-    public User testDriver = new User(1, "driver", "x@gmail.com");
+    public User testDriver = new User("" + 1, "driver", "x@gmail.com");
     public int liftId = 0;
 
     public LiftContainer getLifts(){
