@@ -1,12 +1,15 @@
 package com.surf_sharing.surfsharingmobileapp.screens;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
@@ -84,6 +87,19 @@ public class AvailableLifts extends Fragment {
         liftList = (ListView) view.findViewById(R.id.liftList);
         lifts_list = new ArrayList<Lift>();
 
+
+        // added by Sean, working on requestLift
+        liftList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                //Intent myIntent = new Intent(getActivity(), NextActivity.class);
+                //startActivity(myIntent);
+                NavDrawer nd = (NavDrawer) getActivity();
+                nd.replaceContent(RequestLift.newInstance());
+            }
+        });
+
         liftListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -124,6 +140,8 @@ public class AvailableLifts extends Fragment {
                         lift.time = time;
 
                         lifts_list.add(lift);
+
+
                     }
                     catch (Exception e)
                     {
@@ -131,12 +149,23 @@ public class AvailableLifts extends Fragment {
                     }
                 }
 
-                setListView(lifts_list);
+                try
+                {
+                    ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, lifts_list);
+                    liftList.setAdapter(adapter);
+                }
+                catch (Exception e)
+                { }
+
             }
 
             public void removeListener() {
 
             }
+
+
+
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -145,10 +174,6 @@ public class AvailableLifts extends Fragment {
         };
 
         liftRoot.addValueEventListener(liftListener);
-
-        ArrayList<Lift>  empty = new ArrayList<Lift>();
-        setListView(empty);
-
 
         return view;
     }
@@ -164,10 +189,4 @@ public class AvailableLifts extends Fragment {
         liftRoot.removeEventListener(liftListener);
     }
 
-
-    public void setListView(ArrayList<Lift>  lifts_list) {
-
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, lifts_list);
-        liftList.setAdapter(adapter);
-    }
 }
