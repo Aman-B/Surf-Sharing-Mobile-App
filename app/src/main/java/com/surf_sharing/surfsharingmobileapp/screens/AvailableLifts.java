@@ -69,7 +69,7 @@ public class AvailableLifts extends Fragment {
             // handle bundle arguments
             
         }
-        liftRoot = FirebaseDatabase.getInstance().getReference().getRoot().child("lifts");
+        liftRoot = FirebaseDatabase.getInstance().getReference("lifts");
     }
 
     @Override
