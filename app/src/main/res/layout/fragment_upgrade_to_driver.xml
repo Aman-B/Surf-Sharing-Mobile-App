@@ -5,9 +5,52 @@
     tools:context="com.surf_sharing.surfsharingmobileapp.screens.UpgradeToDriver">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_margin="15dp"
+        android:orientation="vertical">
 
+        <EditText
+            android:id="@+id/carMakeModelInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Car Make and Model"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editText13"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Car Registration"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/LicenceNumberInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Licence Number"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/maxPassengersInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Maximum Number of Passengers"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/submitDriverUpgrade"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="Submit"
+            android:layout_marginTop="25dp"/>
+
+    </LinearLayout>
 </FrameLayout>
