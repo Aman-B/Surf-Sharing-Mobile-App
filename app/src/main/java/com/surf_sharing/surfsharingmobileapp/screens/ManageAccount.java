@@ -160,9 +160,11 @@ public class ManageAccount extends Fragment {
                     // Begin process of upgrading the User Account
                    // to a Driver Account:
 
-
+                   upgradeAccountToDriver();
                }
             });
+
+
 
             Button okButton = (Button) view.findViewById(R.id.ok_btn);
             okButton.setOnClickListener(new View.OnClickListener() {
@@ -284,6 +286,23 @@ public class ManageAccount extends Fragment {
         }
 
         return view;
+    }
+
+    /**
+     * Initiate process of upgrading User Account to
+     *  Driver Account.
+     *
+     */
+    public void upgradeAccountToDriver() {
+
+        Fragment upgradeToDriver = UpgradeToDriver.newInstance();
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                        .replace(R.id.nav_drawer_content, upgradeToDriver)
+                        .addToBackStack(null)
+                        .commit();
+
     }
 
     @Override
