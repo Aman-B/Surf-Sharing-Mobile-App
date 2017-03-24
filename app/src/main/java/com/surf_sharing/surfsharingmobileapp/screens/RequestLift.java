@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.PendingIntent;
+import android.support.v4.app.NotificationCompat;
+import android.app.NotificationManager;
+import android.content.Intent;
+import android.graphics.Color;
 
 import com.surf_sharing.surfsharingmobileapp.NavDrawer;
 import com.surf_sharing.surfsharingmobileapp.R;
@@ -82,13 +88,35 @@ public class RequestLift extends Fragment {
                 nd.replaceContent(ManageAccount.newInstance());
 
                 // request the lift
-
+                String messageTitle = "New Lift Request";
+                String messageDetail = "Request for seat on Lift: _ from User: _";
+                sendNotification(getContext(), messageTitle, messageDetail);
                 
             }
         });
 
 
         return view;
+    }
+
+    public static void sendNotification(Context context, String message, String messageText) {
+
+        PendingIntent notificIntent = PendingIntent.getActivities(context, 0, new Intent[]{new Intent(context, AppCompatActivity.class)}, 0);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setContentTitle(message);
+        builder.setTicker("Alert Message");
+        builder.setVibrate(new long[]{0, 200, 200, 200, 200});
+        builder.setLights(Color.BLUE, 3000, 3000);
+        builder.setContentText(messageText);
+        builder.setContentIntent(notificIntent);
+        builder.setDefaults(NotificationCompat.DEFAULT_SOUND);
+        builder.setAutoCancel(true);
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(1, builder.build());
     }
 
     public boolean constructLift(String id, String destination, int seatsAvailable, User driver){

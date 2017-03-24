@@ -183,7 +183,7 @@ public class ManageAccount extends Fragment {
                     String newAge = newAgeText.getText().toString();
 
                     final EditText newPhoneText = (EditText) view.findViewById(R.id.edit_text_phone);
-                    String newPHone = newPhoneText.getText().toString();
+                    String newPhone = newPhoneText.getText().toString();
 
                     final EditText newEmailText = (EditText) view.findViewById(R.id.edit_text_email);
                     String newEmail = newEmailText.getText().toString();
