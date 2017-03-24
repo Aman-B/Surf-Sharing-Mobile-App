@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -102,9 +104,11 @@ public class AvailableLifts extends Fragment {
                 //startActivity(myIntent);
 
                 Lift l = (Lift) parent.getAdapter().getItem(position);
+
+
                 NavDrawer nd = (NavDrawer) getActivity();
                 //nd.replaceContent(RequestLift.newInstance());
-                nd.setupRequestLift(RequestLift.newInstance(), l.destination, l.seatsAvailable, l.id);
+                nd.setupRequestLift(RequestLift.newInstance(), l.id, l.driver.id);
                 // get lift id
 
 

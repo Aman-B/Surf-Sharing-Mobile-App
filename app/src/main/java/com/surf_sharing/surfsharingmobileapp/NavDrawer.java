@@ -146,12 +146,11 @@ public class NavDrawer extends AppCompatActivity
                 .commit();
     }
 
-    public void setupRequestLift(Fragment fragment,String destination, int seatsAvailable, String id){
+    public void setupRequestLift(Fragment fragment, String id, String driverId){
         FragmentManager fragmentManager = getSupportFragmentManager();
         Bundle bundle=new Bundle();
-        bundle.putString("destination", destination);
-        bundle.putInt("seatsAvailable", seatsAvailable);
         bundle.putString("id", id);
+        bundle.putString("driverId", driverId);
         fragment.setArguments(bundle);
         fragmentManager.beginTransaction()
                 .replace(R.id.nav_drawer_content, fragment)

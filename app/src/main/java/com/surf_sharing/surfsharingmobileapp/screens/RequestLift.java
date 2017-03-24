@@ -9,8 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.PendingIntent;
@@ -19,11 +21,21 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.Color;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.surf_sharing.surfsharingmobileapp.NavDrawer;
 import com.surf_sharing.surfsharingmobileapp.R;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.data.User;
+import com.surf_sharing.surfsharingmobileapp.utils.FirebaseError;
+
+import java.util.ArrayList;
 
 
 public class RequestLift extends Fragment {
@@ -32,8 +44,12 @@ public class RequestLift extends Fragment {
     //EditText seats;
     //Database database;
     Lift requestedLift;
-    String destText, idText;
+    String driverId, idText, userId;
     int seatsVal;
+
+    private DatabaseReference liftRoot;
+    private ValueEventListener liftListener;
+
     public RequestLift() {
         // Required empty public constructor
     }
@@ -58,9 +74,9 @@ public class RequestLift extends Fragment {
             // handle bundle arguments
 
             // take in lift id
-            destText=getArguments().getString("destination");
-            seatsVal=getArguments().getInt("seatsAvailable");
             idText=getArguments().getString("id");
+            driverId=getArguments().getString("driverId");
+
         }
     }
 
@@ -72,10 +88,16 @@ public class RequestLift extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_request_lift, container, false);
 
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        userId = currentUser.getUid();
+
+
+//
+//        liftRoot.addValueEventListener(liftListener);
+
         TextView infoText = (TextView) view.findViewById(R.id.lift_info);
-        infoText.setText("Destination: "+destText+
-                            "\nSeats Available: "+seatsVal+
-                            "\nDriver: "+"driverText"+
+        infoText.setText("User: "+userId+
+                            "\nDriver: "+driverId+
                             "\nLift id: "+idText);
 
 
@@ -85,11 +107,11 @@ public class RequestLift extends Fragment {
             @Override
             public void onClick(View view) {
                 NavDrawer nd = (NavDrawer) getActivity();
-                nd.replaceContent(ManageAccount.newInstance());
+                nd.replaceContent(AvailableLifts.newInstance());
 
                 // request the lift
                 String messageTitle = "New Lift Request";
-                String messageDetail = "Request for seat on Lift: _ from User: _";
+                String messageDetail = "Request for seat on Lift: "+idText+" from User: "+userId;
                 sendNotification(getContext(), messageTitle, messageDetail);
                 
             }
@@ -119,10 +141,6 @@ public class RequestLift extends Fragment {
         notificationManager.notify(1, builder.build());
     }
 
-    public boolean constructLift(String id, String destination, int seatsAvailable, User driver){
-        requestedLift = new Lift(driver, destination, seatsAvailable, id);
-        return true;
-    }
 
     @Override
     public void onAttach(Context context) {
