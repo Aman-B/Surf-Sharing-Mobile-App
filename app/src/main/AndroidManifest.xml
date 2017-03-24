@@ -40,6 +40,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".temp.DatabaseTestActivity" />
+        <activity
+            android:name=".temp.TestRequestLiftActivity"
+            android:label="@string/title_activity_test_request_lift"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

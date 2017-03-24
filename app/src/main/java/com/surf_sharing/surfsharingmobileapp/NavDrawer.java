@@ -19,10 +19,12 @@ import android.widget.EditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
+import com.surf_sharing.surfsharingmobileapp.data.User;
 import com.surf_sharing.surfsharingmobileapp.screens.AvailableLifts;
 import com.surf_sharing.surfsharingmobileapp.screens.ManageAccount;
 import com.surf_sharing.surfsharingmobileapp.screens.OfferLift;
 import com.surf_sharing.surfsharingmobileapp.screens.ProfileScreen;
+import com.surf_sharing.surfsharingmobileapp.screens.RequestLift;
 import com.surf_sharing.surfsharingmobileapp.utils.Display;
 
 import java.util.ArrayList;
@@ -138,6 +140,19 @@ public class NavDrawer extends AppCompatActivity
      */
     public void replaceContent(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.nav_drawer_content, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public void setupRequestLift(Fragment fragment,String destination, int seatsAvailable, String id){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Bundle bundle=new Bundle();
+        bundle.putString("destination", destination);
+        bundle.putInt("seatsAvailable", seatsAvailable);
+        bundle.putString("id", id);
+        fragment.setArguments(bundle);
         fragmentManager.beginTransaction()
                 .replace(R.id.nav_drawer_content, fragment)
                 .addToBackStack(null)

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.surf_sharing.surfsharingmobileapp.NavDrawer;
@@ -24,6 +25,9 @@ public class RequestLift extends Fragment {
     //EditText dest;
     //EditText seats;
     //Database database;
+    Lift requestedLift;
+    String destText, idText;
+    int seatsVal;
     public RequestLift() {
         // Required empty public constructor
     }
@@ -46,9 +50,11 @@ public class RequestLift extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             // handle bundle arguments
+
             // take in lift id
-
-
+            destText=getArguments().getString("destination");
+            seatsVal=getArguments().getInt("seatsAvailable");
+            idText=getArguments().getString("id");
         }
     }
 
@@ -60,6 +66,12 @@ public class RequestLift extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_request_lift, container, false);
 
+        TextView infoText = (TextView) view.findViewById(R.id.lift_info);
+        infoText.setText("Destination: "+destText+
+                            "\nSeats Available: "+seatsVal+
+                            "\nDriver: "+"driverText"+
+                            "\nLift id: "+idText);
+
 
         Button reqButton = (Button) view.findViewById(R.id.requestButton);
 
@@ -70,12 +82,18 @@ public class RequestLift extends Fragment {
                 nd.replaceContent(ManageAccount.newInstance());
 
                 // request the lift
+
                 
             }
         });
 
 
         return view;
+    }
+
+    public boolean constructLift(String id, String destination, int seatsAvailable, User driver){
+        requestedLift = new Lift(driver, destination, seatsAvailable, id);
+        return true;
     }
 
     @Override

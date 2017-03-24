@@ -65,6 +65,11 @@ public class AvailableLifts extends Fragment {
         return fragment;
     }
 
+    // Interface for passing lift id to activity
+    public interface OnLiftSelectedListener {
+        public void onArticleSelected( int liftId );
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,8 +100,15 @@ public class AvailableLifts extends Fragment {
 
                 //Intent myIntent = new Intent(getActivity(), NextActivity.class);
                 //startActivity(myIntent);
+
+                Lift l = (Lift) parent.getAdapter().getItem(position);
                 NavDrawer nd = (NavDrawer) getActivity();
-                nd.replaceContent(RequestLift.newInstance());
+                //nd.replaceContent(RequestLift.newInstance());
+                nd.setupRequestLift(RequestLift.newInstance(), l.destination, l.seatsAvailable, l.id);
+                // get lift id
+
+
+
             }
         });
 

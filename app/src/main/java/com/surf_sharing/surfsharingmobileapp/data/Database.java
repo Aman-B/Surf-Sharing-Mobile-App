@@ -154,6 +154,10 @@ public class Database {
             Child.updateChildren(mapChild);
         }
     }
+
+    /*public static void getLift(int liftId){
+
+    }*/
 }
 
 
