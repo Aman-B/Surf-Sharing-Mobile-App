@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.surf_sharing.surfsharingmobileapp.NavDrawer;
@@ -19,6 +21,7 @@ import com.surf_sharing.surfsharingmobileapp.R;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.data.User;
+import com.surf_sharing.surfsharingmobileapp.utils.Display;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,8 +33,8 @@ import com.surf_sharing.surfsharingmobileapp.data.User;
 // create a lift object containing the info that will be passed to the database
 public class OfferLift extends Fragment {
 
-    private EditText editTextDest, editTextSeats;
-
+    private EditText editTextDest, editTextSeats, editTextTime, editTextDate;
+    String userId, userEmail;
     //EditText dest;
     //EditText seats;
     //Database database;
@@ -70,6 +73,8 @@ public class OfferLift extends Fragment {
 
         editTextDest = (EditText) view.findViewById(R.id.destEnter);
         editTextSeats = (EditText) view.findViewById(R.id.seatsEnter);
+        editTextTime = (EditText) view.findViewById(R.id.timeEnter);
+        editTextDate = (EditText) view.findViewById(R.id.dateEnter);
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         userId = currentUser.getUid();
@@ -81,6 +86,8 @@ public class OfferLift extends Fragment {
                 // create Lift object
                 String dest = editTextDest.getText().toString();
                 String seats = editTextSeats.getText().toString();
+                String time = editTextTime.getText().toString();
+                String date = editTextDate.getText().toString();
                 // check that text fields contain info
                 if (dest.isEmpty()) {
                     Display.popup(getActivity(), "Please enter a destination");
@@ -93,8 +100,8 @@ public class OfferLift extends Fragment {
                     userEmail = currentUser.getEmail();
 
                     // right now this just sends a test lift to Database.postLift()
-                    User testDriver = new User("" + 1, "driver", "x@gmail.com");
-                    Lift l = new Lift(testDriver, dest, Integer.parseInt(seats), "" + 1); //TODO: replace with real acount
+                    User testDriver = new User(userId, "driver", userEmail);
+                    Lift l = new Lift(testDriver, dest, Integer.parseInt(seats), "" + 1, date, time); //TODO: replace with real acount
                     Database.postLift(l);
                     Display.popup(getActivity(), "postlift "+"\nvals: "+dest+", "+seats);
                 }
