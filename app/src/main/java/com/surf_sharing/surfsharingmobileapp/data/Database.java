@@ -45,9 +45,8 @@ public class Database {
      * Function to post a new lift to the database
      *
      * @param lift the lift information to be posted
-     * @return return whether the post succeeded or failed
      */
-    public static boolean postLift(Lift lift) {
+    public static void postLift(Lift lift) {
 
         DatabaseReference usersRef = root.child("lifts");
         String id = usersRef.push().getKey();
@@ -81,7 +80,6 @@ public class Database {
         mapUserChild.put("bio", "" + lift.driver.bio);
         usersChild.updateChildren(mapUserChild);
 
-        return false;
     }
 
     /**

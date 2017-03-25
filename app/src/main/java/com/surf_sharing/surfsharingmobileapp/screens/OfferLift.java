@@ -12,8 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.surf_sharing.surfsharingmobileapp.NavDrawer;
@@ -32,7 +30,8 @@ import com.surf_sharing.surfsharingmobileapp.data.User;
 // create a lift object containing the info that will be passed to the database
 public class OfferLift extends Fragment {
 
-    String userId, userEmail;
+    private EditText editTextDest, editTextSeats;
+
     //EditText dest;
     //EditText seats;
     //Database database;
@@ -69,48 +68,36 @@ public class OfferLift extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_offer_lift, container, false);
 
+        editTextDest = (EditText) view.findViewById(R.id.destEnter);
+        editTextSeats = (EditText) view.findViewById(R.id.seatsEnter);
+
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         userId = currentUser.getUid();
-        // example of a button that replaces the current fragment with another
-        Button testButton = (Button) view.findViewById(R.id.offer_lift_test_button);
-        testButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                NavDrawer nd = (NavDrawer) getActivity();
-                nd.replaceContent(ManageAccount.newInstance());
-            }
-        });
-
 
         Button enterButton = (Button) view.findViewById(R.id.buttonEnter);
         enterButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 // create Lift object
-                EditText dest = (EditText) view.findViewById(R.id.destEnter);
-                EditText seats = (EditText) view.findViewById(R.id.seatsEnter);
+                String dest = editTextDest.getText().toString();
+                String seats = editTextSeats.getText().toString();
+                // check that text fields contain info
+                if (dest.isEmpty()) {
+                    Display.popup(getActivity(), "Please enter a destination");
+                } else if (seats.isEmpty()) {
+                    Display.popup(getActivity(), "Please enter number of seats available on lift");
+                } else {
+                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    userId = currentUser.getUid();
 
-                //Log.d("crash", "test crash");
-                //dest = (EditText) view.findViewById(R.id.destEnter);
-                //Log.d("tag", "dest safe");
-                //seats = (EditText) view.findViewById(R.id.seatsEnter);
-                NavDrawer nd = (NavDrawer) getActivity();
-                String[] fields = nd.getTextValues();
-                // right now this just sends a test lift to Database.postLift()
+                    userEmail = currentUser.getEmail();
 
-                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                userId = currentUser.getUid();
-
-                userEmail = currentUser.getEmail();
-                Toast.makeText(nd, "email: "+userEmail, Toast.LENGTH_SHORT).show();
-
-                User testDriver = new User(userId, "driver", userEmail);
-                Lift l = new Lift(testDriver, fields[0], Integer.parseInt(fields[1]), "" + 1, fields[2], fields[3]);
-
-                Log.d("postlift", ""+Database.postLift(l)+"\nvals: "+fields[0]+", "+fields[1]);
-//                Toast.makeText(getActivity(),
-//                        "postlift "+Database.postLift(l)+"\nvals: "+fields[0]+", "+fields[1], Toast.LENGTH_LONG)
-//                        .show();
+                    // right now this just sends a test lift to Database.postLift()
+                    User testDriver = new User("" + 1, "driver", "x@gmail.com");
+                    Lift l = new Lift(testDriver, dest, Integer.parseInt(seats), "" + 1); //TODO: replace with real acount
+                    Database.postLift(l);
+                    Display.popup(getActivity(), "postlift "+"\nvals: "+dest+", "+seats);
+                }
             }
         });
 

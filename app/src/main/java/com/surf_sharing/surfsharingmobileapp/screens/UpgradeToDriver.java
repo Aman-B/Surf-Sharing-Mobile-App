@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import android.text.TextUtils;
 
 import com.surf_sharing.surfsharingmobileapp.R;
@@ -90,22 +91,26 @@ public class UpgradeToDriver extends Fragment {
 
                 if (TextUtils.isEmpty(carMakeModel))
                 {
-
+                    Toast.makeText(getContext(), "Please enter a Car Make and Model", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
                 if (TextUtils.isEmpty(carRegistration))
                 {
-
+                    Toast.makeText(getContext(), "Please enter a Car Registration", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
                 if (TextUtils.isEmpty(licenceNumber))
                 {
-
+                    Toast.makeText(getContext(), "Please enter your Licence number", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
                 if (TextUtils.isEmpty(maxPassengers))
                 {
-
+                    Toast.makeText(getContext(), "Please enter the Maximum number of Passengers you're willing to take", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
 
