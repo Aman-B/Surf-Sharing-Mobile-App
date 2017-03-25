@@ -11,7 +11,7 @@ public class User {
     public String id, type, name, gender, email, phone, bio, age;
 
     ArrayList<Lift> lifts;
-    public User(String id, String type, String email){
+    public User(String id, String type, String email) {
         this.id = id;
         this.type = type;
         this.email = email;
@@ -33,6 +33,10 @@ public class User {
 
     public void acceptRequest(){
         // accept request and add user to lift
+    }
+
+    public void addLift(Lift newLift) {
+        this.lifts.add(newLift);
     }
 
     public ArrayList<Lift> getUserLifts() {

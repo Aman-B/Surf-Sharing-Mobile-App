@@ -86,7 +86,7 @@ public class RequestLift extends Fragment {
         // change the title of the activity
         getActivity().setTitle(R.string.title_request_lift);
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_request_lift, container, false);
+        View view = inflater.inflate(R.layout.fragment_request_lift, container, false);
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         userId = currentUser.getUid();
@@ -123,7 +123,7 @@ public class RequestLift extends Fragment {
 
     public static void sendNotification(Context context, String message, String messageText) {
 
-        PendingIntent notificIntent = PendingIntent.getActivities(context, 0, new Intent[]{new Intent(context, AppCompatActivity.class)}, 0);
+        PendingIntent notificationIntent = PendingIntent.getActivities(context, 0, new Intent[]{new Intent(context, AppCompatActivity.class)}, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setSmallIcon(R.mipmap.ic_launcher);
@@ -132,7 +132,7 @@ public class RequestLift extends Fragment {
         builder.setVibrate(new long[]{0, 200, 200, 200, 200});
         builder.setLights(Color.BLUE, 3000, 3000);
         builder.setContentText(messageText);
-        builder.setContentIntent(notificIntent);
+        builder.setContentIntent(notificationIntent);
         builder.setDefaults(NotificationCompat.DEFAULT_SOUND);
         builder.setAutoCancel(true);
 
