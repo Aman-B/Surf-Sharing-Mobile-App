@@ -93,18 +93,23 @@ public class OfferLift extends Fragment {
                     Display.popup(getActivity(), "Please enter a destination");
                 } else if (seats.isEmpty()) {
                     Display.popup(getActivity(), "Please enter number of seats available on lift");
-                } else {
-                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                    userId = currentUser.getUid();
+                    } else if (time.isEmpty()) {
+                        Display.popup(getActivity(), "Please enter a time");
+                        } else if (date.isEmpty()) {
+                            Display.popup(getActivity(), "Please enter a date");
+                            }
+                        else {
+                            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                            userId = currentUser.getUid();
 
-                    userEmail = currentUser.getEmail();
+                            userEmail = currentUser.getEmail();
 
-                    // right now this just sends a test lift to Database.postLift()
-                    User testDriver = new User(userId, "driver", userEmail);
-                    Lift l = new Lift(testDriver, dest, Integer.parseInt(seats), "" + 1, date, time); //TODO: replace with real acount
-                    Database.postLift(l);
-                    Display.popup(getActivity(), "postlift "+"\nvals: "+dest+", "+seats);
-                }
+                            // right now this just sends a test lift to Database.postLift()
+                            User testDriver = new User(userId, "driver", userEmail);
+                            Lift l = new Lift(testDriver, dest, Integer.parseInt(seats), "" + 1, date, time); //TODO: replace with real acount
+                            Database.postLift(l);
+                            Display.popup(getActivity(), "postlift "+"\nvals: "+dest+", "+seats);
+                        }
             }
         });
 
