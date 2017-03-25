@@ -44,7 +44,7 @@ public class RequestLift extends Fragment {
     //EditText seats;
     //Database database;
     Lift requestedLift;
-    String driverId, idText, userId;
+    String driverId, idText, userId, dateStr, timeStr, liftStr;
     int seatsVal;
 
     private DatabaseReference liftRoot;
@@ -76,6 +76,9 @@ public class RequestLift extends Fragment {
             // take in lift id
             idText=getArguments().getString("id");
             driverId=getArguments().getString("driverId");
+            dateStr=getArguments().getString("date");
+            timeStr=getArguments().getString("time");
+            liftStr=getArguments().getString("liftStr");
 
         }
     }
@@ -90,6 +93,8 @@ public class RequestLift extends Fragment {
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         userId = currentUser.getUid();
+        userId = currentUser.toString();
+        userId = currentUser.getEmail();
 
 
 //
@@ -98,7 +103,10 @@ public class RequestLift extends Fragment {
         TextView infoText = (TextView) view.findViewById(R.id.lift_info);
         infoText.setText("User: "+userId+
                             "\nDriver: "+driverId+
-                            "\nLift id: "+idText);
+                            //"\nLift id: "+idText+
+                            "\nLift: "+liftStr+
+                            "\nTime: "+timeStr+
+                            "\nDate: "+dateStr);
 
 
         Button reqButton = (Button) view.findViewById(R.id.requestButton);

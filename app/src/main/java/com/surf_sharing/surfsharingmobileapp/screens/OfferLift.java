@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.surf_sharing.surfsharingmobileapp.NavDrawer;
@@ -30,6 +32,7 @@ import com.surf_sharing.surfsharingmobileapp.data.User;
 // create a lift object containing the info that will be passed to the database
 public class OfferLift extends Fragment {
 
+    String userId, userEmail;
     //EditText dest;
     //EditText seats;
     //Database database;
@@ -66,6 +69,8 @@ public class OfferLift extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_offer_lift, container, false);
 
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        userId = currentUser.getUid();
         // example of a button that replaces the current fragment with another
         Button testButton = (Button) view.findViewById(R.id.offer_lift_test_button);
         testButton.setOnClickListener(new View.OnClickListener(){
@@ -84,19 +89,28 @@ public class OfferLift extends Fragment {
                 // create Lift object
                 EditText dest = (EditText) view.findViewById(R.id.destEnter);
                 EditText seats = (EditText) view.findViewById(R.id.seatsEnter);
-                Log.d("crash", "test crash");
+
+                //Log.d("crash", "test crash");
                 //dest = (EditText) view.findViewById(R.id.destEnter);
-                Log.d("tag", "dest safe");
+                //Log.d("tag", "dest safe");
                 //seats = (EditText) view.findViewById(R.id.seatsEnter);
                 NavDrawer nd = (NavDrawer) getActivity();
                 String[] fields = nd.getTextValues();
                 // right now this just sends a test lift to Database.postLift()
-                User testDriver = new User("" + 1, "driver", "x@gmail.com");
-                Lift l = new Lift(testDriver, fields[0], Integer.parseInt(fields[1]), "" + 1);
+
+                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                userId = currentUser.getUid();
+
+                userEmail = currentUser.getEmail();
+                Toast.makeText(nd, "email: "+userEmail, Toast.LENGTH_SHORT).show();
+
+                User testDriver = new User(userId, "driver", userEmail);
+                Lift l = new Lift(testDriver, fields[0], Integer.parseInt(fields[1]), "" + 1, fields[2], fields[3]);
+
                 Log.d("postlift", ""+Database.postLift(l)+"\nvals: "+fields[0]+", "+fields[1]);
-                Toast.makeText(getActivity(),
-                        "postlift "+Database.postLift(l)+"\nvals: "+fields[0]+", "+fields[1], Toast.LENGTH_LONG)
-                        .show();
+//                Toast.makeText(getActivity(),
+//                        "postlift "+Database.postLift(l)+"\nvals: "+fields[0]+", "+fields[1], Toast.LENGTH_LONG)
+//                        .show();
             }
         });
 

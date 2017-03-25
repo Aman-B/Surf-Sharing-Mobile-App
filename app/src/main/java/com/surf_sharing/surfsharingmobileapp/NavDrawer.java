@@ -146,11 +146,14 @@ public class NavDrawer extends AppCompatActivity
                 .commit();
     }
 
-    public void setupRequestLift(Fragment fragment, String id, String driverId){
+    public void setupRequestLift(Fragment fragment, String id, String driverId, String date, String time, String liftStr){
         FragmentManager fragmentManager = getSupportFragmentManager();
         Bundle bundle=new Bundle();
         bundle.putString("id", id);
         bundle.putString("driverId", driverId);
+        bundle.putString("date", date);
+        bundle.putString("time", time);
+        bundle.putString("liftStr", liftStr);
         fragment.setArguments(bundle);
         fragmentManager.beginTransaction()
                 .replace(R.id.nav_drawer_content, fragment)
@@ -162,7 +165,10 @@ public class NavDrawer extends AppCompatActivity
     public String[] getTextValues(){
         EditText dest = (EditText) this.findViewById(R.id.destEnter);
         EditText seats = (EditText) this.findViewById(R.id.seatsEnter);
-        String[] s = {dest.getText().toString(), seats.getText().toString()};
+        EditText time = (EditText) this.findViewById(R.id.timeEnter);
+        EditText date = (EditText) this.findViewById(R.id.dateEnter);
+        String[] s = {dest.getText().toString(), seats.getText().toString(),
+                        time.getText().toString(), date.getText().toString()};
         return s;
     }
 

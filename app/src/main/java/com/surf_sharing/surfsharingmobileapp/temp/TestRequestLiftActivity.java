@@ -32,7 +32,7 @@ public class TestRequestLiftActivity extends AppCompatActivity {
     }
 
     public boolean constructLift(String id, String destination, int seatsAvailable, User driver){
-        requestedLift = new Lift(driver, destination, seatsAvailable, id);
+        //requestedLift = new Lift(driver, destination, seatsAvailable, id);
         return true;
     }
 

@@ -130,7 +130,7 @@ public class DatabaseTestActivity extends AppCompatActivity {
 
                //Database.postLift(new Lift(new User("77", "type", "email"), "a", 5, "" + 8));
 
-                Database.addLiftToUser(new Lift(new User("77", "type", "email"), "a", 5, "" + 8));
+                Database.addLiftToUser(new Lift(new User("77", "type", "email"), "a", 5, "" + 8, "", ""));
 
                 /*User user = Database.getCurrentUser_();
 

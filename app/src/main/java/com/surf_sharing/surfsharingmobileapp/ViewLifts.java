@@ -63,10 +63,10 @@ public class ViewLifts extends AppCompatActivity {
                         driver.phone = driverPhone;
                         driver.bio = driverBio;
 
-                        Lift lift = new Lift(driver, destination, seatsAvailable, id);
+                        Lift lift = new Lift(driver, destination, seatsAvailable, id, time, date);
                         lift.car = car;
-                        lift.date = date;
-                        lift.time = time;
+                        //lift.date = date;
+                        //lift.time = time;
 
                         testCont.addLift(lift);
                     }

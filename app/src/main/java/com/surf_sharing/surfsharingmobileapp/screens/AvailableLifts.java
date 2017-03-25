@@ -108,7 +108,7 @@ public class AvailableLifts extends Fragment {
 
                 NavDrawer nd = (NavDrawer) getActivity();
                 //nd.replaceContent(RequestLift.newInstance());
-                nd.setupRequestLift(RequestLift.newInstance(), l.id, l.driver.id);
+                nd.setupRequestLift(RequestLift.newInstance(), l.id, l.driver.email, l.date, l.time, l.toString());
                 // get lift id
 
 
@@ -150,10 +150,10 @@ public class AvailableLifts extends Fragment {
                         driver.phone = driverPhone;
                         driver.bio = driverBio;
 
-                        Lift lift = new Lift(driver, destination, seatsAvailable, id);
+                        Lift lift = new Lift(driver, destination, seatsAvailable, id, time, date);
                         lift.car = car;
-                        lift.date = date;
-                        lift.time = time;
+                        //lift.date = date;
+                        //lift.time = time;
 
                         lifts_list.add(lift);
 
@@ -178,10 +178,6 @@ public class AvailableLifts extends Fragment {
             public void removeListener() {
 
             }
-
-
-
-
 
             @Override
             public void onCancelled(DatabaseError databaseError) {

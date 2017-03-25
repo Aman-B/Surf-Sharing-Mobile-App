@@ -12,11 +12,13 @@ public class Lift {
 
     // car, time, date
     ArrayList<User> passengers;
-    public Lift(User driver, String destination, int seatsAvailable, String id/*, String car, String time, String date*/){
+    public Lift(User driver, String destination, int seatsAvailable, String id/*, String car*/, String time, String date){
         this.destination = destination;
         this.seatsAvailable = seatsAvailable;
         this.driver = driver;
         this.id = id;
+        this.time = time;
+        this.date = date;
     }
 
     /// returns 1 if passenger added
@@ -32,7 +34,7 @@ public class Lift {
 
     public String toString(){
         String s;
-        s = destination+", "+seatsAvailable+" seats";
+        s = destination+", "+seatsAvailable+" seats.   "+date+" at "+time;
         return s;
     }
 }

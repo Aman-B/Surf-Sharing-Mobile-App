@@ -18,6 +18,22 @@
             android:inputType="textPersonName" />
 
         <EditText
+            android:id="@+id/dateEnter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="date of departure"
+            android:inputType="date" />
+
+        <EditText
+            android:id="@+id/timeEnter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="time of departure"
+            android:inputType="time" />
+
+        <EditText
             android:id="@+id/seatsEnter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
