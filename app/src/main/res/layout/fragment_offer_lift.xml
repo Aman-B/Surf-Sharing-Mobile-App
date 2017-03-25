@@ -7,6 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="15dp"
         android:orientation="vertical">
 
         <EditText
@@ -27,15 +28,11 @@
 
         <Button
             android:id="@+id/buttonEnter"
-            android:layout_width="match_parent"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:text="Enter" />
-
-        <Button
-            android:id="@+id/offer_lift_test_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Change fragment" />
+            android:layout_marginTop="20dp"
+            android:text="Submit"
+            android:layout_gravity="right"/>
 
     </LinearLayout>
 

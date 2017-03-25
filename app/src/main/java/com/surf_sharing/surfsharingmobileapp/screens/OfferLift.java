@@ -19,6 +19,7 @@ import com.surf_sharing.surfsharingmobileapp.R;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.data.User;
+import com.surf_sharing.surfsharingmobileapp.utils.Display;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +30,8 @@ import com.surf_sharing.surfsharingmobileapp.data.User;
 
 // create a lift object containing the info that will be passed to the database
 public class OfferLift extends Fragment {
+
+    private EditText editTextDest, editTextSeats;
 
     //EditText dest;
     //EditText seats;
@@ -53,6 +56,7 @@ public class OfferLift extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             // handle bundle arguments
         }
@@ -66,37 +70,28 @@ public class OfferLift extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_offer_lift, container, false);
 
-        // example of a button that replaces the current fragment with another
-        Button testButton = (Button) view.findViewById(R.id.offer_lift_test_button);
-        testButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                NavDrawer nd = (NavDrawer) getActivity();
-                nd.replaceContent(ManageAccount.newInstance());
-            }
-        });
-
+        editTextDest = (EditText) view.findViewById(R.id.destEnter);
+        editTextSeats = (EditText) view.findViewById(R.id.seatsEnter);
 
         Button enterButton = (Button) view.findViewById(R.id.buttonEnter);
         enterButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 // create Lift object
-                EditText dest = (EditText) view.findViewById(R.id.destEnter);
-                EditText seats = (EditText) view.findViewById(R.id.seatsEnter);
-                Log.d("crash", "test crash");
-                //dest = (EditText) view.findViewById(R.id.destEnter);
-                Log.d("tag", "dest safe");
-                //seats = (EditText) view.findViewById(R.id.seatsEnter);
-                NavDrawer nd = (NavDrawer) getActivity();
-                String[] fields = nd.getTextValues();
-                // right now this just sends a test lift to Database.postLift()
-                User testDriver = new User("" + 1, "driver", "x@gmail.com");
-                Lift l = new Lift(testDriver, fields[0], Integer.parseInt(fields[1]), "" + 1);
-                Log.d("postlift", ""+Database.postLift(l)+"\nvals: "+fields[0]+", "+fields[1]);
-                Toast.makeText(getActivity(),
-                        "postlift "+Database.postLift(l)+"\nvals: "+fields[0]+", "+fields[1], Toast.LENGTH_LONG)
-                        .show();
+                String dest = editTextDest.getText().toString();
+                String seats = editTextSeats.getText().toString();
+                // check that text fields contain info
+                if (dest.isEmpty()) {
+                    Display.popup(getActivity(), "Please enter a destination");
+                } else if (seats.isEmpty()) {
+                    Display.popup(getActivity(), "Please enter number of seats available on lift");
+                } else {
+                    // right now this just sends a test lift to Database.postLift()
+                    User testDriver = new User("" + 1, "driver", "x@gmail.com");
+                    Lift l = new Lift(testDriver, dest, Integer.parseInt(seats), "" + 1); //TODO: replace with real acount
+                    Database.postLift(l);
+                    Display.popup(getActivity(), "postlift "+"\nvals: "+dest+", "+seats);
+                }
             }
         });
 

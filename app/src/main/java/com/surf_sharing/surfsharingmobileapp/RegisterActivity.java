@@ -93,6 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(password)) {
             //password is empty
             Toast.makeText(this, "Please enter a password", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         progressDialog.setMessage("Registering User...");
