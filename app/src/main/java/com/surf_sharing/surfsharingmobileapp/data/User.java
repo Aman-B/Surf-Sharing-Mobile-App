@@ -35,10 +35,6 @@ public class User {
         // accept request and add user to lift
     }
 
-    public void addLift(Lift newLift) {
-        this.lifts.add(newLift);
-    }
-
     public ArrayList<Lift> getUserLifts() {
         return this.lifts;
     }
