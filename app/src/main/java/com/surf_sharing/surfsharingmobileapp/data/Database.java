@@ -42,20 +42,21 @@ public class Database {
     public static DatabaseReference liftRoot = root.child("lifts");
 
     /**
-     * Function to post a new lift to the database
+     * Function to post a new lift to the database and it makes a driver refference inside the driver object
+     *
      *
      * @param lift the lift information to be posted
+     * @return return whether the post succeeded or failed
      */
-    public static void postLift(Lift lift) {
+    public static boolean postLift(Lift lift) {
 
-        DatabaseReference usersRef = root.child("lifts");
-        String id = usersRef.push().getKey();
+        String id = liftRoot.push().getKey();
 
         Map<String,Object> map = new HashMap<String, Object>();
         map.put(id, "");
-        usersRef.updateChildren(map);
+        liftRoot.updateChildren(map);
 
-        DatabaseReference Child = usersRef.child(id);
+        DatabaseReference Child = liftRoot.child(id);
 
         Map<String,Object> mapChild = new HashMap<String, Object>();
         mapChild.put("driver", "");
@@ -67,10 +68,10 @@ public class Database {
         mapChild.put("passengers", "");
         Child.updateChildren(mapChild);
 
-        DatabaseReference usersChild = Child.child("driverId");
+        DatabaseReference usersChild = Child.child("driver");
 
         Map<String,Object> mapUserChild = new HashMap<String, Object>();
-        mapUserChild.put("id", "" + lift.driver.name);
+        mapUserChild.put("id", "" + lift.driver.id);
         mapUserChild.put("name", "" + lift.driver.name);
         mapUserChild.put("age", "" + lift.driver.age);
         mapUserChild.put("gender", "" + lift.driver.gender);
@@ -80,6 +81,19 @@ public class Database {
         mapUserChild.put("bio", "" + lift.driver.bio);
         usersChild.updateChildren(mapUserChild);
 
+        //add a Lift to driver
+        DatabaseReference driverRef = userRoot.child(lift.driver.id);
+
+        Map<String,Object> UserMap = new HashMap<String, Object>();
+        UserMap.put("lifts", "");
+        driverRef.updateChildren(UserMap);
+        DatabaseReference driverChild = driverRef.child("lifts");
+        Map<String,Object> mapDriverChild = new HashMap<String, Object>();
+        mapDriverChild.put(lift.id, "Driver");
+
+        driverChild.updateChildren(mapDriverChild);
+
+        return false;
     }
 
     /**
@@ -120,42 +134,113 @@ public class Database {
         }
     }
 
-    public static void addLiftToUser(Lift lift) {
+    /**
+     * Function to refference the lift id inside the user object and in the case of the passenger
+     * it adds the passenger id to the list of passengers in the lift object in a pending status
+     */
+    public static void makeLiftRequest(final String liftId) {
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (currentUser == null)
         { }
         else
         {
-            String userId = currentUser.getUid();
+            final String userId = currentUser.getUid();
 
-            DatabaseReference usersRef = userRoot.child(userId);
+            //add a Lift to a User
+            final DatabaseReference usersRef = userRoot.child(userId);
+            usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
 
-            Map<String,Object> map = new HashMap<String, Object>();
-            map.put("lifts", "");
-            usersRef.updateChildren(map);
+                    try
+                    {
 
-            DatabaseReference Child = usersRef.child("lifts");
+                        DatabaseReference userLiftsChild = usersRef.child("lifts");
+                        Map<String,Object> mapUserLiftChild = new HashMap<String, Object>();
+                        mapUserLiftChild.put(liftId, "Requested");
 
-            Map<String,Object> mapChild = new HashMap<String, Object>();
+                        //add a User to a Lift
+                        DatabaseReference liftRef = liftRoot.child(liftId);
+                        DatabaseReference liftPassengerChild = liftRef.child("passengers");
+                        Map<String,Object> mapLiftPassengerChild = new HashMap<String, Object>();
+                        mapLiftPassengerChild.put(userId, "");
 
-            if (lift.driver.id != null && userId.equals(lift.driver.id))
-            {
-                mapChild.put(lift.id, "Driver");
-            }
-            else
-            {
-                mapChild.put(lift.id, "Passenger");
-            }
+                        String userName = (String) snapshot.child("name").getValue();
+                        String userAge = (String) snapshot.child("age").getValue();
+                        String userGender = (String) snapshot.child("gender").getValue();
+                        String userEmail = (String) snapshot.child("email").getValue();
+                        String userType = (String) snapshot.child("type").getValue();
+                        String userPhone = (String) snapshot.child("phone").getValue();
+                        String userBio = (String) snapshot.child("bio").getValue();
 
-            Child.updateChildren(mapChild);
+                        DatabaseReference passenger = liftPassengerChild.child(userId);
+
+                        Map<String,Object> mapPassenger = new HashMap<String, Object>();
+                        mapPassenger.put("state", "panding");
+                        mapPassenger.put("name", userName);
+                        mapPassenger.put("age", userAge);
+                        mapPassenger.put("gender", userGender);
+                        mapPassenger.put("email", userEmail);
+                        mapPassenger.put("type", userType);
+                        mapPassenger.put("phone", userPhone);
+                        mapPassenger.put("bio", userBio);
+
+
+                        liftPassengerChild.updateChildren(mapLiftPassengerChild);
+
+                        userLiftsChild.updateChildren(mapUserLiftChild);
+
+                        passenger.updateChildren(mapPassenger);
+                    }
+                    catch (Throwable e)
+                    { }
+                }
+                @Override public void onCancelled(DatabaseError error) { }
+            });
         }
     }
 
-    /*public static void getLift(int liftId){
+    /**
+     * Function to refference the lift id inside the user object and in the case of the passenger
+     * it adds the passenger id to the list of passengers in the lift object in a pending status
+     */
+    public static void acceptLiftRequest(String liftId, String userId) {
 
-    }*/
+        DatabaseReference usersRef = userRoot.child(userId);
+        DatabaseReference userLiftsChild = usersRef.child("lifts");
+        Map<String,Object> mapUserLiftsChild = new HashMap<String, Object>();
+        mapUserLiftsChild.put(liftId, "Passenger");
+
+        DatabaseReference liftRef = liftRoot.child(liftId);
+        DatabaseReference liftPassengers = liftRef.child("passengers");
+        DatabaseReference liftPassengersState = liftPassengers.child(userId);
+        Map<String,Object> mapPassengerState = new HashMap<String, Object>();
+        mapPassengerState.put("state", "Passenger");
+
+        liftPassengersState.updateChildren(mapPassengerState);
+
+        userLiftsChild.updateChildren(mapUserLiftsChild);
+    }
+
+    public static void rejectLiftRequest(String liftId, String userId) {
+
+        DatabaseReference usersRef = userRoot.child(userId);
+        DatabaseReference userLiftsChild = usersRef.child("lifts");
+        Map<String,Object> mapUserLiftsChild = new HashMap<String, Object>();
+        mapUserLiftsChild.put(liftId, "Rejected");
+
+        DatabaseReference liftRef = liftRoot.child(liftId);
+        DatabaseReference liftPassengers = liftRef.child("passengers");
+        Map<String,Object> mapLiftChild = new HashMap<String, Object>();
+        liftPassengers.child(userId).removeValue();
+        liftPassengers.updateChildren(mapLiftChild);
+
+        liftPassengers.updateChildren(mapLiftChild);
+
+        userLiftsChild.updateChildren(mapUserLiftsChild);
+    }
 }
 
 

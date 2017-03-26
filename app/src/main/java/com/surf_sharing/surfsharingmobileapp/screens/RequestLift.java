@@ -117,6 +117,16 @@ public class RequestLift extends Fragment {
         reqButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+
+                Toast.makeText(getContext(), "request Lift: " + idText, Toast.LENGTH_SHORT).show();
+                Database.makeLiftRequest(idText);
+
+                //-------------------------------------------------------------------------------------
+                //Database.rejectLiftRequest(idText, "apMGnPrP8bXyIwztxjMcukxrEve2");
+
+                //Database.findUser("apMGnPrP8bXyIwztxjMcukxrEve2");
+                //-------------------------------------------------------------------------------------
+
                 // request the lift
                 String messageTitle = "New Lift Request";
                 String messageDetail = "Request for seat on Lift: "+liftStr+" from User: "+userId;
