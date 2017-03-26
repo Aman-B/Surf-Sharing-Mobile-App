@@ -183,7 +183,7 @@ public class AvailableLifts extends Fragment {
 
                             Lift.passengers.add(passenger);
 
-                            Toast.makeText(getContext(), "lift id: " + id + "  passengers id : " + passengerId + "  passengerState : " + passengerAge, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "lift id: " + id + "  passengers id : " + passengerId + "  passengerState : " + passengerAge, Toast.LENGTH_SHORT).show();
                         }
 
                         lifts_list.add(lift);
