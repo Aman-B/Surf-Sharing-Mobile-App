@@ -11,7 +11,7 @@ public class Lift {
     public User driver;
 
     // car, time, date
-    ArrayList<User> passengers;
+    public static ArrayList<User> passengers;
     public Lift(User driver, String destination, int seatsAvailable, String id/*, String car*/, String time, String date){
         this.destination = destination;
         this.seatsAvailable = seatsAvailable;

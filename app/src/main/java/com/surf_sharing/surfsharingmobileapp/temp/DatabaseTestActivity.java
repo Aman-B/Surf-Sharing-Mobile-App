@@ -1,9 +1,15 @@
 package com.surf_sharing.surfsharingmobileapp.temp;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.NotificationCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -113,7 +119,13 @@ public class DatabaseTestActivity extends AppCompatActivity {
 
                 //text.setText(Database.lifts);*/
 
-                Database.setUserValue(new User("", "type2", "email"));
+                //Database.setUserValue(new User("", "type2", "email"));
+
+                Lift lift = new Lift(new User("apMGnPrP8bXyIwztxjMcukxrEve2", "type", "email"), "a", 5, "1", "20:11", "22.11.2016");
+                lift.id = "-KfLutnUEbm-OqT7JcNZ";
+                //Database.addRefferencesInLiftAndUser(lift);
+                Database.postLift(lift);
+                popup(DatabaseTestActivity.this, "test ");
 
 
             }
@@ -130,7 +142,7 @@ public class DatabaseTestActivity extends AppCompatActivity {
 
                //Database.postLift(new Lift(new User("77", "type", "email"), "a", 5, "" + 8));
 
-                Database.addLiftToUser(new Lift(new User("77", "type", "email"), "a", 5, "" + 8, "", ""));
+                //Database.addLiftToUser(new Lift(new User("77", "type", "email"), "a", 5, "" + 8));
 
                 /*User user = Database.getCurrentUser_();
 
@@ -142,8 +154,41 @@ public class DatabaseTestActivity extends AppCompatActivity {
                 {
                     popup(DatabaseTestActivity.this, "null");
                 }*/
+                //createNotification(getApplicationContext(), "testMessage", "test");
+                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                User user = new User("0", "type", "email");
+                user.id = currentUser.getUid();
+                Lift lift = new Lift(new User("0", "type", "email"), "a", 5, "1", "20:11", "22.11.2016");
+                lift.id = "-KfLutnUEbm-OqT7JcNZ";
+                //Database.removeRefferencesInLiftAndUser(lift, user);
+                popup(DatabaseTestActivity.this, "test remove");
+
+
             }
         });
+
     }
+
+    public static void createNotification(Context context, String message, String messageText) {
+
+        PendingIntent notificIntent = PendingIntent.getActivities(context, 0, new Intent[]{new Intent(context, AppCompatActivity.class)}, 0);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setContentTitle(message);
+        builder.setTicker("Alert Message");
+        builder.setVibrate(new long[]{0, 200, 200, 200, 200});
+        builder.setLights(Color.BLUE, 3000, 3000);
+        builder.setContentText(messageText);
+        builder.setContentIntent(notificIntent);
+        builder.setDefaults(NotificationCompat.DEFAULT_SOUND);
+        builder.setAutoCancel(true);
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(1, builder.build());
+    }
+
 
 }

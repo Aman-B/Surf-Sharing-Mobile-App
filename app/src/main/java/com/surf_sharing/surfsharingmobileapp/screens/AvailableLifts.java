@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -134,7 +135,7 @@ public class AvailableLifts extends Fragment {
                         String date = (String) postSnapshot.child("date").getValue();
                         String time = (String) postSnapshot.child("time").getValue();
 
-                        DataSnapshot driverRef = postSnapshot.child("driverId");
+                        DataSnapshot driverRef = postSnapshot.child("driver");
                         String driverId = (String) driverRef.child("id").getValue();
                         String driverName = (String) driverRef.child("name").getValue();
                         String driverAge = (String) driverRef.child("age").getValue();
@@ -155,6 +156,35 @@ public class AvailableLifts extends Fragment {
                         lift.car = car;
                         //lift.date = date;
                         //lift.time = time;
+
+                        DataSnapshot passengersRef = postSnapshot.child("passengers");
+                        Lift.passengers = new ArrayList<User>();
+                        for (DataSnapshot snapshot : passengersRef.getChildren()) {
+
+                            String passengerId = (String) snapshot.getKey();
+                            DataSnapshot passengerRef = snapshot.child(passengerId);
+
+                            String passengerState = (String) passengerRef.child("state").getValue();
+
+                            String passengerName = (String) passengerRef.child("name").getValue();
+                            String passengerAge = (String) passengerRef.child("age").getValue();
+                            String passengerGender = (String) passengerRef.child("gender").getValue();
+                            String passengerEmail = (String) passengerRef.child("email").getValue();
+                            String passengerType = (String) passengerRef.child("type").getValue();
+                            String passengerPhone = (String) passengerRef.child("phone").getValue();
+                            String passengerBio = (String) passengerRef.child("bio").getValue();
+
+                            User passenger = new User(passengerId, passengerType, passengerEmail);
+                            //passenger.name = passengerName;
+                            passenger.age = passengerAge;
+                            passenger.gender = passengerGender;
+                            passenger.phone = passengerPhone;
+                            passenger.bio = passengerBio;
+
+                            Lift.passengers.add(passenger);
+
+                            //Toast.makeText(getContext(), "lift id: " + id + "  passengers id : " + passengerId + "  passengerState : " + passengerAge, Toast.LENGTH_SHORT).show();
+                        }
 
                         lifts_list.add(lift);
 
