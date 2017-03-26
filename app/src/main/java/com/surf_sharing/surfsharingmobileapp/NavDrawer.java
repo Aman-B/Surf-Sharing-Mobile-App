@@ -56,6 +56,7 @@ public class NavDrawer extends AppCompatActivity
 
         // listen for sign out event and go to login screen
         mAuth = FirebaseAuth.getInstance();
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -118,7 +119,7 @@ public class NavDrawer extends AppCompatActivity
             case R.id.nav_lifts_offering:
                 break;
             case R.id.nav_profile:
-                fragment = ProfileScreen.newInstance();
+                fragment = ProfileScreen.newInstance(mAuth.getCurrentUser().getUid());
                 break;
             case R.id.nav_manage_account:
                 fragment = ManageAccount.newInstance();
