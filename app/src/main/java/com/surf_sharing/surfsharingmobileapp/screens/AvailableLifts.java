@@ -78,7 +78,7 @@ public class AvailableLifts extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             // handle bundle arguments
-            
+
         }
         liftRoot = FirebaseDatabase.getInstance().getReference("lifts");
     }
@@ -169,6 +169,15 @@ public class AvailableLifts extends Fragment {
                 try
                 {
                     ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, lifts_list);
+                    //You can use my custom list view and custom array adaptor to display driver icon and text instead of just text
+                    //here is an example psudocode. you would need to get the images from the firebase and reference them
+                    // the adaptor takes two lists. the text one you have created and a list of string references to the downloaded icons
+                    //
+                    //
+                    // CustomArrayAdaptor adapter=new CustomArrayAdaptor(this, itemname, imgid);
+                    //list=(ListView)findViewById(R.id.listviewicontext);
+                    //list.setAdapter(adapter);
+
                     liftList.setAdapter(adapter);
                 }
                 catch (Exception e)
