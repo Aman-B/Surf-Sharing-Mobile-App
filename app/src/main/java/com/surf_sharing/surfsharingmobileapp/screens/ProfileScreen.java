@@ -27,9 +27,10 @@ public class ProfileScreen extends Fragment {
      *
      * @return A new instance of fragment AvailableLifts.
      */
-    public static ProfileScreen newInstance() {
+    public static ProfileScreen newInstance(String userId) {
         ProfileScreen fragment = new ProfileScreen();
         Bundle args = new Bundle();
+        args.putString("userId", userId);
         fragment.setArguments(args);
         return fragment;
     }

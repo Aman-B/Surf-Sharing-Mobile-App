@@ -37,5 +37,17 @@ public class Lift {
         s = destination+", "+seatsAvailable+" seats\n"+date+" at "+time;
         return s;
     }
+
+    public String getDestination() {
+        return this.destination;
+    }
+
+    public String getDate() {
+        return this.date;
+    }
+
+    public String getTime() {
+        return this.time;
+    }
 }
 

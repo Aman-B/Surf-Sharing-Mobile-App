@@ -114,14 +114,14 @@ public class RequestLift extends Fragment {
         reqButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                NavDrawer nd = (NavDrawer) getActivity();
-                nd.replaceContent(AvailableLifts.newInstance());
-
                 // request the lift
                 String messageTitle = "New Lift Request";
                 String messageDetail = "Request for seat on Lift: "+idText+" from User: "+userId;
                 sendNotification(getContext(), messageTitle, messageDetail);
-                
+
+                NavDrawer nd = (NavDrawer) getActivity();
+                nd.replaceContent(AvailableLifts.newInstance());
+
             }
         });
 
