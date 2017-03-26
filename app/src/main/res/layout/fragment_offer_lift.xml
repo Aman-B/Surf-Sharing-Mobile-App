@@ -18,21 +18,62 @@
             android:hint="destination"
             android:inputType="textPersonName" />
 
-        <EditText
-            android:id="@+id/dateEnter"
+        <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="date of departure"
-            android:inputType="date" />
+            android:stretchColumns="1">
 
-        <EditText
-            android:id="@+id/timeEnter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="time of departure"
-            android:inputType="time" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/offerLiftDateLabel"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Date: "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+                <TextView
+                    android:id="@+id/offerLiftDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                <Button
+                    android:id="@+id/offerLiftDateButton"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Pick Date" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/offerLiftTimeLabel"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Time: "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+                <TextView
+                    android:id="@+id/offerLiftTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                <Button
+                    android:id="@+id/offerLiftTimeButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pick Time" />
+            </TableRow>
+
+        </TableLayout>
 
         <EditText
             android:id="@+id/seatsEnter"
@@ -46,9 +87,9 @@
             android:id="@+id/buttonEnter"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:layout_marginTop="20dp"
-            android:text="Submit"
-            android:layout_gravity="right"/>
+            android:text="Submit" />
 
     </LinearLayout>
 

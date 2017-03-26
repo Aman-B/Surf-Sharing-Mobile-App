@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -162,17 +163,6 @@ public class NavDrawer extends AppCompatActivity
                 .replace(R.id.nav_drawer_content, fragment)
                 .addToBackStack(null)
                 .commit();
-    }
-
-    // retrieves text values from editTexts in offerlift
-    public String[] getTextValues(){
-        EditText dest = (EditText) this.findViewById(R.id.destEnter);
-        EditText seats = (EditText) this.findViewById(R.id.seatsEnter);
-        EditText time = (EditText) this.findViewById(R.id.timeEnter);
-        EditText date = (EditText) this.findViewById(R.id.dateEnter);
-        String[] s = {dest.getText().toString(), seats.getText().toString(),
-                        time.getText().toString(), date.getText().toString()};
-        return s;
     }
 
     @Override
