@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.data.User;
 import com.surf_sharing.surfsharingmobileapp.screens.AvailableLifts;
+import com.surf_sharing.surfsharingmobileapp.screens.LiftsYouAreOffering;
 import com.surf_sharing.surfsharingmobileapp.screens.ManageAccount;
 import com.surf_sharing.surfsharingmobileapp.screens.OfferLift;
 import com.surf_sharing.surfsharingmobileapp.screens.ProfileScreen;
@@ -56,7 +57,6 @@ public class NavDrawer extends AppCompatActivity
 
         // listen for sign out event and go to login screen
         mAuth = FirebaseAuth.getInstance();
-
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -117,6 +117,7 @@ public class NavDrawer extends AppCompatActivity
                 fragment = OfferLift.newInstance();
                 break;
             case R.id.nav_lifts_offering:
+                fragment = LiftsYouAreOffering.newInstance();
                 break;
             case R.id.nav_profile:
                 fragment = ProfileScreen.newInstance(mAuth.getCurrentUser().getUid());

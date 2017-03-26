@@ -130,7 +130,8 @@ public class RequestResponse extends Fragment {
                 notifyUser(requestingUser, true);
 
                 requestedLift.addPassenger(requestingUser);
-                requestingUser.addLift(requestedLift);
+                // TODO undo comment below
+                //requestingUser.addLift(requestedLift);
 
                 Database.setUserValue(requestingUser);
                 //Database.setLiftValue(requestedLift); // Database function not implemented yet
