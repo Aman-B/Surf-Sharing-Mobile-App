@@ -163,8 +163,10 @@ public class AvailableLifts extends Fragment {
 
                             String passengerId = (String) snapshot.getKey();
                             DataSnapshot passengerRef = snapshot.child(passengerId);
-                            //String passengerState = (String) driverRef.child("state").getValue();
-                            //String passengerName = (String) passengerRef.child("name").getValue();
+
+                            String passengerState = (String) passengerRef.child("state").getValue();
+
+                            String passengerName = (String) passengerRef.child("name").getValue();
                             String passengerAge = (String) passengerRef.child("age").getValue();
                             String passengerGender = (String) passengerRef.child("gender").getValue();
                             String passengerEmail = (String) passengerRef.child("email").getValue();
@@ -181,7 +183,7 @@ public class AvailableLifts extends Fragment {
 
                             Lift.passengers.add(passenger);
 
-                            //Toast.makeText(getContext(), "lift id: " + id + "  passengers id : " + passengerId + "  email : " + passengerAge, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "lift id: " + id + "  passengers id : " + passengerId + "  passengerState : " + passengerAge, Toast.LENGTH_SHORT).show();
                         }
 
                         lifts_list.add(lift);
