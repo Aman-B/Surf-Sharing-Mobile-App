@@ -119,7 +119,7 @@ public class RequestLift extends Fragment {
 
                 // request the lift
                 String messageTitle = "New Lift Request";
-                String messageDetail = "Request for seat on Lift: "+idText+" from User: "+userId;
+                String messageDetail = "Request for seat on Lift: "+liftStr+" from User: "+userId;
                 sendNotification(getContext(), messageTitle, messageDetail);
                 
             }
