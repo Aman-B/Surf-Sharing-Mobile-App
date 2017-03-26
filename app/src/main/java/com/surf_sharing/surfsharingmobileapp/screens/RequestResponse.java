@@ -8,11 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.ImageView;
+import android.media.Image;
 
 import com.surf_sharing.surfsharingmobileapp.NavDrawer;
 import com.surf_sharing.surfsharingmobileapp.R;
 import com.surf_sharing.surfsharingmobileapp.data.User;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
+import com.surf_sharing.surfsharingmobileapp.data.Database;
+import com.surf_sharing.surfsharingmobileapp.LiftsYouAreOn;
 
 
 /**
@@ -29,6 +34,8 @@ public class RequestResponse extends Fragment {
 
     User requestingUser;
     Lift requestedLift;
+
+    NavDrawer nd;
 
     public RequestResponse() {
         // Required empty public constructor
@@ -54,6 +61,8 @@ public class RequestResponse extends Fragment {
             userId = getArguments().getString("userId");
             liftId = getArguments().getString("liftId");
 
+            nd = (NavDrawer) getActivity();
+
             //requestingUser = Database.getUser(userId);
             //requestedLift = Database.getLift(liftId);
         }
@@ -65,17 +74,49 @@ public class RequestResponse extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_request_response, container, false);
 
+        TextView liftDestinationText = (TextView) view.findViewById(R.id.text_view_lift_name);
+        String liftDestination = requestedLift.getDestination();
+        liftDestinationText.setText(liftDestination);
 
+        TextView liftDepartureDateText = (TextView) view.findViewById(R.id.text_view_lift_date);
+        String liftDepartureDate = requestedLift.getDate();
+        liftDepartureDateText.setText(liftDepartureDate);
+
+        TextView liftDepartureTimeText = (TextView) view.findViewById(R.id.text_view_lift_time);
+        String liftDepartureTime = requestedLift.getTime();
+        liftDepartureTimeText.setText(liftDepartureTime);
+
+        //ImageView userProfileImage = (ImageView) view.findViewById(R.id.user_profile_image);
+        //Image userImage = requestingUser.getUserImage();
+
+        TextView userNameText = (TextView) view.findViewById(R.id.text_view_user);
+        String userName = requestingUser.getUserName();
+        userNameText.setText(userName);
+
+
+        Button viewProfileButton = (Button) view.findViewById(R.id.view_full_profile_btn);
+        viewProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                nd = (NavDrawer) getActivity();
+                Fragment userProfileScreen = ProfileScreen.newInstance(requestingUser.getUserId());
+                nd.replaceContent(userProfileScreen);
+
+            }
+        });
 
         Button rejectButton = (Button) view.findViewById(R.id.reject_btn);
         rejectButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
 
-                NavDrawer nd = (NavDrawer) getActivity();
+                notifyUser(requestingUser, false);
 
+                nd = (NavDrawer) getActivity();
+                //Fragment liftsYouAreOfferingScreen = LiftsYouAreOffering.newInstance();
 
-
+                //nd.replaceContent(liftsYouAreOfferingScreen);
 
             }
         });
@@ -86,13 +127,35 @@ public class RequestResponse extends Fragment {
             @Override
             public void onClick(View view) {
 
+                notifyUser(requestingUser, true);
+
                 requestedLift.addPassenger(requestingUser);
                 requestingUser.addLift(requestedLift);
+
+                Database.setUserValue(requestingUser);
+                //Database.setLiftValue(requestedLift); // Database function not implemented yet
 
             }
         });
 
         return view;
+    }
+
+    public void notifyUser(User requestingUser, boolean accepted) {
+
+        if (accepted)
+        {
+
+
+
+        }
+        else
+        {
+
+
+
+        }
+
     }
 
     @Override
