@@ -15,35 +15,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <application android:name=".Globals" />
-
-        <activity android:name=".MainActivity">
-        </activity>
         <activity
-            android:name=".ViewLifts"
-            android:label="@string/title_activity_view_lifts"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".LiftsYouAreOn"
-            android:label="@string/title_activity_lifts_you_are_on"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".LoginActivity">
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".CreateLift" />
         <activity
             android:name=".NavDrawer"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".temp.DatabaseTestActivity" />
-        <activity
-            android:name=".temp.TestRequestLiftActivity"
-            android:label="@string/title_activity_test_request_lift"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
+        <activity android:name=".RegisterActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
