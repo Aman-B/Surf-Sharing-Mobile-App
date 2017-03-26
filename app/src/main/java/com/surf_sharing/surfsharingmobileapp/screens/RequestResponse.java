@@ -114,9 +114,9 @@ public class RequestResponse extends Fragment {
                 notifyUser(requestingUser, false);
 
                 nd = (NavDrawer) getActivity();
-                //Fragment liftsYouAreOfferingScreen = LiftsYouAreOffering.newInstance();
+                Fragment liftsYouAreOfferingScreen = LiftsYouAreOffering.newInstance();
 
-                //nd.replaceContent(liftsYouAreOfferingScreen);
+                nd.replaceContent(liftsYouAreOfferingScreen);
 
             }
         });
@@ -146,14 +146,18 @@ public class RequestResponse extends Fragment {
 
         if (accepted)
         {
-
-
+                // Wherever the user has an entry representing their pending lift
+                // request, change it to show that they are now on this lift and
+                // send a notification to inform them.
+                Database.acceptLiftRequest(liftId, userId);
 
         }
         else
         {
-
-
+                // Wherever the user has an entry representing their pending lift
+                // request, remove it to show that they have not secured a seat
+                // on this lift and send a notification to inform them.
+                Database.rejectLiftRequest(liftId, userId);
 
         }
 

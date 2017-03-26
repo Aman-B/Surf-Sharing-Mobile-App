@@ -135,7 +135,7 @@ public class Database {
     }
 
     /**
-     * Function to refference the lift id inside the user object and in the case of the passenger
+     * Function to reference the lift id inside the user object and in the case of the passenger
      * it adds the passenger id to the list of passengers in the lift object in a pending status
      */
     public static void makeLiftRequest(final String liftId) {
@@ -203,7 +203,7 @@ public class Database {
     }
 
     /**
-     * Function to refference the lift id inside the user object and in the case of the passenger
+     * Function to reference the lift id inside the user object and in the case of the passenger
      * it adds the passenger id to the list of passengers in the lift object in a pending status
      */
     public static void acceptLiftRequest(String liftId, String userId) {
