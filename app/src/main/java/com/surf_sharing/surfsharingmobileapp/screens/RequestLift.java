@@ -44,11 +44,13 @@ public class RequestLift extends Fragment {
     //EditText seats;
     //Database database;
     Lift requestedLift;
-    String driverId, idText, userId, dateStr, timeStr, liftStr;
+    String driverId, idText, userId, dateStr, timeStr, liftStr, seatsStr;
     int seatsVal;
 
     private DatabaseReference liftRoot;
     private ValueEventListener liftListener;
+
+    private TextView locationText, timeText, dateText, driverText, seatsText;
 
     public RequestLift() {
         // Required empty public constructor
@@ -79,6 +81,7 @@ public class RequestLift extends Fragment {
             dateStr=getArguments().getString("date");
             timeStr=getArguments().getString("time");
             liftStr=getArguments().getString("liftStr");
+            seatsStr=getArguments().getString("seatsStr");
 
         }
     }
@@ -91,23 +94,23 @@ public class RequestLift extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_request_lift, container, false);
 
+        locationText = (TextView) view.findViewById(R.id.requestLiftLocation);
+        timeText = (TextView) view.findViewById(R.id.requestLiftTime);
+        dateText = (TextView) view.findViewById(R.id.requestLiftDate);
+        driverText = (TextView) view.findViewById(R.id.requestLiftDriver);
+        seatsText = (TextView) view.findViewById(R.id.requestLiftSeats);
+
+        // set the driver and lift info
+        locationText.setText(liftStr);
+        timeText.setText(timeStr);
+        dateText.setText(dateStr);
+        driverText.setText(driverId);
+        seatsText.setText(String.format("(%s seats remaining)", seatsStr));
+
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         userId = currentUser.getUid();
         userId = currentUser.toString();
         userId = currentUser.getEmail();
-
-
-//
-//        liftRoot.addValueEventListener(liftListener);
-
-        TextView infoText = (TextView) view.findViewById(R.id.lift_info);
-        infoText.setText("User: "+userId+
-                            "\nDriver: "+driverId+
-                            //"\nLift id: "+idText+
-                            "\nLift: "+liftStr+
-                            "\nTime: "+timeStr+
-                            "\nDate: "+dateStr);
-
 
         Button reqButton = (Button) view.findViewById(R.id.requestButton);
 

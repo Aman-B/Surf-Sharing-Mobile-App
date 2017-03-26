@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -108,7 +109,7 @@ public class AvailableLifts extends Fragment {
 
                 NavDrawer nd = (NavDrawer) getActivity();
                 //nd.replaceContent(RequestLift.newInstance());
-                nd.setupRequestLift(RequestLift.newInstance(), l.id, l.driver.email, l.date, l.time, l.destination+", "+l.seatsAvailable+" seats");
+                nd.setupRequestLift(RequestLift.newInstance(), l.id, l.driver.email, l.date, l.time, l.destination, Integer.toString(l.seatsAvailable));
                 // get lift id
 
 
