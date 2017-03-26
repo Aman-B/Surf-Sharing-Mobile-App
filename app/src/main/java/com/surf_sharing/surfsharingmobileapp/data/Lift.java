@@ -34,7 +34,7 @@ public class Lift {
 
     public String toString(){
         String s;
-        s = destination+", "+seatsAvailable+" seats.   "+date+" at "+time;
+        s = destination+", "+seatsAvailable+" seats\n"+date+" at "+time;
         return s;
     }
 }

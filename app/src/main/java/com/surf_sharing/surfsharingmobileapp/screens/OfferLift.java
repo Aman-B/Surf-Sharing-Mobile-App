@@ -106,7 +106,7 @@ public class OfferLift extends Fragment {
 
                             // right now this just sends a test lift to Database.postLift()
                             User testDriver = new User(userId, "driver", userEmail);
-                            Lift l = new Lift(testDriver, dest, Integer.parseInt(seats), "" + 1, date, time); //TODO: replace with real acount
+                            Lift l = new Lift(testDriver, dest, Integer.parseInt(seats), "" + 1, time, date); //TODO: replace with real acount
                             Database.postLift(l);
                             Display.popup(getActivity(), "postlift "+"\nvals: "+dest+", "+seats);
                         }
