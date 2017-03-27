@@ -33,6 +33,7 @@ import com.surf_sharing.surfsharingmobileapp.R;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.data.User;
+import com.surf_sharing.surfsharingmobileapp.utils.Display;
 import com.surf_sharing.surfsharingmobileapp.utils.FirebaseError;
 
 import java.util.ArrayList;
@@ -118,7 +119,8 @@ public class RequestLift extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(getContext(), "request Lift: " + idText, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "request Lift: " + idText, Toast.LENGTH_SHORT).show();
+                Display.popup(getActivity(), "Seat on lift requested!");
                 Database.makeLiftRequest(idText);
 
                 //-------------------------------------------------------------------------------------

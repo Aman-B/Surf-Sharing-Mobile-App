@@ -134,7 +134,6 @@ public class RequestResponse extends Fragment {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
-                Display.popup(getActivity(), "Something happened");
                 arrayAdapter.clear(); // remove all the items from previous event
 
                 try
@@ -207,6 +206,7 @@ public class RequestResponse extends Fragment {
                                 notifyUser(requestingPassenger, true);
 
                                 Database.acceptLiftRequest(liftId, requestingPassenger.getUserId());
+                                Display.popup(getActivity(), "Passenger Accepted!");
 
                                 //requestedLift.addPassenger(requestingPassenger.getUserId());
                                 // TODO undo comment below
@@ -214,7 +214,6 @@ public class RequestResponse extends Fragment {
 
                                 //Database.setUserValue(requestingPassenger);
                                 //Database.setLiftValue(requestedLift); // Database function not implemented yet
-                                Display.popup(getActivity(), "Passenger Accepted!");
 
                             }
                         })
@@ -223,6 +222,7 @@ public class RequestResponse extends Fragment {
                                 notifyUser(requestingPassenger, false);
 
                                 Database.rejectLiftRequest(liftId, requestingPassenger.getUserId());
+                                Display.popup(getActivity(), "Passenger Rejected!");
                             }
                         })
                         .setNeutralButton("cancel", new DialogInterface.OnClickListener() {
