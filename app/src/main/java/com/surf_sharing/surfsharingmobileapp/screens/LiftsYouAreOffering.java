@@ -108,11 +108,15 @@ public class LiftsYouAreOffering extends Fragment {
                 //startActivity(myIntent);
 
                 Lift l = (Lift) parent.getAdapter().getItem(position);
+                // TODO replace with actual condtion which will check if a request has been made for this lift
+                if(true){
+                    NavDrawer nd = (NavDrawer) getActivity();
+                    nd.setupRequestResponse(RequestResponse.newInstance(), userId, l.id, userId, l.seatsAvailable,
+                                                l.destination, l.time, l.date, l.driver.email);
+                }
 
 
-                NavDrawer nd = (NavDrawer) getActivity();
-                //nd.replaceContent(RequestLift.newInstance());
-                nd.setupRequestLift(RequestLift.newInstance(), l.id, l.driver.email, l.date, l.time, l.destination, Integer.toString(l.seatsAvailable));
+                //nd.replaceContent(RequestResponse.newInstance());
                 // get lift id
 
 
@@ -165,10 +169,15 @@ public class LiftsYouAreOffering extends Fragment {
 
                         Log.d("lift: ", driverId+" + "+userId);
 
-                        if(driverId.equals(userId)){
-
+                        
+                        if(driverId.equals("apMGnPrP8bXyIwztxjMcukxrEve2")){
                             lifts_list.add(lift);
                         }
+
+//                        if(driverId.equals(userId)){
+//                            lifts_list.add(lift);
+//                        }
+
 
 
 

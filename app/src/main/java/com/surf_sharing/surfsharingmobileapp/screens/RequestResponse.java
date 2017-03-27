@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import android.media.Image;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.surf_sharing.surfsharingmobileapp.NavDrawer;
 import com.surf_sharing.surfsharingmobileapp.R;
 import com.surf_sharing.surfsharingmobileapp.data.User;
@@ -29,10 +31,11 @@ import com.surf_sharing.surfsharingmobileapp.LiftsYouAreOn;
  */
 public class RequestResponse extends Fragment {
 
-    String userId;
-    String liftId;
+    String userId, userEmail, thisUserId, thisUserEmail;
+    String liftId, liftDest, liftTime, liftDate;
+    int liftSeats;
 
-    User requestingUser;
+    User requestingUser, thisUser;
     Lift requestedLift;
 
     NavDrawer nd;
@@ -59,7 +62,21 @@ public class RequestResponse extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             userId = getArguments().getString("userId");
+            userEmail = getArguments().getString("u_email");
             liftId = getArguments().getString("liftId");
+            liftDate = getArguments().getString("date");
+            liftDest = getArguments().getString("l_dest");
+            liftSeats = getArguments().getInt("l_seats");
+            liftTime = getArguments().getString("time");
+
+            requestingUser = new User(userId, "", userEmail);
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            thisUserId = currentUser.getUid();
+            //thisUserId = currentUser.toString();
+            thisUserEmail = currentUser.getEmail();
+
+            thisUser = new User(thisUserId, "", thisUserEmail);
+            requestedLift = new Lift(thisUser, liftDest, liftSeats, liftId, liftTime, liftDate);
 
             nd = (NavDrawer) getActivity();
 

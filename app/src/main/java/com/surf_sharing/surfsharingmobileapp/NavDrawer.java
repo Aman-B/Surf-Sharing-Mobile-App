@@ -149,6 +149,7 @@ public class NavDrawer extends AppCompatActivity
                 .commit();
     }
 
+    //
     public void setupRequestLift(Fragment fragment, String id, String driverId, String date, String time, String liftStr, String seatsStr){
         FragmentManager fragmentManager = getSupportFragmentManager();
         Bundle bundle=new Bundle();
@@ -158,6 +159,26 @@ public class NavDrawer extends AppCompatActivity
         bundle.putString("time", time);
         bundle.putString("liftStr", liftStr);
         bundle.putString("seatsStr", seatsStr);
+        fragment.setArguments(bundle);
+        fragmentManager.beginTransaction()
+                .replace(R.id.nav_drawer_content, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public void setupRequestResponse(Fragment fragment, String userId, String liftId, String l_user,
+                                        int l_seats, String l_dest, String time, String date, String u_email){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Bundle bundle=new Bundle();
+        bundle.putString("userId", userId);
+        bundle.putString("liftId", liftId);
+        bundle.putString("l_user", l_user);
+        bundle.putInt("l_seats", l_seats);
+        bundle.putString("l_dest", l_dest);
+        bundle.putString("time", time);
+        bundle.putString("date", date);
+        bundle.putString("u_email", u_email);
+
         fragment.setArguments(bundle);
         fragmentManager.beginTransaction()
                 .replace(R.id.nav_drawer_content, fragment)
