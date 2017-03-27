@@ -80,16 +80,16 @@ public class RequestResponse extends Fragment {
 
                     try
                     {
-                        Map<String,Object> mapLiftPassengerChild = new HashMap<String, Object>();
-                        mapLiftPassengerChild.put(userId, "");
+                        DataSnapshot lifts = snapshot.child("passenger");
+                        for (DataSnapshot liftSnapshot : lifts.getChildren()) {
+                            String  liftId = (String) liftSnapshot.getKey();
+                            String state = (String) liftSnapshot.getValue();
 
-                        String userName = (String) snapshot.child("name").getValue();
-                        String userAge = (String) snapshot.child("age").getValue();
-                        String userGender = (String) snapshot.child("gender").getValue();
-                        String userEmail = (String) snapshot.child("email").getValue();
-                        String userType = (String) snapshot.child("type").getValue();
-                        String userPhone = (String) snapshot.child("phone").getValue();
-                        String userBio = (String) snapshot.child("bio").getValue();
+                            if (state.equals("Driver"))
+                            {
+
+                            }
+                        }
                     }
                     catch (Throwable e)
                     { }
@@ -131,21 +131,10 @@ public class RequestResponse extends Fragment {
                         lift.car = car;
 
                         DataSnapshot passengersRef = snapshot.child("passengers");
-                        lift.passengers = new ArrayList<User>();
+                        /*lift.passengers = new ArrayList<User>();
                         for (DataSnapshot PassengerSnapshot : passengersRef.getChildren()) {
 
                             String passengerId = (String) PassengerSnapshot.getKey();
-
-                            String passengerState = (String) PassengerSnapshot.child("state").getValue();
-
-                            if( passengerState.equals("pending"))
-                            {
-                                //passenger requested lift
-                            }
-                            else
-                            {
-                                //passenger is accepted
-                            }
 
                             String passengerName = (String) PassengerSnapshot.child("name").getValue();
                             String passengerAge = (String) PassengerSnapshot.child("age").getValue();
@@ -154,6 +143,7 @@ public class RequestResponse extends Fragment {
                             String passengerType = (String) PassengerSnapshot.child("type").getValue();
                             String passengerPhone = (String) PassengerSnapshot.child("phone").getValue();
                             String passengerBio = (String) PassengerSnapshot.child("bio").getValue();
+                            String passengerState = (String) PassengerSnapshot.child("state").getValue();
 
                             User passenger = new User(passengerId, passengerType, passengerEmail);
                             passenger.name = passengerName;
@@ -162,8 +152,16 @@ public class RequestResponse extends Fragment {
                             passenger.phone = passengerPhone;
                             passenger.bio = passengerBio;
 
-                            lift.passengers.add(passenger);
-                        }
+                            if( passengerState.equals("accepted"))
+                            {
+                                lift.passengers.add(passenger);
+                            }
+                            else
+                            {
+                                lift.pendingPassengers.add(passenger);
+
+                            }
+                        }*/
                     }
                     catch (Throwable e)
                     { }
@@ -237,7 +235,7 @@ public class RequestResponse extends Fragment {
 
                 notifyUser(requestingUser, true);
 
-                requestedLift.addPassenger(requestingUser);
+                requestedLift.addPassenger(requestingUser.id);
                 // TODO undo comment below
                 //requestingUser.addLift(requestedLift);
 

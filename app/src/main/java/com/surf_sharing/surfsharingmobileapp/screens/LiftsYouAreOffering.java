@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -107,12 +108,14 @@ public class LiftsYouAreOffering extends Fragment {
                 //Intent myIntent = new Intent(getActivity(), NextActivity.class);
                 //startActivity(myIntent);
 
+                Toast.makeText(getContext(), "Test ", Toast.LENGTH_SHORT).show();
+
                 Lift l = (Lift) parent.getAdapter().getItem(position);
                 // TODO replace with actual condtion which will check if a request has been made for this lift
                 if(true){
                     NavDrawer nd = (NavDrawer) getActivity();
-                    nd.setupRequestResponse(RequestResponse.newInstance(), userId, l.id, userId, l.seatsAvailable,
-                                                l.destination, l.time, l.date, l.driver.email);
+                    //nd.setupRequestResponse(RequestResponse.newInstance(), userId, l.id, userId, l.seatsAvailable, l.destination, l.time, l.date, l.driver.email);
+                    nd.replaceContent(RequestResponse.newInstance());
                 }
 
 
