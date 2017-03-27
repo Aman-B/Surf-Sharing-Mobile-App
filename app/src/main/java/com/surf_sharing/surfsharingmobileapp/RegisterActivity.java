@@ -27,14 +27,29 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.surf_sharing.surfsharingmobileapp.data.Database;
+import com.surf_sharing.surfsharingmobileapp.data.User;
 import com.surf_sharing.surfsharingmobileapp.utils.Display;
 import com.surf_sharing.surfsharingmobileapp.utils.FirebaseError;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.surf_sharing.surfsharingmobileapp.R.id.email;
+import static com.surf_sharing.surfsharingmobileapp.data.Database.userRoot;
 
 
 public class RegisterActivity extends AppCompatActivity {
 
+    private EditText editTextName;
+    private EditText editTextGender;
+    private EditText editTextDateOfBirth;
+    private EditText editTextPhoneNumber;
     private EditText editTextEmail;
     private EditText editTextPassword;
+    private EditText editTextPassword2;
+
     private Button buttonRegister;
     private ProgressDialog progressDialog;
 
@@ -48,10 +63,15 @@ public class RegisterActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
 
-        buttonRegister = (Button) findViewById(R.id.buttonRegister);
+        buttonRegister = (Button) findViewById(R.id.ok_btn);
 
-        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
-        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
+        editTextName = (EditText) findViewById(R.id.edit_text_name);
+        editTextGender = (EditText) findViewById(R.id.edit_text_gender);
+        editTextDateOfBirth = (EditText) findViewById(R.id.editText6);
+        editTextPhoneNumber = (EditText) findViewById(R.id.edit_text_phone);
+        editTextEmail = (EditText) findViewById(R.id.edit_text_email);
+        editTextPassword = (EditText) findViewById(R.id.editText4);
+        editTextPassword2 = (EditText) findViewById(R.id.editText5);
 
 
         buttonRegister.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +104,8 @@ public class RegisterActivity extends AppCompatActivity {
     private void registerUser() {
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
+        String password2 = editTextPassword2.getText().toString().trim();
+        boolean register = true;
 
         if (TextUtils.isEmpty(email)) {
             //email is empty
@@ -95,42 +117,123 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter a password", Toast.LENGTH_SHORT).show();
             return;
         }
+        String name = editTextName.getText().toString().trim();
+        String gender = editTextGender.getText().toString().trim();
+        String age = editTextDateOfBirth.getText().toString().trim();
+        String phone = editTextPhoneNumber.getText().toString().trim();
 
-        progressDialog.setMessage("Registering User...");
-        progressDialog.show();
 
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            //user is registered
-                            Toast.makeText(RegisterActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            Toast.makeText(RegisterActivity.this, "Failed to Register", Toast.LENGTH_SHORT).show();
-                            if(!task.isSuccessful()) {
-                                FirebaseAuthException e = (FirebaseAuthException) task.getException();
-                                switch (e.getErrorCode()) {
-                                    case FirebaseError.INVALID_EMAIL:
-                                        editTextEmail.setError(getString(R.string.error_invalid_email));
-                                        editTextEmail.requestFocus();
-                                        break;
-                                    case FirebaseError.EMAIL_ALREADY_IN_USE:
-                                        editTextEmail.setError(getString(R.string.error_user_exists));
-                                        editTextEmail.requestFocus();
-                                        break;
-                                    case FirebaseError.WEAK_PASSWORD:
-                                        editTextPassword.setError(getString(R.string.error_invalid_password));
-                                        editTextPassword.requestFocus();
-                                        break;
-                                    default:
-                                        Display.popup(RegisterActivity.this,e.getMessage());
+
+        if(name.isEmpty()) {
+            Display.popup(RegisterActivity.this, "Please enter your Name");
+            register = false;
+        }
+        else if(gender.isEmpty()) {
+            Display.popup(RegisterActivity.this, "Please enter your Gender");
+            register = false;
+        }
+        else if(age.isEmpty()) {
+            Display.popup(RegisterActivity.this, "Please enter your Date Of Birth");
+            register = false;
+        }
+        else if(phone.isEmpty()) {
+            Display.popup(RegisterActivity.this, "Please enter your Phone Number");
+            register = false;
+        }
+
+
+
+        if(register == true) {
+            if (password.equals(password2)) {
+
+
+                progressDialog.setMessage("Registering User...");
+                progressDialog.show();
+
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    //user is registered
+                                    //Toast.makeText(RegisterActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                                    sendVerificationEmail();
+                                    registerUserInfo();
+                                } else {
+                                    Toast.makeText(RegisterActivity.this, "Failed to Register", Toast.LENGTH_SHORT).show();
+                                    if (!task.isSuccessful()) {
+                                        FirebaseAuthException e = (FirebaseAuthException) task.getException();
+                                        switch (e.getErrorCode()) {
+                                            case FirebaseError.INVALID_EMAIL:
+                                                editTextEmail.setError(getString(R.string.error_invalid_email));
+                                                editTextEmail.requestFocus();
+                                                break;
+                                            case FirebaseError.EMAIL_ALREADY_IN_USE:
+                                                editTextEmail.setError(getString(R.string.error_user_exists));
+                                                editTextEmail.requestFocus();
+                                                break;
+                                            case FirebaseError.WEAK_PASSWORD:
+                                                editTextPassword.setError(getString(R.string.error_invalid_password));
+                                                editTextPassword.requestFocus();
+                                                break;
+                                            default:
+                                                Display.popup(RegisterActivity.this, e.getMessage());
+                                        }
+                                    }
                                 }
+                                progressDialog.dismiss();
                             }
+                        });
+            } else
+                Display.popup(RegisterActivity.this, "Passwords do not match");
+        }
+
+    }
+
+    public void sendVerificationEmail() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            user.sendEmailVerification()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(RegisterActivity.this, "SignUp Succssful, Email Verification Sent", Toast.LENGTH_SHORT).show();
                         }
-                        progressDialog.dismiss();
                     }
-                });
+        });
+
+    }
+}
+    public void registerUserInfo(){
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        User newUserValue = null;
+
+        if(currentUser != null)
+        {
+            String userId = currentUser.getUid();
+            String type = "";
+
+            String name = editTextName.getText().toString().trim();
+            String gender = editTextGender.getText().toString().trim();
+            String age = editTextDateOfBirth.getText().toString().trim();
+            String phone = editTextPhoneNumber.getText().toString().trim();
+            String email = editTextEmail.getText().toString().trim();
+
+
+
+            User user = new User(userId, type, email);
+            user.gender = gender;
+            user.age = age;
+            user.name = name;
+            user.phone = phone;
+
+
+            Database.setUserValue(user);
+
+
+        }
+
     }
 }
