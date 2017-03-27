@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.surf_sharing.surfsharingmobileapp.screens.RegisterAccount">
+    tools:context="com.surf_sharing.surfsharingmobileapp.RegisterActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,13 +26,40 @@
             android:inputType="text"
             android:hint="Gender"/>
 
-        <EditText
-            android:id="@+id/editText6"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="date"
-            android:hint="Date of Birth"/>
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/dateOfBirthLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date Of Birth"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:id="@+id/dateOfBirth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@+id/dateOfBirthLabel"
+                android:layout_toRightOf="@+id/dateOfBirthLabel"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <Button
+                android:id="@+id/dateOfBirthButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:text="Pick Date" />
+        </RelativeLayout>
 
         <EditText
             android:id="@+id/edit_text_phone"
