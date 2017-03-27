@@ -50,6 +50,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText editTextPassword;
     private EditText editTextPassword2;
 
+    private String accountType;
+
     private Button buttonRegister;
     private ProgressDialog progressDialog;
 
@@ -60,6 +62,9 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        accountType = getIntent().getStringExtra("ACCOUNT_TYPE");
+        Display.popup(this, accountType);
 
         progressDialog = new ProgressDialog(this);
 
