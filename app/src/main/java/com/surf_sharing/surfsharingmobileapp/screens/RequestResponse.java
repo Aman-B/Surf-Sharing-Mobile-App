@@ -7,10 +7,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.media.Image;
+import android.app.Dialog;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -38,6 +44,9 @@ import java.util.Map;
  * create an instance of this fragment.
  */
 public class RequestResponse extends Fragment {
+
+    ListView requestingUsers;
+    ArrayList<User> requesting_users_list;
 
     String userId;
     String liftId;
@@ -68,106 +77,14 @@ public class RequestResponse extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+
+
             userId = getArguments().getString("userId");
             liftId = getArguments().getString("liftId");
 
             nd = (NavDrawer) getActivity();
 
-            final DatabaseReference usersRef = Database.userRoot.child(userId);
-            usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot snapshot) {
 
-                    try
-                    {
-                        DataSnapshot lifts = snapshot.child("passenger");
-                        for (DataSnapshot liftSnapshot : lifts.getChildren()) {
-                            String  liftId = (String) liftSnapshot.getKey();
-                            String state = (String) liftSnapshot.getValue();
-
-                            if (state.equals("Driver"))
-                            {
-
-                            }
-                        }
-                    }
-                    catch (Throwable e)
-                    { }
-                }
-                @Override public void onCancelled(DatabaseError error) { }
-            });
-
-            final DatabaseReference liftRef = Database.liftRoot.child(liftId);
-            liftRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot snapshot) {
-
-                    try
-                    {
-                        int seatsAvailable = Integer.parseInt((String) snapshot.child("seatsAvailable").getValue());
-                        String car = (String) snapshot.child("car").getValue();
-                        String destination = (String) snapshot.child("destination").getValue();
-                        String date = (String) snapshot.child("date").getValue();
-                        String time = (String) snapshot.child("time").getValue();
-
-                        DataSnapshot driverRef = snapshot.child("driver");
-                        String driverId = (String) driverRef.child("id").getValue();
-                        String driverName = (String) driverRef.child("name").getValue();
-                        String driverAge = (String) driverRef.child("age").getValue();
-                        String driverGender = (String) driverRef.child("gender").getValue();
-                        String driverEmail = (String) driverRef.child("email").getValue();
-                        String driverType = (String) driverRef.child("type").getValue();
-                        String driverPhone = (String) driverRef.child("phone").getValue();
-                        String driverBio = (String) driverRef.child("bio").getValue();
-
-                        User driver = new User(driverId, driverType, driverEmail);
-                        driver.name = driverName;
-                        driver.age = driverAge;
-                        driver.gender = driverGender;
-                        driver.phone = driverPhone;
-                        driver.bio = driverBio;
-
-                        Lift lift = new Lift(driver, destination, seatsAvailable, liftId, time, date);
-                        lift.car = car;
-
-                        DataSnapshot passengersRef = snapshot.child("passengers");
-                        /*lift.passengers = new ArrayList<User>();
-                        for (DataSnapshot PassengerSnapshot : passengersRef.getChildren()) {
-
-                            String passengerId = (String) PassengerSnapshot.getKey();
-
-                            String passengerName = (String) PassengerSnapshot.child("name").getValue();
-                            String passengerAge = (String) PassengerSnapshot.child("age").getValue();
-                            String passengerGender = (String) PassengerSnapshot.child("gender").getValue();
-                            String passengerEmail = (String) PassengerSnapshot.child("email").getValue();
-                            String passengerType = (String) PassengerSnapshot.child("type").getValue();
-                            String passengerPhone = (String) PassengerSnapshot.child("phone").getValue();
-                            String passengerBio = (String) PassengerSnapshot.child("bio").getValue();
-                            String passengerState = (String) PassengerSnapshot.child("state").getValue();
-
-                            User passenger = new User(passengerId, passengerType, passengerEmail);
-                            passenger.name = passengerName;
-                            passenger.age = passengerAge;
-                            passenger.gender = passengerGender;
-                            passenger.phone = passengerPhone;
-                            passenger.bio = passengerBio;
-
-                            if( passengerState.equals("accepted"))
-                            {
-                                lift.passengers.add(passenger);
-                            }
-                            else
-                            {
-                                lift.pendingPassengers.add(passenger);
-
-                            }
-                        }*/
-                    }
-                    catch (Throwable e)
-                    { }
-                }
-                @Override public void onCancelled(DatabaseError error) { }
-            });
 
             //requestingUser = Database.getUser(userId);
             //requestedLift = Database.getLift(liftId);
@@ -180,7 +97,7 @@ public class RequestResponse extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_request_response, container, false);
 
-        TextView liftDestinationText = (TextView) view.findViewById(R.id.text_view_lift_name);
+        /*TextView liftDestinationText = (TextView) view.findViewById(R.id.text_view_lift_name);
         String liftDestination = requestedLift.getDestination();
         liftDestinationText.setText(liftDestination);
 
@@ -197,10 +114,64 @@ public class RequestResponse extends Fragment {
 
         TextView userNameText = (TextView) view.findViewById(R.id.text_view_user);
         String userName = requestingUser.getUserName();
-        userNameText.setText(userName);
+        userNameText.setText(userName);*/
+
+        requestingUsers = (ListView) view.findViewById(R.id.passengerRequestList);
+        //requesting_users_list = Database.getRequestingUsers();
+
+        ArrayAdapter<User> arrayAdapter = new ArrayAdapter<User>(
+                getActivity(),
+                android.R.layout.simple_list_item_1,
+                requesting_users_list);
+
+        requestingUsers.setAdapter(arrayAdapter);
 
 
-        Button viewProfileButton = (Button) view.findViewById(R.id.view_full_profile_btn);
+        requestingUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                //Intent myIntent = new Intent(getActivity(), NextActivity.class);
+                //startActivity(myIntent);
+
+                final User requestingPassenger = (User) parent.getAdapter().getItem(position);
+
+
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Accept Passenger")
+                        .setMessage("Do you want to accept " + requestingPassenger.getUserName() + "as a Passenger?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                notifyUser(requestingPassenger, true);
+
+                                requestedLift.addPassenger(requestingPassenger.getUserId());
+                                // TODO undo comment below
+                                //requestingPassenger.addLift(requestedLift);
+
+                                Database.setUserValue(requestingPassenger);
+                                //Database.setLiftValue(requestedLift); // Database function not implemented yet
+
+
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                notifyUser(requestingPassenger, false);
+
+                            }
+                        })
+                        .setCancelable(true)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+
+
+
+            }
+        });
+
+
+
+        /*Button viewProfileButton = (Button) view.findViewById(R.id.view_full_profile_btn);
         viewProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -243,7 +214,7 @@ public class RequestResponse extends Fragment {
                 //Database.setLiftValue(requestedLift); // Database function not implemented yet
 
             }
-        });
+        });*/
 
         return view;
     }
@@ -257,6 +228,9 @@ public class RequestResponse extends Fragment {
                 // send a notification to inform them.
                 Database.acceptLiftRequest(liftId, userId);
 
+                // TODO send notification message to user informing them
+                // that their request was accepted
+
         }
         else
         {
@@ -265,6 +239,8 @@ public class RequestResponse extends Fragment {
                 // on this lift and send a notification to inform them.
                 Database.rejectLiftRequest(liftId, userId);
 
+                // TODO send notification message to user informing them
+                // that their request was rejected.
         }
 
     }
