@@ -27,10 +27,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.surf_sharing.surfsharingmobileapp.NavDrawer;
 import com.surf_sharing.surfsharingmobileapp.R;
+import com.surf_sharing.surfsharingmobileapp.RequestItemAdapter;
 import com.surf_sharing.surfsharingmobileapp.data.User;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.LiftsYouAreOn;
+import com.surf_sharing.surfsharingmobileapp.utils.Display;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,6 +99,8 @@ public class RequestResponse extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_request_response, container, false);
 
+        getActivity().setTitle(R.string.title_request_responce);
+
         /*TextView liftDestinationText = (TextView) view.findViewById(R.id.text_view_lift_name);
         String liftDestination = requestedLift.getDestination();
         liftDestinationText.setText(liftDestination);
@@ -119,17 +123,16 @@ public class RequestResponse extends Fragment {
         requestingUsers = (ListView) view.findViewById(R.id.passengerRequestList);
         //requesting_users_list = Database.getRequestingUsers();
 
-        final ArrayAdapter<User> arrayAdapter = new ArrayAdapter<User>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                requesting_users_list);
+        final RequestItemAdapter arrayAdapter = new RequestItemAdapter(
+                getActivity(), requesting_users_list);
 
         Database.root.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
                 try
-                {Toast.makeText(getContext(), "liftId: " + liftId, Toast.LENGTH_SHORT).show();
+                {
+//                    Toast.makeText(getContext(), "liftId: " + liftId, Toast.LENGTH_SHORT).show();
                     DataSnapshot liftRef = snapshot.child("lifts").child(liftId);
                     DataSnapshot passengersRef = liftRef.child("passengers");
 
@@ -200,7 +203,7 @@ public class RequestResponse extends Fragment {
 
                                 //Database.setUserValue(requestingPassenger);
                                 //Database.setLiftValue(requestedLift); // Database function not implemented yet
-
+                                Display.popup(getActivity(), "Passenger Accepted!");
 
                             }
                         })

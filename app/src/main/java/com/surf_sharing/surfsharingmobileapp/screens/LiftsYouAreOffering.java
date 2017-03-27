@@ -315,7 +315,7 @@ public class LiftsYouAreOffering extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        liftRoot.removeEventListener(liftListener);
+//        liftRoot.removeEventListener(liftListener);
     }
 
 }

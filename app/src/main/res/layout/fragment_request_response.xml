@@ -5,20 +5,10 @@
     tools:context="com.surf_sharing.surfsharingmobileapp.screens.RequestResponse">
 
 
-        <TextView
-            android:id="@+id/text_view_passenger_request"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Passenger Requests"
-            android:textSize="20dp"
-            android:textAllCaps="false"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
-
         <!-- TODO: Update blank fragment layout -->
 
         <ListView
             android:id="@+id/passengerRequestList"
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 </FrameLayout>
