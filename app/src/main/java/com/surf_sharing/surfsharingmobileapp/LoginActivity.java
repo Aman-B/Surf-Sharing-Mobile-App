@@ -1,27 +1,12 @@
 package com.surf_sharing.surfsharingmobileapp;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
 
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,23 +16,17 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.surf_sharing.surfsharingmobileapp.utils.Display;
 import com.surf_sharing.surfsharingmobileapp.utils.FirebaseError;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -74,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private ProgressDialog progressDialog;
     private View mLoginFormView;
-    private Button passangerAccButon,driverAccButton;
+    private Button passengerAccButon,driverAccButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,11 +89,12 @@ public class LoginActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
 
-        passangerAccButon = (Button) findViewById(R.id.passangerAccButon);
-        passangerAccButon.setOnClickListener(new OnClickListener() {
+        passengerAccButon = (Button) findViewById(R.id.passangerAccButon);
+        passengerAccButon.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                intent.putExtra("ACCOUNT_TYPE", "passenger");
                 startActivity(intent);
             }
         });
@@ -123,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                intent.putExtra("ACCOUNT_TYPE", "driver");
                 startActivity(intent);
             }
         });
