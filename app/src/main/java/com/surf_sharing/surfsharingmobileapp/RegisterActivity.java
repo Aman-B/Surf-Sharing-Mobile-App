@@ -95,15 +95,19 @@ public class RegisterActivity extends AppCompatActivity {
                 if (user != null) {
                     // user is logged in
                     // Send user to NavDrawer when
-                    Intent intent = new Intent(RegisterActivity.this, NavDrawer.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
+                    gotoNavDrawer();
                 } else {
                     // user is logged out
                 }
             }
         };
+    }
+
+    private void gotoNavDrawer() {
+        Intent intent = new Intent(RegisterActivity.this, NavDrawer.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 
     private void registerUser() {
@@ -164,6 +168,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     //Toast.makeText(RegisterActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
                                     sendVerificationEmail();
                                     registerUserInfo();
+                                    gotoNavDrawer();
                                 } else {
                                     Toast.makeText(RegisterActivity.this, "Failed to Register", Toast.LENGTH_SHORT).show();
                                     if (!task.isSuccessful()) {
