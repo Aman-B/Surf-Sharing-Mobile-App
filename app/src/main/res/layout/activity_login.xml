@@ -100,7 +100,7 @@
             android:layout_width="271dp"
             android:layout_height="52dp"
             android:background="@android:color/holo_blue_light"
-            android:text="Creater Passenger Account"
+            android:text="Create Passenger Account"
             android:textColor="@android:color/white"
             android:layout_marginLeft="41dp"
             app:layout_constraintLeft_toLeftOf="parent"
