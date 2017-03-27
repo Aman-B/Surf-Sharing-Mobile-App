@@ -14,12 +14,20 @@ import android.media.Image;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.surf_sharing.surfsharingmobileapp.NavDrawer;
 import com.surf_sharing.surfsharingmobileapp.R;
 import com.surf_sharing.surfsharingmobileapp.data.User;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.LiftsYouAreOn;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -31,11 +39,10 @@ import com.surf_sharing.surfsharingmobileapp.LiftsYouAreOn;
  */
 public class RequestResponse extends Fragment {
 
-    String userId, userEmail, thisUserId, thisUserEmail;
-    String liftId, liftDest, liftTime, liftDate;
-    int liftSeats;
+    String userId;
+    String liftId;
 
-    User requestingUser, thisUser;
+    User requestingUser;
     Lift requestedLift;
 
     NavDrawer nd;
@@ -62,23 +69,107 @@ public class RequestResponse extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             userId = getArguments().getString("userId");
-            userEmail = getArguments().getString("u_email");
             liftId = getArguments().getString("liftId");
-            liftDate = getArguments().getString("date");
-            liftDest = getArguments().getString("l_dest");
-            liftSeats = getArguments().getInt("l_seats");
-            liftTime = getArguments().getString("time");
-
-            requestingUser = new User(userId, "", userEmail);
-            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-            thisUserId = currentUser.getUid();
-            //thisUserId = currentUser.toString();
-            thisUserEmail = currentUser.getEmail();
-
-            thisUser = new User(thisUserId, "", thisUserEmail);
-            requestedLift = new Lift(thisUser, liftDest, liftSeats, liftId, liftTime, liftDate);
 
             nd = (NavDrawer) getActivity();
+
+            final DatabaseReference usersRef = Database.userRoot.child(userId);
+            usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+
+                    try
+                    {
+                        Map<String,Object> mapLiftPassengerChild = new HashMap<String, Object>();
+                        mapLiftPassengerChild.put(userId, "");
+
+                        String userName = (String) snapshot.child("name").getValue();
+                        String userAge = (String) snapshot.child("age").getValue();
+                        String userGender = (String) snapshot.child("gender").getValue();
+                        String userEmail = (String) snapshot.child("email").getValue();
+                        String userType = (String) snapshot.child("type").getValue();
+                        String userPhone = (String) snapshot.child("phone").getValue();
+                        String userBio = (String) snapshot.child("bio").getValue();
+                    }
+                    catch (Throwable e)
+                    { }
+                }
+                @Override public void onCancelled(DatabaseError error) { }
+            });
+
+            final DatabaseReference liftRef = Database.liftRoot.child(liftId);
+            liftRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+
+                    try
+                    {
+                        int seatsAvailable = Integer.parseInt((String) snapshot.child("seatsAvailable").getValue());
+                        String car = (String) snapshot.child("car").getValue();
+                        String destination = (String) snapshot.child("destination").getValue();
+                        String date = (String) snapshot.child("date").getValue();
+                        String time = (String) snapshot.child("time").getValue();
+
+                        DataSnapshot driverRef = snapshot.child("driver");
+                        String driverId = (String) driverRef.child("id").getValue();
+                        String driverName = (String) driverRef.child("name").getValue();
+                        String driverAge = (String) driverRef.child("age").getValue();
+                        String driverGender = (String) driverRef.child("gender").getValue();
+                        String driverEmail = (String) driverRef.child("email").getValue();
+                        String driverType = (String) driverRef.child("type").getValue();
+                        String driverPhone = (String) driverRef.child("phone").getValue();
+                        String driverBio = (String) driverRef.child("bio").getValue();
+
+                        User driver = new User(driverId, driverType, driverEmail);
+                        driver.name = driverName;
+                        driver.age = driverAge;
+                        driver.gender = driverGender;
+                        driver.phone = driverPhone;
+                        driver.bio = driverBio;
+
+                        Lift lift = new Lift(driver, destination, seatsAvailable, liftId, time, date);
+                        lift.car = car;
+
+                        DataSnapshot passengersRef = snapshot.child("passengers");
+                        lift.passengers = new ArrayList<User>();
+                        for (DataSnapshot PassengerSnapshot : passengersRef.getChildren()) {
+
+                            String passengerId = (String) PassengerSnapshot.getKey();
+
+                            String passengerState = (String) PassengerSnapshot.child("state").getValue();
+
+                            if( passengerState.equals("panding"))
+                            {
+                                //passenger requested lift
+                            }
+                            else
+                            {
+                                //passenger is accepted
+                            }
+
+                            String passengerName = (String) PassengerSnapshot.child("name").getValue();
+                            String passengerAge = (String) PassengerSnapshot.child("age").getValue();
+                            String passengerGender = (String) PassengerSnapshot.child("gender").getValue();
+                            String passengerEmail = (String) PassengerSnapshot.child("email").getValue();
+                            String passengerType = (String) PassengerSnapshot.child("type").getValue();
+                            String passengerPhone = (String) PassengerSnapshot.child("phone").getValue();
+                            String passengerBio = (String) PassengerSnapshot.child("bio").getValue();
+
+                            User passenger = new User(passengerId, passengerType, passengerEmail);
+                            passenger.name = passengerName;
+                            passenger.age = passengerAge;
+                            passenger.gender = passengerGender;
+                            passenger.phone = passengerPhone;
+                            passenger.bio = passengerBio;
+
+                            lift.passengers.add(passenger);
+                        }
+                    }
+                    catch (Throwable e)
+                    { }
+                }
+                @Override public void onCancelled(DatabaseError error) { }
+            });
 
             //requestingUser = Database.getUser(userId);
             //requestedLift = Database.getLift(liftId);

@@ -154,36 +154,40 @@ public class AvailableLifts extends Fragment {
 
                         Lift lift = new Lift(driver, destination, seatsAvailable, id, time, date);
                         lift.car = car;
-                        //lift.date = date;
-                        //lift.time = time;
 
                         DataSnapshot passengersRef = postSnapshot.child("passengers");
-                        Lift.passengers = new ArrayList<User>();
+                        lift.passengers = new ArrayList<User>();
                         for (DataSnapshot snapshot : passengersRef.getChildren()) {
 
                             String passengerId = (String) snapshot.getKey();
-                            DataSnapshot passengerRef = snapshot.child(passengerId);
 
-                            String passengerState = (String) passengerRef.child("state").getValue();
+                            String passengerState = (String) snapshot.child("state").getValue();
 
-                            String passengerName = (String) passengerRef.child("name").getValue();
-                            String passengerAge = (String) passengerRef.child("age").getValue();
-                            String passengerGender = (String) passengerRef.child("gender").getValue();
-                            String passengerEmail = (String) passengerRef.child("email").getValue();
-                            String passengerType = (String) passengerRef.child("type").getValue();
-                            String passengerPhone = (String) passengerRef.child("phone").getValue();
-                            String passengerBio = (String) passengerRef.child("bio").getValue();
+                            if( passengerState.equals("accepted"))
+                            {
+                                //passenger requested lift
+                            }
+                            else
+                            {
+                                //passenger is accepted
+                            }
+
+                            String passengerName = (String) snapshot.child("name").getValue();
+                            String passengerAge = (String) snapshot.child("age").getValue();
+                            String passengerGender = (String) snapshot.child("gender").getValue();
+                            String passengerEmail = (String) snapshot.child("email").getValue();
+                            String passengerType = (String) snapshot.child("type").getValue();
+                            String passengerPhone = (String) snapshot.child("phone").getValue();
+                            String passengerBio = (String) snapshot.child("bio").getValue();
 
                             User passenger = new User(passengerId, passengerType, passengerEmail);
-                            //passenger.name = passengerName;
+                            passenger.name = passengerName;
                             passenger.age = passengerAge;
                             passenger.gender = passengerGender;
                             passenger.phone = passengerPhone;
                             passenger.bio = passengerBio;
 
-                            Lift.passengers.add(passenger);
-
-                            //Toast.makeText(getContext(), "lift id: " + id + "  passengers id : " + passengerId + "  passengerState : " + passengerAge, Toast.LENGTH_SHORT).show();
+                            lift.passengers.add(passenger);
                         }
 
                         lifts_list.add(lift);

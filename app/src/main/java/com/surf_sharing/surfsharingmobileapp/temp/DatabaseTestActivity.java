@@ -124,7 +124,7 @@ public class DatabaseTestActivity extends AppCompatActivity {
                 Lift lift = new Lift(new User("apMGnPrP8bXyIwztxjMcukxrEve2", "type", "email"), "a", 5, "1", "20:11", "22.11.2016");
                 lift.id = "-KfLutnUEbm-OqT7JcNZ";
                 //Database.addRefferencesInLiftAndUser(lift);
-                Database.postLift(lift);
+                //Database.postLift(lift);
                 popup(DatabaseTestActivity.this, "test ");
 
 

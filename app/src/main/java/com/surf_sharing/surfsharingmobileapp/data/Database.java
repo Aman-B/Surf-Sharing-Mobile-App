@@ -45,53 +45,92 @@ public class Database {
      * Function to post a new lift to the database and it makes a driver refference inside the driver object
      *
      *
-     * @param lift the lift information to be posted
+     * //@param lift the lift information to be posted
      * @return return whether the post succeeded or failed
      */
-    public static boolean postLift(Lift lift) {
+    public static boolean postLift(final String car, final String seatsAvailable, final String destination, final String date, final String time) {
 
-        String id = liftRoot.push().getKey();
+        ///////////////////////////////////////////////////////////
 
-        Map<String,Object> map = new HashMap<String, Object>();
-        map.put(id, "");
-        liftRoot.updateChildren(map);
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        DatabaseReference Child = liftRoot.child(id);
+        if (currentUser == null)
+        { }
+        else
+        {
+            final String userId = currentUser.getUid();
 
-        Map<String,Object> mapChild = new HashMap<String, Object>();
-        mapChild.put("driver", "");
-        mapChild.put("car", "" + lift.car);
-        mapChild.put("seatsAvailable", "" + lift.seatsAvailable);
-        mapChild.put("destination", "" + lift.destination);
-        mapChild.put("date", "" + lift.date);
-        mapChild.put("time", "" + lift.time);
-        mapChild.put("passengers", "");
-        Child.updateChildren(mapChild);
+            //add a Lift to a User
+            final DatabaseReference usersRef = userRoot.child(userId);
+            usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
 
-        DatabaseReference usersChild = Child.child("driver");
+                    try
+                    {
+                        Map<String,Object> mapLiftPassengerChild = new HashMap<String, Object>();
+                        mapLiftPassengerChild.put(userId, "");
 
-        Map<String,Object> mapUserChild = new HashMap<String, Object>();
-        mapUserChild.put("id", "" + lift.driver.id);
-        mapUserChild.put("name", "" + lift.driver.name);
-        mapUserChild.put("age", "" + lift.driver.age);
-        mapUserChild.put("gender", "" + lift.driver.gender);
-        mapUserChild.put("email", "" + lift.driver.email);
-        mapUserChild.put("type", "" + lift.driver.type);
-        mapUserChild.put("phone", "" + lift.driver.phone);
-        mapUserChild.put("bio", "" + lift.driver.bio);
-        usersChild.updateChildren(mapUserChild);
+                        String userName = (String) snapshot.child("name").getValue();
+                        String userAge = (String) snapshot.child("age").getValue();
+                        String userGender = (String) snapshot.child("gender").getValue();
+                        String userEmail = (String) snapshot.child("email").getValue();
+                        String userType = (String) snapshot.child("type").getValue();
+                        String userPhone = (String) snapshot.child("phone").getValue();
+                        String userBio = (String) snapshot.child("bio").getValue();
 
-        //add a Lift to driver
-        DatabaseReference driverRef = userRoot.child(lift.driver.id);
+                        String id = liftRoot.push().getKey();
 
-        Map<String,Object> UserMap = new HashMap<String, Object>();
-        UserMap.put("lifts", "");
-        driverRef.updateChildren(UserMap);
-        DatabaseReference driverChild = driverRef.child("lifts");
-        Map<String,Object> mapDriverChild = new HashMap<String, Object>();
-        mapDriverChild.put(lift.id, "Driver");
+                        Map<String,Object> map = new HashMap<String, Object>();
+                        map.put(id, "");
+                        liftRoot.updateChildren(map);
 
-        driverChild.updateChildren(mapDriverChild);
+                        DatabaseReference Child = liftRoot.child(id);
+
+                        Map<String,Object> mapChild = new HashMap<String, Object>();
+                        mapChild.put("driver", "");
+                        mapChild.put("car", car);
+                        mapChild.put("seatsAvailable", seatsAvailable);
+                        mapChild.put("destination", "" + destination);
+                        mapChild.put("date", "" + date);
+                        mapChild.put("time", "" + time);
+                        mapChild.put("passengers", "");
+                        Child.updateChildren(mapChild);
+
+                        DatabaseReference usersChild = Child.child("driver");
+
+                        Map<String,Object> mapUserChild = new HashMap<String, Object>();
+                        mapUserChild.put("id", userId);
+                        mapUserChild.put("name", userName);
+                        mapUserChild.put("age", userAge);
+                        mapUserChild.put("gender", userGender);
+                        mapUserChild.put("email", userEmail);
+                        mapUserChild.put("type", userType);
+                        mapUserChild.put("phone", userPhone);
+                        mapUserChild.put("bio", userBio);
+                        usersChild.updateChildren(mapUserChild);
+
+                        //add a Lift to driver
+                        DatabaseReference driverRef = userRoot.child(userId);
+
+                        Map<String,Object> UserMap = new HashMap<String, Object>();
+                        UserMap.put("lifts", "");
+
+                        driverRef.updateChildren(UserMap);
+                        DatabaseReference driverChild = driverRef.child("lifts");
+
+                        Map<String,Object> mapDriverChild = new HashMap<String, Object>();
+                        mapDriverChild.put(id, "Driver");
+
+                        driverChild.updateChildren(mapDriverChild);
+
+                    }
+                    catch (Throwable e)
+                    { }
+                }
+                @Override public void onCancelled(DatabaseError error) { }
+            });
+        }
 
         return false;
     }
@@ -217,7 +256,7 @@ public class Database {
         DatabaseReference liftPassengers = liftRef.child("passengers");
         DatabaseReference liftPassengersState = liftPassengers.child(userId);
         Map<String,Object> mapPassengerState = new HashMap<String, Object>();
-        mapPassengerState.put("state", "Passenger");
+        mapPassengerState.put("state", "accepted");
 
         liftPassengersState.updateChildren(mapPassengerState);
 
