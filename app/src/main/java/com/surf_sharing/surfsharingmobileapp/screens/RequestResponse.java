@@ -54,6 +54,9 @@ public class RequestResponse extends Fragment {
     String userId;
     String liftId;
 
+    private DatabaseReference liftRoot;
+    private ValueEventListener liftListener;
+
     User requestingUser;
     Lift requestedLift;
 
@@ -126,9 +129,13 @@ public class RequestResponse extends Fragment {
         final RequestItemAdapter arrayAdapter = new RequestItemAdapter(
                 getActivity(), requesting_users_list);
 
-        Database.root.addListenerForSingleValueEvent(new ValueEventListener() {
+        liftRoot = Database.root;
+        liftListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+
+                Display.popup(getActivity(), "Something happened");
+                arrayAdapter.clear(); // remove all the items from previous event
 
                 try
                 {
@@ -177,7 +184,9 @@ public class RequestResponse extends Fragment {
                 }
             }
             @Override public void onCancelled(DatabaseError error) { }
-        });
+        };
+
+        liftRoot.addValueEventListener(liftListener);
 
 
         requestingUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -193,9 +202,11 @@ public class RequestResponse extends Fragment {
                 new AlertDialog.Builder(getContext())
                         .setTitle("Accept Passenger")
                         .setMessage("Do you want to accept " + requestingPassenger.getUserName() + " as a Passenger?")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        .setPositiveButton("accept", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 notifyUser(requestingPassenger, true);
+
+                                Database.acceptLiftRequest(liftId, requestingPassenger.getUserId());
 
                                 //requestedLift.addPassenger(requestingPassenger.getUserId());
                                 // TODO undo comment below
@@ -207,13 +218,20 @@ public class RequestResponse extends Fragment {
 
                             }
                         })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        .setNegativeButton("reject", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 notifyUser(requestingPassenger, false);
 
+                                Database.rejectLiftRequest(liftId, requestingPassenger.getUserId());
                             }
                         })
+                        .setNeutralButton("cancel", new DialogInterface.OnClickListener() {
 
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
 
                         //.setCancelable(true)
                         .setIcon(android.R.drawable.ic_dialog_alert)
@@ -308,6 +326,7 @@ public class RequestResponse extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        liftRoot.removeEventListener(liftListener);
     }
 
 
