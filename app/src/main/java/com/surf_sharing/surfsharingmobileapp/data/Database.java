@@ -217,7 +217,7 @@ public class Database {
                         DatabaseReference passenger = liftPassengerChild.child(userId);
 
                         Map<String,Object> mapPassenger = new HashMap<String, Object>();
-                        mapPassenger.put("state", "panding");
+                        mapPassenger.put("state", "pending");
                         mapPassenger.put("name", userName);
                         mapPassenger.put("age", userAge);
                         mapPassenger.put("gender", userGender);

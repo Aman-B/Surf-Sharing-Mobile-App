@@ -138,7 +138,7 @@ public class RequestResponse extends Fragment {
 
                             String passengerState = (String) PassengerSnapshot.child("state").getValue();
 
-                            if( passengerState.equals("panding"))
+                            if( passengerState.equals("pending"))
                             {
                                 //passenger requested lift
                             }
