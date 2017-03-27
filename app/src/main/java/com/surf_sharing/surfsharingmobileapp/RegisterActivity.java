@@ -219,8 +219,6 @@ public class RegisterActivity extends AppCompatActivity {
         {
             String userId = currentUser.getUid();
             String type = accountType;
-
-
             String name = editTextName.getText().toString().trim();
             String gender = editTextGender.getText().toString().trim();
             String age = editTextDateOfBirth.getText().toString().trim();
@@ -231,8 +229,6 @@ public class RegisterActivity extends AppCompatActivity {
                 type = "pending";
             }
 
-
-
             User user = new User(userId, type, email);
             user.gender = gender;
             user.age = age;
@@ -240,11 +236,7 @@ public class RegisterActivity extends AppCompatActivity {
             user.phone = phone;
             user.type = type;
 
-
             Database.setUserValue(user);
-
-
         }
-
     }
 }
