@@ -12,7 +12,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -29,6 +31,7 @@ import com.surf_sharing.surfsharingmobileapp.screens.ProfileScreen;
 import com.surf_sharing.surfsharingmobileapp.screens.RequestLift;
 import com.surf_sharing.surfsharingmobileapp.utils.Display;
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 
 public class NavDrawer extends AppCompatActivity
@@ -52,6 +55,9 @@ public class NavDrawer extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Menu menu = navigationView.getMenu();
+        menu.setGroupVisible(R.id.driver_nav_menu, true);
 
         // Display available lifts as default fragment
         replaceContent(AvailableLifts.newInstance());

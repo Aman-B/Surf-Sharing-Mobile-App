@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group
-        android:id="@+id/top_nav_menu"
+        android:id="@+id/passenger_nav_menu"
         android:checkableBehavior="none">
         <item
             android:id="@+id/nav_available_lifts"
@@ -10,6 +10,11 @@
         <item
             android:id="@+id/nav_lifts_on"
             android:title="Lifts You Are On" />
+        </group>
+    <group
+        android:id="@+id/driver_nav_menu"
+        android:checkableBehavior="none"
+        android:visible="false">
         <item
             android:id="@+id/nav_offer_lift"
             android:title="Offer Lift" />
@@ -19,7 +24,7 @@
     </group>
 
     <group
-        android:id="@+id/bottom_nav_menu"
+        android:id="@+id/account_nav_menu"
         android:checkableBehavior="none">
         <item
             android:id="@+id/nav_profile"
