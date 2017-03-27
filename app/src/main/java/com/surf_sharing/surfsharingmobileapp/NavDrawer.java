@@ -58,13 +58,8 @@ public class NavDrawer extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        Menu menu = navigationView.getMenu();
-        menu.setGroupVisible(R.id.driver_nav_menu, true);
 
         // Display available lifts as default fragment
         replaceContent(AvailableLifts.newInstance());
@@ -89,11 +84,15 @@ public class NavDrawer extends AppCompatActivity
         };
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        final DatabaseReference usersRef = Database.userRoot.child(String.valueOf(currentUser));
-        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        final DatabaseReference usersRef = Database.userRoot.child(currentUser.getUid());
+        usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 String userType = (String) snapshot.child("type").getValue();
+                if (userType != null && userType.equals("driver")) {
+                    Menu menu = navigationView.getMenu();
+                    menu.setGroupVisible(R.id.driver_nav_menu, true);
+                }
             }
 
             @Override
