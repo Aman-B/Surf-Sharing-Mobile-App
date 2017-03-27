@@ -1,5 +1,6 @@
 package com.surf_sharing.surfsharingmobileapp;
 
+import android.app.DatePickerDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,6 +35,7 @@ import com.surf_sharing.surfsharingmobileapp.data.User;
 import com.surf_sharing.surfsharingmobileapp.utils.Display;
 import com.surf_sharing.surfsharingmobileapp.utils.FirebaseError;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,15 +47,16 @@ public class RegisterActivity extends AppCompatActivity {
 
     private EditText editTextName;
     private EditText editTextGender;
-    private EditText editTextDateOfBirth;
     private EditText editTextPhoneNumber;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private EditText editTextPassword2;
 
+    private TextView textDateOfBirth;
+
     private String accountType;
 
-    private Button buttonRegister;
+    private Button buttonRegister, buttonDateOfBirth;
     private ProgressDialog progressDialog;
 
     private FirebaseAuth mAuth;
@@ -64,20 +68,41 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         accountType = getIntent().getStringExtra("ACCOUNT_TYPE");
-        Display.popup(this, accountType);
 
         progressDialog = new ProgressDialog(this);
 
+        buttonDateOfBirth = (Button) findViewById(R.id.dateOfBirthButton);
         buttonRegister = (Button) findViewById(R.id.ok_btn);
 
         editTextName = (EditText) findViewById(R.id.edit_text_name);
         editTextGender = (EditText) findViewById(R.id.edit_text_gender);
-        editTextDateOfBirth = (EditText) findViewById(R.id.editText6);
         editTextPhoneNumber = (EditText) findViewById(R.id.edit_text_phone);
         editTextEmail = (EditText) findViewById(R.id.edit_text_email);
         editTextPassword = (EditText) findViewById(R.id.editText4);
         editTextPassword2 = (EditText) findViewById(R.id.editText5);
 
+        textDateOfBirth = (TextView) findViewById(R.id.dateOfBirth);
+
+        buttonDateOfBirth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mcurrentDate = Calendar.getInstance();
+                int dayOfMonth = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+                int month = mcurrentDate.get(Calendar.MONTH);
+                int year = mcurrentDate.get(Calendar.YEAR);
+                DatePickerDialog mDatePicker;
+                mDatePicker = new DatePickerDialog(RegisterActivity.this, new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        textDateOfBirth.setText(String.format("%02d/%02d/%04d", dayOfMonth, month, year));
+                    }
+
+                }, year, month, dayOfMonth);
+                mDatePicker.show();
+            }
+        });
 
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +153,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
         String name = editTextName.getText().toString().trim();
         String gender = editTextGender.getText().toString().trim();
-        String age = editTextDateOfBirth.getText().toString().trim();
+        String age = textDateOfBirth.getText().toString().trim();
         String phone = editTextPhoneNumber.getText().toString().trim();
 
 
@@ -226,7 +251,7 @@ public class RegisterActivity extends AppCompatActivity {
             String type = accountType;
             String name = editTextName.getText().toString().trim();
             String gender = editTextGender.getText().toString().trim();
-            String age = editTextDateOfBirth.getText().toString().trim();
+            String age = textDateOfBirth.getText().toString().trim();
             String phone = editTextPhoneNumber.getText().toString().trim();
             String email = editTextEmail.getText().toString().trim();
 
