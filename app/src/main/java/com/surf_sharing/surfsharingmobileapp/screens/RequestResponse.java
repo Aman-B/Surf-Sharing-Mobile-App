@@ -189,16 +189,16 @@ public class RequestResponse extends Fragment {
 
                 new AlertDialog.Builder(getContext())
                         .setTitle("Accept Passenger")
-                        .setMessage("Do you want to accept " + requestingPassenger.getUserName() + "as a Passenger?")
+                        .setMessage("Do you want to accept " + requestingPassenger.getUserName() + " as a Passenger?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 notifyUser(requestingPassenger, true);
 
-                                requestedLift.addPassenger(requestingPassenger.getUserId());
+                                //requestedLift.addPassenger(requestingPassenger.getUserId());
                                 // TODO undo comment below
                                 //requestingPassenger.addLift(requestedLift);
 
-                                Database.setUserValue(requestingPassenger);
+                                //Database.setUserValue(requestingPassenger);
                                 //Database.setLiftValue(requestedLift); // Database function not implemented yet
 
 
@@ -278,7 +278,7 @@ public class RequestResponse extends Fragment {
                 // Wherever the user has an entry representing their pending lift
                 // request, change it to show that they are now on this lift and
                 // send a notification to inform them.
-                Database.acceptLiftRequest(liftId, userId);
+                //Database.acceptLiftRequest(liftId, userId);
 
                 // TODO send notification message to user informing them
                 // that their request was accepted
@@ -289,7 +289,7 @@ public class RequestResponse extends Fragment {
                 // Wherever the user has an entry representing their pending lift
                 // request, remove it to show that they have not secured a seat
                 // on this lift and send a notification to inform them.
-                Database.rejectLiftRequest(liftId, userId);
+                //Database.rejectLiftRequest(liftId, userId);
 
                 // TODO send notification message to user informing them
                 // that their request was rejected.

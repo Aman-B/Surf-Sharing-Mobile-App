@@ -3,59 +3,32 @@ package com.surf_sharing.surfsharingmobileapp.screens;
 
 
 import android.app.DatePickerDialog;
-
 import android.app.TimePickerDialog;
-
 import android.content.Context;
-
 import java.util.Calendar;
-
 import android.net.Uri;
-
 import android.os.Bundle;
-
 import android.support.v4.app.Fragment;
-
 import android.util.Log;
-
 import android.view.LayoutInflater;
-
 import android.view.View;
-
 import android.view.ViewGroup;
-
 import android.widget.Button;
-
 import android.widget.DatePicker;
-
 import android.widget.EditText;
-
 import android.widget.TextView;
-
 import android.widget.TimePicker;
-
 import android.widget.Toast;
 
-
-
 import com.google.firebase.auth.FirebaseAuth;
-
 import com.google.firebase.auth.FirebaseUser;
-
 import com.google.firebase.database.DatabaseReference;
-
 import com.google.firebase.database.FirebaseDatabase;
-
 import com.surf_sharing.surfsharingmobileapp.NavDrawer;
-
 import com.surf_sharing.surfsharingmobileapp.R;
-
 import com.surf_sharing.surfsharingmobileapp.data.Database;
-
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
-
 import com.surf_sharing.surfsharingmobileapp.data.User;
-
 import com.surf_sharing.surfsharingmobileapp.utils.Display;
 /**
  * A simple {@link Fragment} subclass.
