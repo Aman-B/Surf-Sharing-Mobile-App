@@ -122,6 +122,7 @@ public class RequestLift extends Fragment {
                 Database.makeLiftRequest(idText);
 
                 //-------------------------------------------------------------------------------------
+                //Database.acceptLiftRequest(idText, "apMGnPrP8bXyIwztxjMcukxrEve2");
                 //Database.rejectLiftRequest(idText, "apMGnPrP8bXyIwztxjMcukxrEve2");
 
                 //Database.findUser("apMGnPrP8bXyIwztxjMcukxrEve2");

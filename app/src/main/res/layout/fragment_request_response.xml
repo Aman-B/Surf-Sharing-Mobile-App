@@ -9,114 +9,16 @@
             android:id="@+id/text_view_passenger_request"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Passenger Request"
+            android:text="Passenger Requests"
             android:textSize="20dp"
             android:textAllCaps="false"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="35dp"
-        android:orientation="vertical">
+        <!-- TODO: Update blank fragment layout -->
 
-        <TextView
-            android:id="@+id/text_view_lift_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:text="Lift Destination"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/text_view_lift_date"
-                android:layout_marginLeft="80dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Lift Date"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
-
-            <TextView
-                android:id="@+id/text_view_lift_time"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="80dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Lift Time"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <ListView
+            android:id="@+id/passengerRequestList"
             android:layout_marginTop="20dp"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:id="@+id/user_profile_image"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="20dp"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_marginTop="10dp"
-                android:scaleType="centerCrop"
-                android:background="@drawable/driver_avatar"
-                />
-
-
-            <TextView
-                android:id="@+id/text_view_user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="40dp"
-                android:layout_marginRight="110dp"
-                android:text="User Name"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
-
-            <Button
-                android:id="@+id/view_full_profile_btn"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="70dp"
-                android:layout_marginRight="90dp"
-                android:text="View Full Profile"
-                android:textAllCaps="false"
-                />
-
-        </RelativeLayout>
-
-        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="40dp"
-            android:orientation="horizontal" >
-
-            <Button
-                android:id="@+id/reject_btn"
-                android:layout_alignParentLeft="true"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="Reject"
-                />
-
-            <Button
-                android:id="@+id/accept_btn"
-                android:layout_alignParentRight="true"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:text="Accept"
-                />
-        </RelativeLayout>
-    </LinearLayout>
+            android:layout_height="match_parent" />
 </FrameLayout>
