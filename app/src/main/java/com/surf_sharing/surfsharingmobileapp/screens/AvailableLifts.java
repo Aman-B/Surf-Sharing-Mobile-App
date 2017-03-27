@@ -175,8 +175,6 @@ public class AvailableLifts extends Fragment {
                         }
 
                         lifts_list.add(lift);
-
-
                     }
                     catch (Exception e)
                     {

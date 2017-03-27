@@ -84,7 +84,8 @@ public class LiftsYouAreOffering extends Fragment {
             // handle bundle arguments
 
         }
-        liftRoot = FirebaseDatabase.getInstance().getReference("lifts");
+
+
     }
 
     @Override
@@ -108,14 +109,13 @@ public class LiftsYouAreOffering extends Fragment {
                 //Intent myIntent = new Intent(getActivity(), NextActivity.class);
                 //startActivity(myIntent);
 
-                Toast.makeText(getContext(), "Test ", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Test ", Toast.LENGTH_SHORT).show();
 
                 Lift l = (Lift) parent.getAdapter().getItem(position);
                 // TODO replace with actual condtion which will check if a request has been made for this lift
                 if(true){
                     NavDrawer nd = (NavDrawer) getActivity();
-                    //nd.setupRequestResponse(RequestResponse.newInstance(), userId, l.id, userId, l.seatsAvailable, l.destination, l.time, l.date, l.driver.email);
-                    nd.replaceContent(RequestResponse.newInstance());
+                    nd.setupRequestResponse(RequestResponse.newInstance(), userId, l.id, userId, l.seatsAvailable, l.destination, l.time, l.date, l.driver.email);
                 }
 
 
@@ -127,7 +127,98 @@ public class LiftsYouAreOffering extends Fragment {
             }
         });
 
-        liftListener = new ValueEventListener() {
+        lifts_list = new ArrayList<Lift>();
+        final ArrayAdapter<Lift> arrayAdapter = new ArrayAdapter<Lift>(getActivity(), android.R.layout.simple_list_item_1, lifts_list);
+        //liftRoot = FirebaseDatabase.getInstance().getReference("lifts");
+
+        Database.root.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+
+                try
+                {
+                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    String userId = currentUser.getUid();
+
+                    DataSnapshot userRef = snapshot.child("users").child(userId);
+
+                    DataSnapshot liftsRef = userRef.child("lifts");
+
+                    for (DataSnapshot lifttSnapshot : liftsRef.getChildren()) {
+
+                        String liftId = lifttSnapshot.getKey();
+                        String liftState = (String) lifttSnapshot.getValue();
+
+                        if (liftState.equals("driver"))
+                        {
+                            DataSnapshot liftRef = snapshot.child("lifts").child(liftId);
+
+                            String id = liftRef.getKey();
+                            int seatsAvailable = Integer.parseInt((String) liftRef.child("seatsAvailable").getValue());
+                            String car = (String) liftRef.child("car").getValue();
+                            String destination = (String) liftRef.child("destination").getValue();
+                            String date = (String) liftRef.child("date").getValue();
+                            String time = (String) liftRef.child("time").getValue();
+
+                            DataSnapshot driverRef = liftRef.child("driver");
+                            String driverId = (String) driverRef.child("id").getValue();
+                            String driverName = (String) driverRef.child("name").getValue();
+                            String driverAge = (String) driverRef.child("age").getValue();
+                            String driverGender = (String) driverRef.child("gender").getValue();
+                            String driverEmail = (String) driverRef.child("email").getValue();
+                            String driverType = (String) driverRef.child("type").getValue();
+                            String driverPhone = (String) driverRef.child("phone").getValue();
+                            String driverBio = (String) driverRef.child("bio").getValue();
+
+                            User driver = new User(driverId, driverType, driverEmail);
+                            driver.name = driverName;
+                            driver.age = driverAge;
+                            driver.gender = driverGender;
+                            driver.phone = driverPhone;
+                            driver.bio = driverBio;
+
+                            Lift lift = new Lift(driver, destination, seatsAvailable, id, time, date);
+                            lift.car = car;
+
+                            DataSnapshot passengersRef = liftRef.child("passengers");
+                            lift.passengers = new ArrayList<String>();
+                            lift.pendingPassengers = new ArrayList<String>();
+
+                            for (DataSnapshot passengerSnapshot : passengersRef.getChildren()) {
+
+                                String passengerId = passengerSnapshot.getKey();
+                                String passengerState = (String) passengerSnapshot.getValue();
+
+                                if (passengerState.equals("pending"))
+                                {
+                                    lift.pendingPassengers.add(passengerId);
+                                }
+                                else
+                                {
+                                    lift.passengers.add(passengerId);
+                                }
+                            }
+
+                            lifts_list.add(lift);
+                        }
+                        else
+                        { }
+                    }
+
+                    liftList.setAdapter(arrayAdapter);
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+            @Override public void onCancelled(DatabaseError error) { }
+        });
+
+
+
+
+        /*liftListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -172,7 +263,7 @@ public class LiftsYouAreOffering extends Fragment {
 
                         Log.d("lift: ", driverId+" + "+userId);
 
-                        
+
                         if(driverId.equals("apMGnPrP8bXyIwztxjMcukxrEve2")){
                             lifts_list.add(lift);
                         }
@@ -211,7 +302,7 @@ public class LiftsYouAreOffering extends Fragment {
             }
         };
 
-        liftRoot.addValueEventListener(liftListener);
+        liftRoot.addValueEventListener(liftListener);*/
 
         return view;
     }
