@@ -113,10 +113,10 @@ public class Database {
                         //add a Lift to driver
                         DatabaseReference driverRef = userRoot.child(userId);
 
-                        Map<String,Object> UserMap = new HashMap<String, Object>();
-                        UserMap.put("lifts", "");
+                        //Map<String,Object> UserMap = new HashMap<String, Object>();
+                        //UserMap.put("lifts", "");
 
-                        driverRef.updateChildren(UserMap);
+                        //driverRef.updateChildren(UserMap);
                         DatabaseReference driverChild = driverRef.child("lifts");
 
                         Map<String,Object> mapDriverChild = new HashMap<String, Object>();

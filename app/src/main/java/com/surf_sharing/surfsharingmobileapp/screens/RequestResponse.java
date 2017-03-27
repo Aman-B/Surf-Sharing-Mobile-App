@@ -17,6 +17,7 @@ import android.media.Image;
 import android.app.Dialog;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -78,13 +79,12 @@ public class RequestResponse extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
 
+            requesting_users_list = new ArrayList<User>();
 
             userId = getArguments().getString("userId");
             liftId = getArguments().getString("liftId");
 
             nd = (NavDrawer) getActivity();
-
-
 
             //requestingUser = Database.getUser(userId);
             //requestedLift = Database.getLift(liftId);
@@ -119,12 +119,62 @@ public class RequestResponse extends Fragment {
         requestingUsers = (ListView) view.findViewById(R.id.passengerRequestList);
         //requesting_users_list = Database.getRequestingUsers();
 
-        ArrayAdapter<User> arrayAdapter = new ArrayAdapter<User>(
+        final ArrayAdapter<User> arrayAdapter = new ArrayAdapter<User>(
                 getActivity(),
                 android.R.layout.simple_list_item_1,
                 requesting_users_list);
 
-        requestingUsers.setAdapter(arrayAdapter);
+        Database.root.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+
+                try
+                {Toast.makeText(getContext(), "liftId: " + liftId, Toast.LENGTH_SHORT).show();
+                    DataSnapshot liftRef = snapshot.child("lifts").child(liftId);
+                    DataSnapshot passengersRef = liftRef.child("passengers");
+
+
+
+                    for (DataSnapshot passengersSnapshot : passengersRef.getChildren()) {
+
+                        String passengerId = passengersSnapshot.getKey();
+                        String passengerState = (String) passengersSnapshot.getValue();
+
+
+
+                        if (passengerState.equals("pending"))
+                        {
+                            DataSnapshot userRef = snapshot.child("users").child(passengerId);
+                            String passengerName = (String) userRef.child("name").getValue();
+                            String passengerAge = (String) userRef.child("age").getValue();
+                            String passengerGender = (String) userRef.child("gender").getValue();
+                            String passengerEmail = (String) userRef.child("email").getValue();
+                            String passengerType = (String) userRef.child("type").getValue();
+                            String passengerPhone = (String) userRef.child("phone").getValue();
+                            String passengerBio = (String) userRef.child("bio").getValue();
+
+                            User passenger = new User(passengerId, passengerType, passengerEmail);
+                            passenger.name = passengerName;
+                            passenger.age = passengerAge;
+                            passenger.gender = passengerGender;
+                            passenger.phone = passengerPhone;
+                            passenger.bio = passengerBio;
+
+                            requesting_users_list.add(passenger);
+                        }
+                        else
+                        { }
+                    }
+
+                    requestingUsers.setAdapter(arrayAdapter);
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+            @Override public void onCancelled(DatabaseError error) { }
+        });
 
 
         requestingUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -160,7 +210,9 @@ public class RequestResponse extends Fragment {
 
                             }
                         })
-                        .setCancelable(true)
+
+
+                        //.setCancelable(true)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
 
