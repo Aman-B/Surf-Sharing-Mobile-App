@@ -11,7 +11,9 @@ public class Lift {
     public User driver;
 
     // car, time, date
-    public static ArrayList<User> passengers;
+    public static ArrayList<String> passengers;
+    public static ArrayList<String> pendingPassengers;
+
     public Lift(User driver, String destination, int seatsAvailable, String id/*, String car*/, String time, String date){
         this.destination = destination;
         this.seatsAvailable = seatsAvailable;
@@ -22,7 +24,7 @@ public class Lift {
     }
 
     /// returns 1 if passenger added
-    public int addPassenger(User p){
+    public int addPassenger(String p){
         if(seatsAvailable > 0){
             passengers.add(p);
             this.seatsAvailable--;

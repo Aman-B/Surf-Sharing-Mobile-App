@@ -218,27 +218,25 @@ public class RegisterActivity extends AppCompatActivity {
         if(currentUser != null)
         {
             String userId = currentUser.getUid();
-            String type = "";
-
+            String type = accountType;
             String name = editTextName.getText().toString().trim();
             String gender = editTextGender.getText().toString().trim();
             String age = editTextDateOfBirth.getText().toString().trim();
             String phone = editTextPhoneNumber.getText().toString().trim();
             String email = editTextEmail.getText().toString().trim();
 
-
+            if(type.equals("driver")){
+                type = "pending";
+            }
 
             User user = new User(userId, type, email);
             user.gender = gender;
             user.age = age;
             user.name = name;
             user.phone = phone;
-
+            user.type = type;
 
             Database.setUserValue(user);
-
-
         }
-
     }
 }
