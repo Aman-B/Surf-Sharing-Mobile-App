@@ -31,7 +31,7 @@ import com.surf_sharing.surfsharingmobileapp.RequestItemAdapter;
 import com.surf_sharing.surfsharingmobileapp.data.User;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
-import com.surf_sharing.surfsharingmobileapp.LiftsYouAreOn;
+import com.surf_sharing.surfsharingmobileapp.screens.LiftsYouAreOn;
 import com.surf_sharing.surfsharingmobileapp.utils.Display;
 
 import java.util.ArrayList;

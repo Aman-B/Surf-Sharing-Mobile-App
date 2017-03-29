@@ -127,7 +127,6 @@ public class LiftsYouAreOffering extends Fragment {
             }
         });
 
-        lifts_list = new ArrayList<Lift>();
         final ArrayAdapter<Lift> arrayAdapter = new ArrayAdapter<Lift>(getActivity(), android.R.layout.simple_list_item_1, lifts_list);
         //liftRoot = FirebaseDatabase.getInstance().getReference("lifts");
 
