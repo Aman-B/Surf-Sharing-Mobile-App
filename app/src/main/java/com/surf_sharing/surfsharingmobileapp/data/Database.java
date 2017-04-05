@@ -173,74 +173,6 @@ public class Database {
         }
     }
 
-    /**
-     * Function to reference the lift id inside the user object and in the case of the passenger
-     * it adds the passenger id to the list of passengers in the lift object in a pending status
-     *//*
-    public static void makeLiftRequest(final String liftId) {
-
-        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (currentUser == null)
-        { }
-        else
-        {
-            final String userId = currentUser.getUid();
-
-            //add a Lift to a User
-            final DatabaseReference usersRef = userRoot.child(userId);
-            usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot snapshot) {
-
-                    try
-                    {
-
-                        DatabaseReference userLiftsChild = usersRef.child("lifts");
-                        Map<String,Object> mapUserLiftChild = new HashMap<String, Object>();
-                        mapUserLiftChild.put(liftId, "Requested");
-
-                        //add a User to a Lift
-                        DatabaseReference liftRef = liftRoot.child(liftId);
-                        DatabaseReference liftPassengerChild = liftRef.child("passengers");
-                        Map<String,Object> mapLiftPassengerChild = new HashMap<String, Object>();
-                        mapLiftPassengerChild.put(userId, "");
-
-                        String userName = (String) snapshot.child("name").getValue();
-                        String userAge = (String) snapshot.child("age").getValue();
-                        String userGender = (String) snapshot.child("gender").getValue();
-                        String userEmail = (String) snapshot.child("email").getValue();
-                        String userType = (String) snapshot.child("type").getValue();
-                        String userPhone = (String) snapshot.child("phone").getValue();
-                        String userBio = (String) snapshot.child("bio").getValue();
-
-                        DatabaseReference passenger = liftPassengerChild.child(userId);
-
-                        Map<String,Object> mapPassenger = new HashMap<String, Object>();
-                        mapPassenger.put("state", "pending");
-                        mapPassenger.put("name", userName);
-                        mapPassenger.put("age", userAge);
-                        mapPassenger.put("gender", userGender);
-                        mapPassenger.put("email", userEmail);
-                        mapPassenger.put("type", userType);
-                        mapPassenger.put("phone", userPhone);
-                        mapPassenger.put("bio", userBio);
-
-
-                        liftPassengerChild.updateChildren(mapLiftPassengerChild);
-
-                        userLiftsChild.updateChildren(mapUserLiftChild);
-
-                        passenger.updateChildren(mapPassenger);
-                    }
-                    catch (Throwable e)
-                    { }
-                }
-                @Override public void onCancelled(DatabaseError error) { }
-            });
-        }
-    }*/
-
     public static void makeLiftRequest(final String liftId) {
 
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -286,29 +218,6 @@ public class Database {
         }
     }
 
-
-    /**
-     * Function to reference the lift id inside the user object and in the case of the passenger
-     * it adds the passenger id to the list of passengers in the lift object in a pending status
-     */
- /*   public static void acceptLiftRequest(String liftId, String userId) {
-
-        DatabaseReference usersRef = userRoot.child(userId);
-        DatabaseReference userLiftsChild = usersRef.child("lifts");
-        Map<String,Object> mapUserLiftsChild = new HashMap<String, Object>();
-        mapUserLiftsChild.put(liftId, "Passenger");
-
-        DatabaseReference liftRef = liftRoot.child(liftId);
-        DatabaseReference liftPassengers = liftRef.child("passengers");
-        DatabaseReference liftPassengersState = liftPassengers.child(userId);
-        Map<String,Object> mapPassengerState = new HashMap<String, Object>();
-        mapPassengerState.put("state", "accepted");
-
-        liftPassengersState.updateChildren(mapPassengerState);
-
-        userLiftsChild.updateChildren(mapUserLiftsChild);
-    }*/
-
     /**
      * Function to reference the lift id inside the user object and in the case of the passenger
      * it adds the passenger id to the list of passengers in the lift object in a pending status
@@ -347,6 +256,36 @@ public class Database {
         liftPassengers.updateChildren(mapLiftChild);
 
         userLiftsChild.updateChildren(mapUserLiftsChild);
+    }
+
+    public static boolean upgradeToDriver(String carModel, String carRegistration, String licenceNumber, String maxPassengers) {
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (currentUser == null)
+        {
+            return false;
+        }
+        else
+        {
+            String userId = currentUser.getUid();
+
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put(userId, "");
+            userRoot.updateChildren(map);
+
+            DatabaseReference usersRefChild = userRoot.child("" + userId);
+
+            Map<String,Object> mapChild = new HashMap<String, Object>();
+            mapChild.put("car_model", carModel);
+            mapChild.put("car_registration", carRegistration);
+            mapChild.put("licence_number", licenceNumber);
+            mapChild.put("max_passengers", maxPassengers);
+            mapChild.put("type", "pending");
+            usersRefChild.updateChildren(mapChild);
+
+            return true;
+        }
     }
 }
 
