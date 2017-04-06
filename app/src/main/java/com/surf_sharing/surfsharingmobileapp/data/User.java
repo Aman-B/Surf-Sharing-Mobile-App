@@ -8,6 +8,7 @@ import java.util.Scanner;
  */
 public class User {
 
+
     public String id, type, name, gender, email, phone, bio, age;
 
     ArrayList<Lift> lifts;
@@ -18,8 +19,6 @@ public class User {
         this.lifts = new ArrayList<Lift>();
         this.lifts.clear();
     }
-
-
 
     public void requestLift(Lift lift){
         lift.driver.receiveRequest(this, lift);
@@ -69,5 +68,29 @@ public class User {
 
     public String getUserBio() {
         return this.bio;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
     }
 }

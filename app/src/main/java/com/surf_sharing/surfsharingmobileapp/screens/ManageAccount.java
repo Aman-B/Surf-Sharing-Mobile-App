@@ -1,7 +1,9 @@
 package com.surf_sharing.surfsharingmobileapp.screens;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.app.AlertDialog;
+import android.text.InputType;
+import android.content.DialogInterface;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,6 +37,7 @@ import static com.surf_sharing.surfsharingmobileapp.utils.Display.popup;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.User;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
+import com.surf_sharing.surfsharingmobileapp.NavDrawer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +47,8 @@ import com.surf_sharing.surfsharingmobileapp.data.Lift;
  */
 public class ManageAccount extends Fragment {
     private DatabaseReference ref;
+    private Button nameButton, genderButton, dobButton, phoneButton, emailButton;
+    private String nameInput, genderInput, dobInput, phoneInput, emailInput;
 
     public ManageAccount() {
         // Required empty public constructor
@@ -74,20 +83,21 @@ public class ManageAccount extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_manage_account, container, false);
 
+        final NavDrawer nd = (NavDrawer) getActivity();
+
         //FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         //User currentUser = Database.getCurrentUser();
 
         ///////////////////////////////////////////////////
 
-        final EditText nameText = (EditText) view.findViewById(R.id.edit_text_name);
-        final EditText genderText = (EditText) view.findViewById(R.id.edit_text_gender);
-        final EditText ageText = (EditText) view.findViewById(R.id.edit_text_age);
-        final EditText phoneText = (EditText) view.findViewById(R.id.edit_text_phone);
-        final EditText emailText = (EditText) view.findViewById(R.id.edit_text_email);
-        final EditText bioText = (EditText) view.findViewById(R.id.edit_text_bio);
-        final TextView liftViewText = (TextView) view.findViewById(R.id.text_view_lifts);
-
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        final TextView nameText = (TextView) view.findViewById(R.id.text_view_name);
+        final TextView genderText = (TextView) view.findViewById(R.id.text_view_gender);
+        final TextView ageText = (TextView) view.findViewById(R.id.text_view_age);
+        final TextView phoneText = (TextView) view.findViewById(R.id.text_view_phone);
+        final TextView emailText = (TextView) view.findViewById(R.id.text_view_email);
+        //TextView bioText = (TextView) tempView.findViewById(R.id.text_view_bio);
 
         if (currentUser == null)
         {
@@ -109,7 +119,7 @@ public class ManageAccount extends Fragment {
                     String email = (String) dataSnapshot.child("email").getValue();
                     String type = (String) dataSnapshot.child("type").getValue();
                     String phone = (String) dataSnapshot.child("phone").getValue();
-                    String bio = (String) dataSnapshot.child("bio").getValue();
+                    //String bio = (String) dataSnapshot.child("bio").getValue();
 
                     user.name = name;
                     user.age = age;
@@ -117,7 +127,7 @@ public class ManageAccount extends Fragment {
                     user.email = email;
                     user.type = type;
                     user.phone = phone;
-                    user.bio = bio;
+                    //user.bio = bio;
 
                     final String userID = user.getUserId();
                     final String userType = user.getUserType();
@@ -126,7 +136,7 @@ public class ManageAccount extends Fragment {
                     String userAge = user.getUserAge();
                     String userPhone = user.getUserPhone();
                     String userEmail = user.getUserEmail();
-                    String userBio = user.getUserBio();
+                    //String userBio = user.getUserBio();
 
                     //ArrayList<Lift> userLifts = user.getUserLifts();
                     String liftDetails = "";
@@ -138,13 +148,12 @@ public class ManageAccount extends Fragment {
                         liftDetails = liftDetails + currentLift.toString() + "\n";
                     }*/
 
-                    nameText.setText(userName);
-                    genderText.setText(userGender);
-                    ageText.setText(userAge);
-                    phoneText.setText(userPhone);
-                    emailText.setText(userEmail);
-                    bioText.setText(userBio);
-                    liftViewText.setText(liftDetails);
+                    nameText.setText(userName + "");
+                    genderText.setText(userGender + "");
+                    ageText.setText(userAge + "");
+                    phoneText.setText(userPhone + "");
+                    emailText.setText(userEmail + "");
+                    //bioText.setText(userBio + "");
                 }
 
                 @Override
@@ -165,6 +174,182 @@ public class ManageAccount extends Fragment {
             });
 
 
+            nameButton = (Button) view.findViewById(R.id.edit_name_btn);
+            nameButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Name");
+
+                    // Set up the input
+                    final EditText input = new EditText(getContext());
+                    // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    builder.setView(input);
+
+                    // Set up the buttons
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            nameInput = input.getText().toString();
+                            nameText.setText(nameInput);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
+
+                }
+            });
+
+            genderButton = (Button) view.findViewById(R.id.edit_gender_btn);
+            genderButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Name");
+
+                    // Set up the input
+                    final EditText input = new EditText(getContext());
+                    // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    builder.setView(input);
+
+                    // Set up the buttons
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            genderInput = input.getText().toString();
+                            genderText.setText(genderInput);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
+
+
+                }
+            });
+
+            dobButton = (Button) view.findViewById(R.id.edit_age_btn);
+            dobButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Calendar mcurrentDate = Calendar.getInstance();
+
+                    int dayOfMonth = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+                    int month = mcurrentDate.get(Calendar.MONTH);
+
+                    int year = mcurrentDate.get(Calendar.YEAR);
+
+                    DatePickerDialog mDatePicker;
+
+                    mDatePicker = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+
+                        @Override
+
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                            ageText.setText(String.format("%02d/%02d/%04d", dayOfMonth, month, year));
+
+                        }
+
+                    }, year, month, dayOfMonth);
+
+                    mDatePicker.show();
+
+
+
+
+
+
+
+
+
+
+
+
+                }
+            });
+
+
+            phoneButton = (Button) view.findViewById(R.id.edit_phone_btn);
+            phoneButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Name");
+
+                    // Set up the input
+                    final EditText input = new EditText(getContext());
+                    // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    builder.setView(input);
+
+                    // Set up the buttons
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            phoneInput = input.getText().toString();
+                            phoneText.setText(phoneInput);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
+
+                }
+            });
+
+            emailButton = (Button) view.findViewById(R.id.edit_email_btn);
+            emailButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Name");
+
+                    // Set up the input
+                    final EditText input = new EditText(getContext());
+                    // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    builder.setView(input);
+
+                    // Set up the buttons
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            emailInput = input.getText().toString();
+                            emailText.setText(emailInput);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
+
+                }
+            });
 
             Button okButton = (Button) view.findViewById(R.id.ok_btn);
             okButton.setOnClickListener(new View.OnClickListener() {
@@ -191,9 +376,6 @@ public class ManageAccount extends Fragment {
                     final EditText newBioText = (EditText) view.findViewById(R.id.edit_text_bio);
                     String newBio = newBioText.getText().toString();
 
-                    final TextView newLiftViewText = (TextView) view.findViewById(R.id.text_view_lifts);
-                    String newLiftDetails = newLiftViewText.getText().toString();
-
                     User updatedUser = new User(userId, user.type, newEmail);
 
                     Database.setUserValue(updatedUser);
@@ -213,6 +395,10 @@ public class ManageAccount extends Fragment {
                             }
                         }
                     });*/
+
+                    Fragment availableLifts = AvailableLifts.newInstance();
+                    nd.replaceContent(availableLifts);
+
                 }
             });
 
@@ -226,6 +412,8 @@ public class ManageAccount extends Fragment {
 
                     //FragmentManager fm = getActivity().getSupportFragmentManager();
                     //fm.popBackStack();
+                    Fragment availableLifts = AvailableLifts.newInstance();
+                    nd.replaceContent(availableLifts);
                 }
             });
 
@@ -239,8 +427,8 @@ public class ManageAccount extends Fragment {
         if (currentUser == null) {
             popup(new AppCompatActivity(), "Please sign in to use this feature");
         } else {
-/*
-            final String userID = currentUser.getUserId();
+
+            /*final String userID = currentUser.getUserId();
             final String userType = currentUser.getUserType();
             String userName = currentUser.getUserName();
             String userGender = currentUser.getUserGender();
@@ -278,9 +466,7 @@ public class ManageAccount extends Fragment {
             bioText.setText(userBio);
 
             TextView liftViewText = (TextView) view.findViewById(R.id.text_view_lifts);
-            liftViewText.setText(liftDetails);
-
-*/
+            liftViewText.setText(liftDetails);*/
 
 
         }

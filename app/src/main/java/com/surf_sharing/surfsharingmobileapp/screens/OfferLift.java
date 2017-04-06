@@ -119,31 +119,22 @@ public class OfferLift extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_offer_lift, container, false);
 
 
+        final NavDrawer nd = (NavDrawer) getActivity();
 
         textViewTime = (TextView) view.findViewById(R.id.offerLiftTime);
-
         textViewDate = (TextView) view.findViewById(R.id.offerLiftDate);
 
-
-
         editTextDest = (EditText) view.findViewById(R.id.destEnter);
-
         editTextSeats = (EditText) view.findViewById(R.id.seatsEnter);
 
-
-
         pickDateButton = (Button) view.findViewById(R.id.offerLiftDateButton);
-
         pickTimeButton = (Button) view.findViewById(R.id.offerLiftTimeButton);
-
         enterButton = (Button) view.findViewById(R.id.buttonEnter);
-
 
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         userId = currentUser.getUid();
-
 
 
         pickTimeButton.setOnClickListener(new View.OnClickListener() {
@@ -155,13 +146,10 @@ public class OfferLift extends Fragment {
             public void onClick(View v) {
 
                 Calendar mcurrentTime = Calendar.getInstance();
-
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-
                 int minute = mcurrentTime.get(Calendar.MINUTE);
 
                 TimePickerDialog mTimePicker;
-
                 mTimePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
 
                     @Override
@@ -175,7 +163,6 @@ public class OfferLift extends Fragment {
                 }, hour, minute, true);//Yes 24 hour time
 
                 mTimePicker.setTitle("Select Time");
-
                 mTimePicker.show();
 
             }
@@ -264,8 +251,6 @@ public class OfferLift extends Fragment {
 
                     userId = currentUser.getUid();
 
-
-
                     userEmail = currentUser.getEmail();
 
 
@@ -277,6 +262,8 @@ public class OfferLift extends Fragment {
                     Database.postLift("", seats, dest, date, time);
 
                     //Display.popup(getActivity(), "You're lift offer has been created:\n"+l.toString());
+                    Fragment liftsYouAreOffering = LiftsYouAreOffering.newInstance();
+                    nd.replaceContent(liftsYouAreOffering);
 
                 }
 
