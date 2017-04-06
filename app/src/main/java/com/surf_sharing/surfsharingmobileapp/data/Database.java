@@ -270,11 +270,11 @@ public class Database {
         {
             String userId = currentUser.getUid();
 
-            Map<String,Object> map = new HashMap<String, Object>();
-            map.put(userId, "");
-            userRoot.updateChildren(map);
+ //           Map<String,Object> map = new HashMap<String, Object>();
+ //           map.put(userId, "");
+ //           userRoot.updateChildren(map);
 
-            DatabaseReference usersRefChild = userRoot.child("" + userId);
+            DatabaseReference usersRefChild = userRoot.child(userId);
 
             Map<String,Object> mapChild = new HashMap<String, Object>();
             mapChild.put("car_model", carModel);

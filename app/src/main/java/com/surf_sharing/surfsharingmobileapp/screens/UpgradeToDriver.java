@@ -13,6 +13,7 @@ import android.widget.Toast;
 import android.text.TextUtils;
 
 import com.surf_sharing.surfsharingmobileapp.R;
+import com.surf_sharing.surfsharingmobileapp.data.Database;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,20 +73,18 @@ public class UpgradeToDriver extends Fragment {
         Button submitButton = (Button) view.findViewById(R.id.submitDriverUpgrade);
 
 
+        final EditText carMakeModelText = (EditText) view.findViewById(R.id.carMakeModelInput);
+        final EditText carRegistrationText = (EditText) view.findViewById(R.id.registrationInput);
+        final EditText licenceNumberText = (EditText) view.findViewById(R.id.licenceNumberInput);
+        final EditText maxPassengersText = (EditText) view.findViewById(R.id.maxPassengersInput);
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                final EditText carMakeModelText = (EditText) view.findViewById(R.id.carMakeModelInput);
                 String carMakeModel = carMakeModelText.getText().toString();
-
-                final EditText carRegistrationText = (EditText) view.findViewById(R.id.registrationInput);
                 String carRegistration = carRegistrationText.getText().toString();
-
-                final EditText licenceNumberText = (EditText) view.findViewById(R.id.licenceNumberInput);
                 String licenceNumber = licenceNumberText.getText().toString();
-
-                final EditText maxPassengersText = (EditText) view.findViewById(R.id.maxPassengersInput);
                 String maxPassengers = maxPassengersText.getText().toString();
 
 
@@ -113,8 +112,7 @@ public class UpgradeToDriver extends Fragment {
                     return;
                 }
 
-
-
+                Database.upgradeToDriver(carMakeModel, carRegistration, licenceNumber, maxPassengers);
 
             }
         });
