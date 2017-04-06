@@ -85,11 +85,6 @@ public class ManageAccount extends Fragment {
 
         final NavDrawer nd = (NavDrawer) getActivity();
 
-        //FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        //User currentUser = Database.getCurrentUser();
-
-        ///////////////////////////////////////////////////
-
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         final TextView nameText = (TextView) view.findViewById(R.id.text_view_name);
@@ -97,7 +92,7 @@ public class ManageAccount extends Fragment {
         final TextView ageText = (TextView) view.findViewById(R.id.text_view_age);
         final TextView phoneText = (TextView) view.findViewById(R.id.text_view_phone);
         final TextView emailText = (TextView) view.findViewById(R.id.text_view_email);
-        //TextView bioText = (TextView) tempView.findViewById(R.id.text_view_bio);
+        //final TextView bioText = (TextView) tempView.findViewById(R.id.text_view_bio);
 
         if (currentUser == null)
         {
@@ -358,25 +353,23 @@ public class ManageAccount extends Fragment {
                     // post data to database:
                     // location to write to
 
-                    final EditText newNameText = (EditText) view.findViewById(R.id.edit_text_name);
-                    String newName = newNameText.getText().toString();
+                    String newName = nameText.getText().toString();
 
-                    final EditText newGenderText = (EditText) view.findViewById(R.id.edit_text_gender);
-                    String newGender = newGenderText.getText().toString();
+                    String newGender = genderText.getText().toString();
 
-                    final EditText newAgeText = (EditText) view.findViewById(R.id.edit_text_age);
-                    String newAge = newAgeText.getText().toString();
+                    String newAge = ageText.getText().toString();
 
-                    final EditText newPhoneText = (EditText) view.findViewById(R.id.edit_text_phone);
-                    String newPhone = newPhoneText.getText().toString();
+                    String newPhone = phoneText.getText().toString();
 
-                    final EditText newEmailText = (EditText) view.findViewById(R.id.edit_text_email);
-                    String newEmail = newEmailText.getText().toString();
+                    String newEmail = emailText.getText().toString();
 
-                    final EditText newBioText = (EditText) view.findViewById(R.id.edit_text_bio);
-                    String newBio = newBioText.getText().toString();
+                    //String newBio = bioText.getText().toString();
 
                     User updatedUser = new User(userId, user.type, newEmail);
+                    updatedUser.setName(newName);
+                    updatedUser.setGender(newGender);
+                    updatedUser.setAge(newAge);
+                    updatedUser.setPhone(newPhone);
 
                     Database.setUserValue(updatedUser);
 
@@ -410,64 +403,10 @@ public class ManageAccount extends Fragment {
                 @Override
                 public void onClick(View view) {
 
-                    //FragmentManager fm = getActivity().getSupportFragmentManager();
-                    //fm.popBackStack();
                     Fragment availableLifts = AvailableLifts.newInstance();
                     nd.replaceContent(availableLifts);
                 }
             });
-
-        }
-
-
-        /////////////////////////////////////////////////////
-
-
-
-        if (currentUser == null) {
-            popup(new AppCompatActivity(), "Please sign in to use this feature");
-        } else {
-
-            /*final String userID = currentUser.getUserId();
-            final String userType = currentUser.getUserType();
-            String userName = currentUser.getUserName();
-            String userGender = currentUser.getUserGender();
-            String userAge = currentUser.getUserAge();
-            String userPhone = currentUser.getUserPhone();
-            String userEmail = currentUser.getUserEmail();
-            String userBio = currentUser.getUserBio();
-
-            ArrayList<Lift> userLifts = currentUser.getUserLifts();
-            String liftDetails = "";
-
-            for (int index = 0; index < userLifts.size(); index++)
-            {
-                Lift currentLift = userLifts.get(index);
-                liftDetails = liftDetails + currentLift.toString() + "\n";
-            }
-
-
-            EditText nameText = (EditText) view.findViewById(R.id.edit_text_name);
-            nameText.setText(userName);
-
-            EditText genderText = (EditText) view.findViewById(R.id.edit_text_gender);
-            genderText.setText(userGender);
-
-            EditText ageText = (EditText) view.findViewById(R.id.edit_text_age);
-            ageText.setText(userAge);
-
-            EditText phoneText = (EditText) view.findViewById(R.id.edit_text_phone);
-            phoneText.setText(userPhone);
-
-            EditText emailText = (EditText) view.findViewById(R.id.edit_text_email);
-            emailText.setText(userEmail);
-
-            EditText bioText = (EditText) view.findViewById(R.id.edit_text_bio);
-            bioText.setText(userBio);
-
-            TextView liftViewText = (TextView) view.findViewById(R.id.text_view_lifts);
-            liftViewText.setText(liftDetails);*/
-
 
         }
 
