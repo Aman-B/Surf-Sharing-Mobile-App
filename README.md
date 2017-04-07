@@ -6,7 +6,7 @@
 * Android Studio
 * Git
 
-To clone this repository in Android Studio do `File > New > Project From Version Control > GitHub`. Git Repository URL is `https://github.com/LukeAgnew/Surf-Sharing-Mobile-App.git`. Once the repository has been cloned it should open up in Android studio.  
+Unzip the file and run the Android Studio project.
 
 **Firebase:**
 
