@@ -1,6 +1,10 @@
 package com.surf_sharing.surfsharingmobileapp.data;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 /**
  * Created by Sean on 27/02/2017.
@@ -36,7 +40,49 @@ public class Lift {
 
     public String toString(){
         String s;
-        s = destination+", "+seatsAvailable+" seats\n"+date+" at "+time;
+
+        Calendar mCurrentCalendar = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        Date formatedDate = mCurrentCalendar.getTime();
+
+        try {
+            formatedDate = format.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        mCurrentCalendar.setTime(formatedDate);
+
+        int dayResult = mCurrentCalendar.get(Calendar.DAY_OF_WEEK);
+        String day;
+
+        switch (dayResult) {
+            case Calendar.MONDAY:
+                day = "Monday";
+                break;
+            case Calendar.TUESDAY:
+                day = "Tuesday";
+                break;
+            case Calendar.WEDNESDAY:
+                day = "Wednesday";
+                break;
+            case Calendar.THURSDAY:
+                day = "Thursday";
+                break;
+            case Calendar.FRIDAY:
+                day = "Friday";
+                break;
+            case Calendar.SATURDAY:
+                day = "Saturday";
+                break;
+            default:
+                day = "Sunday";
+                break;
+
+        }
+
+        s = destination + ", " + seatsAvailable + " seats\n" + day + ", " + date + " at " + time;
         return s;
     }
 

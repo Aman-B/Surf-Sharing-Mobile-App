@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.InputType;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -75,6 +76,8 @@ public class RegisterActivity extends AppCompatActivity {
         buttonRegister = (Button) findViewById(R.id.ok_btn);
 
         editTextName = (EditText) findViewById(R.id.edit_text_name);
+        editTextName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+
         editTextGender = (EditText) findViewById(R.id.edit_text_gender);
         editTextPhoneNumber = (EditText) findViewById(R.id.edit_text_phone);
         editTextEmail = (EditText) findViewById(R.id.edit_text_email);
@@ -96,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
 
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        textDateOfBirth.setText(String.format("%02d/%02d/%04d", dayOfMonth, month, year));
+                        textDateOfBirth.setText(String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year));
                     }
 
                 }, year, month, dayOfMonth);
@@ -156,8 +159,6 @@ public class RegisterActivity extends AppCompatActivity {
         String age = textDateOfBirth.getText().toString().trim();
         String phone = editTextPhoneNumber.getText().toString().trim();
 
-
-
         if(name.isEmpty()) {
             Display.popup(RegisterActivity.this, "Please enter your Name");
             register = false;
@@ -179,7 +180,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         if(register == true) {
             if (password.equals(password2)) {
-
 
                 progressDialog.setMessage("Registering User...");
                 progressDialog.show();
