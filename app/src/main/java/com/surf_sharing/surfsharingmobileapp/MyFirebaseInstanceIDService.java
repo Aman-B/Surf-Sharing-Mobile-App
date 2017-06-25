@@ -1,7 +1,5 @@
 package com.surf_sharing.surfsharingmobileapp;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;

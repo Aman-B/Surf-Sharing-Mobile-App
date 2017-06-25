@@ -70,6 +70,140 @@ public class RegisterActivity extends AppCompatActivity {
 
         accountType = getIntent().getStringExtra("ACCOUNT_TYPE");
 
+        /*
+
+        if (accountType.equals("passenger"))
+        {
+            setContentView(R.layout.activity_register_passenger);
+
+            progressDialog = new ProgressDialog(this);
+
+            buttonDateOfBirth = (Button) findViewById(R.id.dateOfBirthButton);
+            buttonRegister = (Button) findViewById(R.id.ok_btn);
+
+            editTextName = (EditText) findViewById(R.id.edit_text_name);
+            editTextName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+
+            editTextGender = (EditText) findViewById(R.id.edit_text_gender);
+            editTextPhoneNumber = (EditText) findViewById(R.id.edit_text_phone);
+            editTextEmail = (EditText) findViewById(R.id.edit_text_email);
+            editTextPassword = (EditText) findViewById(R.id.editText4);
+            editTextPassword2 = (EditText) findViewById(R.id.editText5);
+
+            textDateOfBirth = (TextView) findViewById(R.id.dateOfBirth);
+
+            buttonDateOfBirth.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Calendar mcurrentDate = Calendar.getInstance();
+                    int dayOfMonth = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+                    int month = mcurrentDate.get(Calendar.MONTH);
+                    int year = mcurrentDate.get(Calendar.YEAR);
+                    DatePickerDialog mDatePicker;
+                    mDatePicker = new DatePickerDialog(RegisterActivity.this, new DatePickerDialog.OnDateSetListener() {
+
+                        @Override
+
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                            textDateOfBirth.setText(String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year));
+                        }
+
+                    }, year, month, dayOfMonth);
+                    mDatePicker.show();
+                }
+            });
+
+            buttonRegister.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //calling register method on click
+                    registerUser();
+                }
+            });
+
+            mAuth = FirebaseAuth.getInstance();
+            mAuthListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    if (user != null) {
+                        // user is logged in
+                        // Send user to NavDrawer when
+                        gotoNavDrawer();
+                    } else {
+                        // user is logged out
+                    }
+                }
+            };
+
+        }
+        else
+        {
+            setContentView(R.layout.activity_register_driver);
+
+            progressDialog = new ProgressDialog(this);
+
+            buttonDateOfBirth = (Button) findViewById(R.id.dateOfBirthButton);
+            buttonRegister = (Button) findViewById(R.id.ok_btn);
+
+            editTextName = (EditText) findViewById(R.id.edit_text_name);
+            editTextName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+
+            editTextGender = (EditText) findViewById(R.id.edit_text_gender);
+            editTextPhoneNumber = (EditText) findViewById(R.id.edit_text_phone);
+            editTextEmail = (EditText) findViewById(R.id.edit_text_email);
+            editTextPassword = (EditText) findViewById(R.id.editText4);
+            editTextPassword2 = (EditText) findViewById(R.id.editText5);
+
+            textDateOfBirth = (TextView) findViewById(R.id.dateOfBirth);
+
+            buttonDateOfBirth.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Calendar mcurrentDate = Calendar.getInstance();
+                    int dayOfMonth = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+                    int month = mcurrentDate.get(Calendar.MONTH);
+                    int year = mcurrentDate.get(Calendar.YEAR);
+                    DatePickerDialog mDatePicker;
+                    mDatePicker = new DatePickerDialog(RegisterActivity.this, new DatePickerDialog.OnDateSetListener() {
+
+                        @Override
+
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                            textDateOfBirth.setText(String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year));
+                        }
+
+                    }, year, month, dayOfMonth);
+                    mDatePicker.show();
+                }
+            });
+
+            buttonRegister.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //calling register method on click
+                    registerUser();
+                }
+            });
+
+            mAuth = FirebaseAuth.getInstance();
+            mAuthListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    if (user != null) {
+                        // user is logged in
+                        // Send user to NavDrawer when
+                        gotoNavDrawer();
+                    } else {
+                        // user is logged out
+                    }
+                }
+            };
+        }
+
+         */
+
         progressDialog = new ProgressDialog(this);
 
         buttonDateOfBirth = (Button) findViewById(R.id.dateOfBirthButton);

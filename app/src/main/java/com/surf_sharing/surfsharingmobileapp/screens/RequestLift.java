@@ -28,6 +28,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 import com.surf_sharing.surfsharingmobileapp.NavDrawer;
 import com.surf_sharing.surfsharingmobileapp.R;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
@@ -134,6 +136,21 @@ public class RequestLift extends Fragment {
                 String messageTitle = "New Lift Request";
                 String messageDetail = "Request for seat on Lift: "+liftStr+" from User: "+userId;
                 sendNotification(getContext(), messageTitle, messageDetail);
+
+
+
+
+
+                /*FirebaseMessaging fm = FirebaseMessaging.getInstance();
+                fm.send(new RemoteMessage.Builder(SENDER_ID + "@gcm.googleapis.com")
+                        .setMessageId(Integer.toString(msgId.incrementAndGet()))
+                        .addData("my_message", "Hello World")
+                        .addData("my_action","SAY_HELLO")
+                        .build());*/
+
+
+
+
 
                 NavDrawer nd = (NavDrawer) getActivity();
                 nd.replaceContent(AvailableLifts.newInstance());
