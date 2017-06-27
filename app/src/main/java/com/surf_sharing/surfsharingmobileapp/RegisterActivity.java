@@ -143,19 +143,19 @@ public class RegisterActivity extends AppCompatActivity {
 
             progressDialog = new ProgressDialog(this);
 
-            buttonDateOfBirth = (Button) findViewById(R.id.dateOfBirthButton);
-            buttonRegister = (Button) findViewById(R.id.ok_btn);
+            buttonDateOfBirth = (Button) findViewById(R.id.driverDateOfBirthButton);
+            buttonRegister = (Button) findViewById(R.id.ok_driver_btn);
 
-            editTextName = (EditText) findViewById(R.id.edit_text_name);
+            editTextName = (EditText) findViewById(R.id.edit_text_driver_name);
             editTextName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
-            editTextGender = (EditText) findViewById(R.id.edit_text_gender);
-            editTextPhoneNumber = (EditText) findViewById(R.id.edit_text_phone);
-            editTextEmail = (EditText) findViewById(R.id.edit_text_email);
-            editTextPassword = (EditText) findViewById(R.id.editText4);
-            editTextPassword2 = (EditText) findViewById(R.id.editText5);
+            editTextGender = (EditText) findViewById(R.id.edit_text_driver_gender);
+            editTextPhoneNumber = (EditText) findViewById(R.id.edit_text_driver_phone);
+            editTextEmail = (EditText) findViewById(R.id.edit_text_driver_email);
+            editTextPassword = (EditText) findViewById(R.id.edit_text_driver_password);
+            editTextPassword2 = (EditText) findViewById(R.id.edit_text_driver_password_confirm);
 
-            textDateOfBirth = (TextView) findViewById(R.id.dateOfBirth);
+            textDateOfBirth = (TextView) findViewById(R.id.driverDateOfBirth);
 
             buttonDateOfBirth.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.content.Intent;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.surf_sharing.surfsharingmobileapp.temp.DatabaseTestActivity;
 import com.surf_sharing.surfsharingmobileapp.utils.Display;
 
 public class MainActivity extends AppCompatActivity {
@@ -55,27 +54,11 @@ public class MainActivity extends AppCompatActivity {
         databaseTestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, DatabaseTestActivity.class);
-                startActivity(intent);
+
             }
         });
     }
 
-    public void ViewLifts(View v){
-        Toast myToast = Toast.makeText(getApplicationContext(), "viewing lifts now", Toast.LENGTH_LONG);
-        myToast.show();
-        Intent i = new Intent(MainActivity.this, ViewLifts.class);
-        startActivity(i);
-        return;
-    }
-
-    public void CreateLifts( View v ){
-        Toast myToast = Toast.makeText(getApplicationContext(), "create lifts now", Toast.LENGTH_LONG);
-        myToast.show();
-        Intent i = new Intent(MainActivity.this, CreateLift.class);
-        startActivity(i);
-        return;
-    }
 
     public void ShowUserId(View v) {
         Display.popup(this, FirebaseAuth.getInstance().getCurrentUser().getUid());

@@ -39,6 +39,7 @@ import com.surf_sharing.surfsharingmobileapp.utils.Display;
 import com.surf_sharing.surfsharingmobileapp.utils.FirebaseError;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class RequestLift extends Fragment {
@@ -52,8 +53,8 @@ public class RequestLift extends Fragment {
 
     private DatabaseReference liftRoot;
     private ValueEventListener liftListener;
-
     private TextView locationText, timeText, dateText, driverText, seatsText;
+    private String SENDER_ID = "561530043428";
 
     public RequestLift() {
         // Required empty public constructor
@@ -141,12 +142,13 @@ public class RequestLift extends Fragment {
 
 
 
-                /*FirebaseMessaging fm = FirebaseMessaging.getInstance();
+                FirebaseMessaging fm = FirebaseMessaging.getInstance();
+                AtomicInteger msgId = new AtomicInteger();
                 fm.send(new RemoteMessage.Builder(SENDER_ID + "@gcm.googleapis.com")
                         .setMessageId(Integer.toString(msgId.incrementAndGet()))
                         .addData("my_message", "Hello World")
                         .addData("my_action","SAY_HELLO")
-                        .build());*/
+                        .build());
 
 
 
