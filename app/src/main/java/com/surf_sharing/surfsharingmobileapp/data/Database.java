@@ -1,5 +1,6 @@
 package com.surf_sharing.surfsharingmobileapp.data;
 
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,7 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.surf_sharing.surfsharingmobileapp.R;
-import com.surf_sharing.surfsharingmobileapp.temp.DatabaseTestActivity;
 
 
 import static com.surf_sharing.surfsharingmobileapp.utils.Display.popup;
@@ -143,7 +143,6 @@ public class Database {
     public static boolean setUserValue(User newUserValue) {
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
         if (currentUser == null)
         {
             return false;
@@ -167,6 +166,16 @@ public class Database {
             mapChild.put("phone", newUserValue.phone);
             mapChild.put("bio", newUserValue.bio);
             mapChild.put("lifts", "");
+
+            if(newUserValue.image == null){
+                mapChild.put("image", "");
+                Log.i("Saving", "nothing");
+
+            }
+            else {
+                mapChild.put("image", newUserValue.image);
+                Log.i("Saving", "image");
+            }
             usersRefChild.updateChildren(mapChild);
 
             return true;

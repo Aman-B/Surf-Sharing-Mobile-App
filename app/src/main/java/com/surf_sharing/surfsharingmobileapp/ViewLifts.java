@@ -72,7 +72,7 @@ public class ViewLifts extends AppCompatActivity {
                     }
                     catch (Exception e)
                     {
-
+                        e.printStackTrace();
                     }
                 }
 
@@ -107,6 +107,7 @@ public class ViewLifts extends AppCompatActivity {
                Toast.makeText(getApplicationContext(),
                         "Request made for lift "+itemValue, Toast.LENGTH_LONG)
                         .show();
+
                 currentUser.requestLift(testLift);
 
             }

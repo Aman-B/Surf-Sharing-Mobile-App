@@ -1,42 +1,61 @@
 package com.surf_sharing.surfsharingmobileapp.screens;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.app.AlertDialog;
 import android.text.InputType;
 import android.content.DialogInterface;
+import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import com.google.firebase.database.ValueEventListener;
+import com.surf_sharing.surfsharingmobileapp.MainActivity;
 import com.surf_sharing.surfsharingmobileapp.R;
-import com.surf_sharing.surfsharingmobileapp.temp.DatabaseTestActivity;
-import static com.surf_sharing.surfsharingmobileapp.utils.Display.popup;
+
+import static android.app.Activity.RESULT_OK;
+import static android.content.Context.NOTIFICATION_SERVICE;
+import static android.support.design.R.id.icon;
+
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.User;
-import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.NavDrawer;
 
 /**
@@ -45,10 +64,195 @@ import com.surf_sharing.surfsharingmobileapp.NavDrawer;
  * Use the {@link ManageAccount#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ManageAccount extends Fragment {
+public class ManageAccount extends Fragment{
+
     private DatabaseReference ref;
     private Button nameButton, genderButton, dobButton, phoneButton, emailButton;
-    private String nameInput, genderInput, dobInput, phoneInput, emailInput;
+    private String nameInput, genderInput, dobInput, phoneInput, emailInput, image;
+    public static String userLastSavedImage;
+
+
+
+    //get the state of image.
+
+    @Override
+    public void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("userLastImage", (Serializable) userLastSavedImage);
+
+        Log.i("saved Instance", "success");
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            //probably orientation change
+            userLastSavedImage = (String) savedInstanceState.getSerializable("userLastImage");
+            ImageView imgView = (ImageView) getActivity().findViewById(R.id.profileImageView);
+            //setUserImage(userLastSavedImage);
+            Toast.makeText(getActivity(), "SAVED IMAGE INSTANCE RESTORED", Toast.LENGTH_LONG).show();
+        }
+        else{
+            userLastSavedImage = "";
+        }
+
+
+
+    }
+
+
+
+
+//get the photo from the gallery
+    public void getPhoto(){
+
+        Log.i("here", "here");
+        //starts a new activity where action is picking media images
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        //expecting a result, give a request code
+        startActivityForResult(intent, 1);
+
+    }
+
+//gallery permission result
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == 1 ){
+
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+
+                getPhoto();
+
+            }
+
+
+        }
+    }
+
+
+
+    //When the user is done with the subsequent activity and returns, the system calls your activity's onActivityResult() method.
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //data!=null to make sure the user has not cancelled the activity in which case do not
+        //dispaly image
+        //URI bit like URL for image/resources
+        if(requestCode == 1 && resultCode == RESULT_OK && data != null){
+
+            Uri selectedImage = data.getData();
+            //convert to a bitmap image
+            try {
+
+
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+
+                //take bitmap and upload to the server
+                //will allow us to convert image into a parse file
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                //compress bitmap into PNG format
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+                //convert stream to byteArray
+                byte[] byteArray = stream.toByteArray();
+
+                //add to firebase as an encoded string
+
+                userLastSavedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                Log.i("image", userLastSavedImage);
+                ImageView userImageView = (ImageView) getActivity().findViewById(R.id.profileImageView);
+
+                userImageView.setImageBitmap(bitmap);
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+    }
+
+
+    public void setUserImage(String base64String){
+
+        byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0,decodedString.length);
+        ImageView userImageView = (ImageView) getActivity().findViewById(R.id.profileImageView);
+        userImageView.setImageBitmap(decodedByte);
+
+
+    }
+
+
+    public String convertImageViewToString() {
+
+        String img_str = "";
+        ImageView imgView = (ImageView) getActivity().findViewById(R.id.profileImageView);
+        Drawable drawable = imgView.getDrawable();
+        imgView.setImageDrawable(drawable);
+//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), );
+
+//        if (bitmap != null) {
+//
+//
+//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//
+//
+//            byte[] imageByteArray = stream.toByteArray();
+//            System.out.println("byte array:" + imageByteArray);
+//            img_str = Base64.encodeToString(imageByteArray, Base64.DEFAULT);
+//            System.out.println("string:" + img_str);
+//            return img_str;
+//        }
+
+
+        return img_str;
+    }
+
+
+
+
+//    //allow the user to upload their photo when the user clicks on the imageView
+//    public void addUserPhoto(View view){
+//
+//        ImageView userImageView = (ImageView) view.findViewById(R.id.userImageView);
+//
+//        //first ask the user to access photo folder
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+//
+//                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+//
+//            }
+//            else{
+//                getPhoto();
+//            }
+//        }
+//
+//        else{
+//            //permission has already been granted
+//            getPhoto();
+//        }
+//        return view;
+//    }
+
+
+
+
+
+
+
+
+
 
     public ManageAccount() {
         // Required empty public constructor
@@ -108,12 +312,35 @@ public class ManageAccount extends Fragment {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
+
+                    Log.i("datasnaphshot count", Long.toString(dataSnapshot.getChildrenCount()));
+
+
+                    Map<String, Object> td = (HashMap<String,Object>) dataSnapshot.getValue();
+
+                    ArrayList<Object> values =  new ArrayList<Object>(td.values());
+
+                    for(Object value:values){
+                        Log.i("value", value.toString());
+                    }
+
                     String name = (String) dataSnapshot.child("name").getValue();
                     String age = (String) dataSnapshot.child("age").getValue();
                     String gender = (String) dataSnapshot.child("gender").getValue();
                     String email = (String) dataSnapshot.child("email").getValue();
                     String type = (String) dataSnapshot.child("type").getValue();
                     String phone = (String) dataSnapshot.child("phone").getValue();
+                    String img64 = (String) dataSnapshot.child("image").getValue();
+
+
+
+                    if(img64.equals("")) {
+                        Log.i("image from firebase:", "nothing");
+                    }
+                    else{
+                        Log.i("image from firebase:", img64);
+
+                    }
                     //String bio = (String) dataSnapshot.child("bio").getValue();
 
                     user.name = name;
@@ -122,6 +349,7 @@ public class ManageAccount extends Fragment {
                     user.email = email;
                     user.type = type;
                     user.phone = phone;
+                    user.image = img64;
                     //user.bio = bio;
 
                     final String userID = user.getUserId();
@@ -131,6 +359,7 @@ public class ManageAccount extends Fragment {
                     String userAge = user.getUserAge();
                     String userPhone = user.getUserPhone();
                     String userEmail = user.getUserEmail();
+                    String userImage = user.getUserImage();
                     //String userBio = user.getUserBio();
 
                     //ArrayList<Lift> userLifts = user.getUserLifts();
@@ -148,8 +377,35 @@ public class ManageAccount extends Fragment {
                     ageText.setText(userAge + "");
                     phoneText.setText(userPhone + "");
                     emailText.setText(userEmail + "");
+
+
+
+                    //set user's image
+                    if(!userImage.equals("")) {
+
+//                        byte[] data = userImage.getBytes();
+//                        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+//                        ImageView userImageView = (ImageView) getActivity().findViewById(R.id.imageView);
+//                        userImageView.setImageBitmap(bitmap);
+
+                        setUserImage(userImage);
+                        userLastSavedImage = userImage;
+
+
+                        Toast.makeText(getActivity(), "image restored from firebase", Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        Toast.makeText(getActivity(), "image NOT restored from firebase", Toast.LENGTH_LONG).show();
+
+                    }
+
                     //bioText.setText(userBio + "");
                 }
+
+
+
+
+
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
@@ -167,6 +423,9 @@ public class ManageAccount extends Fragment {
                    upgradeAccountToDriver();
                }
             });
+
+
+
 
 
             nameButton = (Button) view.findViewById(R.id.edit_name_btn);
@@ -265,17 +524,6 @@ public class ManageAccount extends Fragment {
 
                     mDatePicker.show();
 
-
-
-
-
-
-
-
-
-
-
-
                 }
             });
 
@@ -346,6 +594,31 @@ public class ManageAccount extends Fragment {
                 }
             });
 
+
+            Button addPhotoButton = (Button) view.findViewById(R.id.addPhotoButton);
+            addPhotoButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.i("Button has been ","clicked");
+
+                    //first ask the user to access photo folder
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                    getPhoto();
+                           // requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+//                        } else {
+//                            getPhoto();
+//                        }
+//                    } else {
+//                        //permission has already been granted
+//                        getPhoto();
+//                    }
+
+
+                }
+            });
+
             Button okButton = (Button) view.findViewById(R.id.ok_btn);
             okButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -365,11 +638,18 @@ public class ManageAccount extends Fragment {
 
                     //String newBio = bioText.getText().toString();
 
+
                     User updatedUser = new User(userId, user.type, newEmail);
                     updatedUser.setName(newName);
                     updatedUser.setGender(newGender);
                     updatedUser.setAge(newAge);
                     updatedUser.setPhone(newPhone);
+                    //set to latest image set
+
+                    Log.i("new Image", userLastSavedImage);
+                    updatedUser.setImage(userLastSavedImage);
+
+
 
                     Database.setUserValue(updatedUser);
 
@@ -413,6 +693,12 @@ public class ManageAccount extends Fragment {
         return view;
     }
 
+
+
+
+
+
+
     /**
      * Initiate process of upgrading User Account to
      *  Driver Account.
@@ -439,4 +725,6 @@ public class ManageAccount extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
+
+
 }

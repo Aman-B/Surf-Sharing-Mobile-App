@@ -10,101 +10,58 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/profileImageView"
             android:layout_width="120dp"
             android:layout_height="115dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            app:srcCompat="@drawable/driver_avatar"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="16dp"
-            android:layout_marginLeft="23dp"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/driver_avatar" />
 
         <TextView
             android:id="@+id/textViewName"
             android:layout_width="127dp"
             android:layout_height="29dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="12dp"
             android:text="John Doe"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/black"
             android:textStyle="bold"
-            android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
-            android:layout_marginLeft="16dp"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileImageView"
+            android:layout_marginStart="16dp" />
 
         <TextView
             android:id="@+id/textViewGender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="153dp"
+            android:layout_marginTop="35dp"
             android:text="Male"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:textStyle="bold|italic"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="35dp"
-            android:layout_marginLeft="153dp"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            android:layout_marginStart="153dp" />
 
         <TextView
             android:id="@+id/textViewAge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="160dp"
             android:layout_marginTop="12dp"
             android:text="25"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:textStyle="bold|italic"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewGender"
-            android:layout_marginLeft="160dp"
-            app:layout_constraintLeft_toLeftOf="parent" />
-
-        <LinearLayout
-            android:layout_width="158dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="46dp"
-            android:orientation="horizontal"
-            app:layout_constraintLeft_toRightOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/textViewGender">
-
-            <ImageView
-                android:id="@+id/imageView77"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:srcCompat="@android:drawable/star_big_off" />
-
-            <ImageView
-                android:id="@+id/imageView11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:srcCompat="@android:drawable/star_big_off" />
-
-            <ImageView
-                android:id="@+id/imageView10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:srcCompat="@android:drawable/star_big_off" />
-
-            <ImageView
-                android:id="@+id/imageView9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:srcCompat="@android:drawable/star_big_off" />
-
-            <ImageView
-                android:id="@+id/imageView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:srcCompat="@android:drawable/star_big_off" />
-        </LinearLayout>
+            android:layout_marginStart="160dp" />
 
         <TextView
             android:id="@+id/textView899"
@@ -115,15 +72,18 @@
             android:text="@string/loremipsum"
             android:textColor="@android:color/black"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="37dp" />
 
         <ScrollView
             android:layout_width="302dp"
             android:layout_height="151dp"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="328dp"
             android:layout_marginLeft="41dp"
-            app:layout_constraintLeft_toLeftOf="parent">
+            android:layout_marginTop="328dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="41dp"
+            android:id="@+id/scrollView2">
 
 
             <LinearLayout
@@ -195,6 +155,27 @@
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rating="4"
+            tools:layout_constraintTop_creator="1"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textViewAge"
+            tools:layout_constraintLeft_creator="1"
+            app:layout_constraintLeft_toRightOf="@+id/profileImageView" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comments"
+            tools:layout_constraintBottom_creator="1"
+            app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+            tools:layout_constraintLeft_creator="1"
+            app:layout_constraintLeft_toLeftOf="@+id/textView899" />
 
     </android.support.constraint.ConstraintLayout>
 

@@ -15,6 +15,50 @@
       },
       "oauth_client": [
         {
+          "client_id": "561530043428-dtfapr7km4s6sdgfvmvu3ec2m1377e2s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.surf_sharing.surfsharingmobileapp",
+            "certificate_hash": "6847eb6b7b5b110641b9a9a7f5a887d1edf3788c"
+          }
+        },
+        {
+          "client_id": "561530043428-lat3geacqglfmuv83u7869g9mnafuclg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARy-ovrcL3PQEyu4U9eAwSpibUVoq1ZZY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "561530043428-lat3geacqglfmuv83u7869g9mnafuclg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561530043428:android:b1a4cc29ccaf378c",
+        "android_client_info": {
+          "package_name": "com.example.philip.databasetest"
+        }
+      },
+      "oauth_client": [
+        {
           "client_id": "561530043428-lat3geacqglfmuv83u7869g9mnafuclg.apps.googleusercontent.com",
           "client_type": 3
         }

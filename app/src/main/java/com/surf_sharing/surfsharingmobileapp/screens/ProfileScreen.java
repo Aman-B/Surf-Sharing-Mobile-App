@@ -1,24 +1,24 @@
 package com.surf_sharing.surfsharingmobileapp.screens;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.surf_sharing.surfsharingmobileapp.R;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
-import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.data.User;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -35,6 +35,7 @@ public class ProfileScreen extends Fragment {
     String userEmail;
     String userGender;
     String userDob;
+    String userImage;
     String userBio;
     User profileUser;
 
@@ -56,6 +57,16 @@ public class ProfileScreen extends Fragment {
         return fragment;
     }
 
+    public void setUserImage(String base64String){
+
+        byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0,decodedString.length);
+        ImageView userImageView = (ImageView) getActivity().findViewById(R.id.profileImageView);
+        userImageView.setImageBitmap(decodedByte);
+
+
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +74,8 @@ public class ProfileScreen extends Fragment {
             // handle bundle arguments
             userId = getArguments().getString("userId");
         }
+
+       // setUserImage(ManageAccount.userLastSavedImage);
     }
 
     @Override
@@ -92,6 +105,7 @@ public class ProfileScreen extends Fragment {
                     userGender = (String) userRef.child("gender").getValue();
                     userEmail = (String) userRef.child("email").getValue();
                     userDob = (String)  userRef.child("age").getValue();
+                    userImage = (String) userRef.child("image").getValue();
 
                     profileUser = new User(userId, userType, userEmail);
                     profileUser.name = userName;
@@ -102,7 +116,7 @@ public class ProfileScreen extends Fragment {
                     profileUserName.setText(userName);
                     profileUserGender.setText(userGender);
                     profileUserAge.setText(userAge);
-
+                    setUserImage(userImage);
                 }
                 catch (Exception e)
                 {

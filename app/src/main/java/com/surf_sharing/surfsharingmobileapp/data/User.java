@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class User {
 
 
-    public String id, type, name, gender, email, phone, bio, age;
+    public String id, type, name, gender, email, phone, bio, age, image;
 
     ArrayList<Lift> lifts;
     public User(String id, String type, String email) {
@@ -70,6 +70,8 @@ public class User {
         return this.bio;
     }
 
+    public String getUserImage(){return this.image;}
+
     public void setName(String name) {
         this.name = name;
     }
@@ -93,4 +95,6 @@ public class User {
     public void setAge(String age) {
         this.age = age;
     }
+
+    public void setImage(String image){this.image = image;}
 }
