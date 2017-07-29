@@ -10,7 +10,7 @@ import java.text.ParseException;
  * Created by Sean on 27/02/2017.
  */
 public class Lift {
-    public String id, destination, car, time, date;
+    public String id, destination, car, time, date, name;
     public int seatsAvailable;
     public User driver;
 

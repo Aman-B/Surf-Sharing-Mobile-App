@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,12 +49,12 @@ public class RequestLift extends Fragment {
     //EditText seats;
     //Database database;
     Lift requestedLift;
-    String driverId, idText, userId, dateStr, timeStr, liftStr, seatsStr;
+    String driverId, driverName, idText, userId, dateStr, timeStr, liftStr, seatsStr;
     int seatsVal;
 
     private DatabaseReference liftRoot;
     private ValueEventListener liftListener;
-    private TextView locationText, timeText, dateText, driverText, seatsText;
+    private TextView locationText, timeText, dateText, driverNameText, seatsText, driverIDText;
     private String SENDER_ID = "561530043428";
 
     public RequestLift() {
@@ -82,6 +83,7 @@ public class RequestLift extends Fragment {
             // take in lift id
             idText=getArguments().getString("id");
             driverId=getArguments().getString("driverId");
+            driverName = getArguments().getString("driverName");
             dateStr=getArguments().getString("date");
             timeStr=getArguments().getString("time");
             liftStr=getArguments().getString("liftStr");
@@ -101,14 +103,15 @@ public class RequestLift extends Fragment {
         locationText = (TextView) view.findViewById(R.id.requestLiftLocation);
         timeText = (TextView) view.findViewById(R.id.requestLiftTime);
         dateText = (TextView) view.findViewById(R.id.requestLiftDate);
-        driverText = (TextView) view.findViewById(R.id.requestLiftDriver);
+        driverNameText = (TextView) view.findViewById(R.id.requestLiftDriverName);
         seatsText = (TextView) view.findViewById(R.id.requestLiftSeats);
 
         // set the driver and lift info
         locationText.setText(liftStr);
         timeText.setText(timeStr);
         dateText.setText(dateStr);
-        driverText.setText(driverId);
+        driverNameText.setText(driverName);
+        //driverNameText.setText(driverId);
         seatsText.setText(String.format("(%s seats remaining)", seatsStr));
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -117,6 +120,23 @@ public class RequestLift extends Fragment {
         userId = currentUser.getEmail();
 
         Button reqButton = (Button) view.findViewById(R.id.requestButton);
+        Button viewProfileButton = (Button) view.findViewById(R.id.viewProfileButton);
+
+
+
+
+        viewProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //go to driver's profile screen
+                NavDrawer nd = (NavDrawer) getActivity();
+                nd.replaceContent(ProfileScreen.newInstance(driverId));
+
+            }
+        });
+
+
 
         reqButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -149,8 +169,6 @@ public class RequestLift extends Fragment {
                         .addData("my_message", "Hello World")
                         .addData("my_action","SAY_HELLO")
                         .build());
-
-
 
 
 

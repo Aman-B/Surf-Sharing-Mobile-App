@@ -84,6 +84,7 @@ public class RequestResponse extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
 
+            //List which keeps track of the Users who have requested the particular lift from the driver
             requesting_users_list = new ArrayList<User>();
 
             userId = getArguments().getString("userId");
@@ -91,8 +92,6 @@ public class RequestResponse extends Fragment {
 
             nd = (NavDrawer) getActivity();
 
-            //requestingUser = Database.getUser(userId);
-            //requestedLift = Database.getLift(liftId);
         }
     }
 
@@ -104,24 +103,6 @@ public class RequestResponse extends Fragment {
 
         getActivity().setTitle(R.string.title_request_responce);
 
-        /*TextView liftDestinationText = (TextView) view.findViewById(R.id.text_view_lift_name);
-        String liftDestination = requestedLift.getDestination();
-        liftDestinationText.setText(liftDestination);
-
-        TextView liftDepartureDateText = (TextView) view.findViewById(R.id.text_view_lift_date);
-        String liftDepartureDate = requestedLift.getDate();
-        liftDepartureDateText.setText(liftDepartureDate);
-
-        TextView liftDepartureTimeText = (TextView) view.findViewById(R.id.text_view_lift_time);
-        String liftDepartureTime = requestedLift.getTime();
-        liftDepartureTimeText.setText(liftDepartureTime);
-
-        //ImageView userProfileImage = (ImageView) view.findViewById(R.id.user_profile_image);
-        //Image userImage = requestingUser.getUserImage();
-
-        TextView userNameText = (TextView) view.findViewById(R.id.text_view_user);
-        String userName = requestingUser.getUserName();
-        userNameText.setText(userName);*/
 
         requestingUsers = (ListView) view.findViewById(R.id.passengerRequestList);
         //requesting_users_list = Database.getRequestingUsers();
@@ -188,6 +169,20 @@ public class RequestResponse extends Fragment {
         liftRoot.addValueEventListener(liftListener);
 
 
+
+        requestingUsers.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                final User requestingPassenger = (User) adapterView.getAdapter().getItem(i);
+                //show the requesting pasenger's profile pic
+                NavDrawer nd = (NavDrawer) getActivity();
+                nd.replaceContent(ProfileScreen.newInstance(requestingPassenger.getUserId()));
+
+                return true;
+            }
+        });
+
         requestingUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
@@ -196,6 +191,8 @@ public class RequestResponse extends Fragment {
                 //startActivity(myIntent);
 
                 final User requestingPassenger = (User) parent.getAdapter().getItem(position);
+
+
 
 
                 new AlertDialog.Builder(getContext())

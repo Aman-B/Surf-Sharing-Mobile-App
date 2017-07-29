@@ -137,7 +137,7 @@ public class LiftsYouAreOffering extends Fragment {
                 try
                 {
                     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                    String userId = currentUser.getUid();
+                    userId = currentUser.getUid();
 
                     DataSnapshot userRef = snapshot.child("users").child(userId);
 
@@ -208,100 +208,12 @@ public class LiftsYouAreOffering extends Fragment {
                 }
                 catch (Exception e)
                 {
-
+                    e.printStackTrace();
                 }
             }
             @Override public void onCancelled(DatabaseError error) { }
         });
 
-
-
-
-        /*liftListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                lifts_list = new ArrayList<Lift>();
-
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-
-                    try
-                    {
-                        String id = postSnapshot.getKey();
-                        int seatsAvailable = Integer.parseInt((String) postSnapshot.child("seatsAvailable").getValue());
-                        String car = (String) postSnapshot.child("car").getValue();
-                        String destination = (String) postSnapshot.child("destination").getValue();
-                        String date = (String) postSnapshot.child("date").getValue();
-                        String time = (String) postSnapshot.child("time").getValue();
-
-                        DataSnapshot driverRef = postSnapshot.child("driverId");
-                        String driverId = (String) driverRef.child("id").getValue();
-                        String driverName = (String) driverRef.child("name").getValue();
-                        String driverAge = (String) driverRef.child("age").getValue();
-                        String driverGender = (String) driverRef.child("gender").getValue();
-                        String driverEmail = (String) driverRef.child("email").getValue();
-                        String driverType = (String) driverRef.child("type").getValue();
-                        String driverPhone = (String) driverRef.child("phone").getValue();
-                        String driverBio = (String) driverRef.child("bio").getValue();
-
-                        User driver = new User(driverId, driverType, driverEmail);
-                        driver.name = driverName;
-                        driver.age = driverAge;
-                        driver.gender = driverGender;
-                        driver.phone = driverPhone;
-                        driver.bio = driverBio;
-
-                        Lift lift = new Lift(driver, destination, seatsAvailable, id, time, date);
-                        lift.car = car;
-                        //lift.date = date;
-                        //lift.time = time;
-
-                        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                        userId = currentUser.getUid();
-
-
-                        Log.d("lift: ", driverId+" + "+userId);
-
-
-                        if(driverId.equals("apMGnPrP8bXyIwztxjMcukxrEve2")){
-                            lifts_list.add(lift);
-                        }
-
-//                        if(driverId.equals(userId)){
-//                            lifts_list.add(lift);
-//                        }
-
-
-
-
-                    }
-                    catch (Exception e)
-                    {
-
-                    }
-                }
-
-                try
-                {
-                    ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, lifts_list);
-                    liftList.setAdapter(adapter);
-                }
-                catch (Exception e)
-                { }
-
-            }
-
-            public void removeListener() {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-
-        liftRoot.addValueEventListener(liftListener);*/
 
         return view;
     }

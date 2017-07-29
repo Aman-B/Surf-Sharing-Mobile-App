@@ -107,10 +107,9 @@ public class AvailableLifts extends Fragment {
 
                 Lift l = (Lift) parent.getAdapter().getItem(position);
 
-
                 NavDrawer nd = (NavDrawer) getActivity();
                 //nd.replaceContent(RequestLift.newInstance());
-                nd.setupRequestLift(RequestLift.newInstance(), l.id, l.driver.email, l.date, l.time, l.destination, Integer.toString(l.seatsAvailable));
+                nd.setupRequestLift(RequestLift.newInstance(), l);
                 // get lift id
 
 

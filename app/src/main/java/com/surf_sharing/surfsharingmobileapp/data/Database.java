@@ -220,7 +220,9 @@ public class Database {
 
                     }
                     catch (Throwable e)
-                    { }
+                    {
+                        e.printStackTrace();
+                    }
                 }
                 @Override public void onCancelled(DatabaseError error) { }
             });

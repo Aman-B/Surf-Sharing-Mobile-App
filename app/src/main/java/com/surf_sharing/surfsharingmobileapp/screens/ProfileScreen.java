@@ -6,11 +6,13 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -59,10 +61,17 @@ public class ProfileScreen extends Fragment {
 
     public void setUserImage(String base64String){
 
-        byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0,decodedString.length);
-        ImageView userImageView = (ImageView) getActivity().findViewById(R.id.profileImageView);
-        userImageView.setImageBitmap(decodedByte);
+        if(!base64String.equals("") | base64String !=null) {
+            Log.i("Image found", base64String);
+            byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            ImageView userImageView = (ImageView) getActivity().findViewById(R.id.profileImageView);
+            userImageView.setImageBitmap(decodedByte);
+        }
+        else{
+            Log.i("Image NOT FOUND", "");
+
+        }
 
 
     }
@@ -71,11 +80,11 @@ public class ProfileScreen extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            // handle bundle arguments
+            //get the user id to access info from firebase
             userId = getArguments().getString("userId");
+            Log.i("userId", userId);
         }
 
-       // setUserImage(ManageAccount.userLastSavedImage);
     }
 
     @Override
@@ -87,9 +96,9 @@ public class ProfileScreen extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_profile, container, false);
 
 
-        final TextView profileUserName = (TextView) view.findViewById(R.id.textViewName);
-        final TextView profileUserGender = (TextView) view.findViewById(R.id.textViewGender);
-        final TextView profileUserAge = (TextView) view.findViewById(R.id.textViewAge);
+        final TextView profileUserName = (TextView) view.findViewById(R.id.profileNameTextView);
+        final TextView profileUserGender = (TextView) view.findViewById(R.id.profileGenderTextView);
+        final TextView profileUserAge = (TextView) view.findViewById(R.id.profileAgeTextView);
 
 
         Database.root.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -107,20 +116,33 @@ public class ProfileScreen extends Fragment {
                     userDob = (String)  userRef.child("age").getValue();
                     userImage = (String) userRef.child("image").getValue();
 
+
+
+
                     profileUser = new User(userId, userType, userEmail);
                     profileUser.name = userName;
                     profileUser.gender = userGender;
 
                     String userAge = getAge(userDob);
-
-                    profileUserName.setText(userName);
-                    profileUserGender.setText(userGender);
+                    Log.i("profile name", userName);
+                    Log.i("profile age", userAge);
+                    Log.i("profile gender", userName);
+                    profileUserName.setText(userName );
+                    profileUserGender.setText(userGender + " ,");
                     profileUserAge.setText(userAge);
-                    setUserImage(userImage);
+//                    if(userImage != null) {
+//                        Log.i("profile Image", userImage);
+                        setUserImage(userImage);
+//                    }
+//                    else{
+//                        Log.i("profile Image", userImage);
+//
+//                    }
                 }
                 catch (Exception e)
                 {
 
+                    e.printStackTrace();
                 }
             }
             @Override public void onCancelled(DatabaseError error) { }

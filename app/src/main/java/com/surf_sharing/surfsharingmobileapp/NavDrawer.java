@@ -178,15 +178,17 @@ public class NavDrawer extends AppCompatActivity
     }
 
     //
-    public void setupRequestLift(Fragment fragment, String id, String driverId, String date, String time, String liftStr, String seatsStr){
+    public void setupRequestLift(Fragment fragment, Lift lift){
         FragmentManager fragmentManager = getSupportFragmentManager();
         Bundle bundle=new Bundle();
-        bundle.putString("id", id);
-        bundle.putString("driverId", driverId);
-        bundle.putString("date", date);
-        bundle.putString("time", time);
-        bundle.putString("liftStr", liftStr);
-        bundle.putString("seatsStr", seatsStr);
+
+        bundle.putString("id", lift.id);
+        bundle.putString("driverId", lift.driver.id);
+        bundle.putString("driverName", lift.driver.name);
+        bundle.putString("date", lift.date);
+        bundle.putString("time", lift.time);
+        bundle.putString("liftStr", lift.destination);
+        bundle.putString("seatsStr", Integer.toString(lift.seatsAvailable));
         fragment.setArguments(bundle);
         fragmentManager.beginTransaction()
                 .replace(R.id.nav_drawer_content, fragment)
@@ -194,8 +196,15 @@ public class NavDrawer extends AppCompatActivity
                 .commit();
     }
 
-    public void setupRequestResponse(Fragment fragment, String userId, String liftId, String l_user,
-                                        int l_seats, String l_dest, String time, String date, String u_email){
+    public void setupRequestResponse(Fragment fragment,
+                                     String userId,
+                                     String liftId,
+                                     String l_user,
+                                     int l_seats,
+                                     String l_dest,
+                                     String time,
+                                     String date,
+                                     String u_email){
         FragmentManager fragmentManager = getSupportFragmentManager();
         Bundle bundle=new Bundle();
         bundle.putString("userId", userId);
