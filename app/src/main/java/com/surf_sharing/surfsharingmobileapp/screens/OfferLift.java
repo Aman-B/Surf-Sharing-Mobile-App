@@ -172,35 +172,29 @@ public class OfferLift extends Fragment {
 
 
 
+
+
         pickDateButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
 
             public void onClick(View v) {
 
-                Calendar mcurrentDate = Calendar.getInstance();
 
-                int dayOfMonth = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
-                int month = mcurrentDate.get(Calendar.MONTH);
-
-                int year = mcurrentDate.get(Calendar.YEAR);
-
-                DatePickerDialog mDatePicker;
-
-                mDatePicker = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                Calendar calendar=Calendar.getInstance();
+                DatePickerDialog dialog=new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
 
                     @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                          int dayOfMonth) {
 
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
-                        textViewDate.setText(String.format("%02d/%02d/%04d", dayOfMonth, month, year));
-
+                        textViewDate.setText(String.format("%02d/%02d/%04d", dayOfMonth, monthOfYear, year));
                     }
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
-                }, year, month, dayOfMonth);
-
-                mDatePicker.show();
+                dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+                dialog.show();
 
             }
 
@@ -224,11 +218,6 @@ public class OfferLift extends Fragment {
 
                 String date = textViewDate.getText().toString();
 
-//                String time = editTextTime.getText().toString();
-
-//                String date = editTextDate.getText().toString();
-
-                // check that text fields contain info
 
                 if (dest.isEmpty()) {
 

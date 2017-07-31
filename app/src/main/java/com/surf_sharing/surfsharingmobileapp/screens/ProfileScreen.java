@@ -31,15 +31,15 @@ import java.util.Calendar;
  */
 public class ProfileScreen extends Fragment {
 
-    String userId;
-    String userType;
-    String userName;
-    String userEmail;
-    String userGender;
-    String userDob;
-    String userImage;
-    String userBio;
-    User profileUser;
+    private String userId;
+    private String userType;
+    private String userName;
+    private String userEmail;
+    private String userGender;
+    private String userDob;
+    private String userImage;
+    private String userBio;
+    private User profileUser;
 
     public ProfileScreen() {
         // Required empty public constructor
@@ -84,6 +84,12 @@ public class ProfileScreen extends Fragment {
             userId = getArguments().getString("userId");
             Log.i("userId", userId);
         }
+
+
+
+
+
+
 
     }
 
@@ -130,14 +136,11 @@ public class ProfileScreen extends Fragment {
                     profileUserName.setText(userName );
                     profileUserGender.setText(userGender + " ,");
                     profileUserAge.setText(userAge);
-//                    if(userImage != null) {
-//                        Log.i("profile Image", userImage);
+                    if(userImage != null) {
+                        Log.i("profile Image", userImage);
                         setUserImage(userImage);
-//                    }
-//                    else{
-//                        Log.i("profile Image", userImage);
-//
-//                    }
+                    }
+
                 }
                 catch (Exception e)
                 {
