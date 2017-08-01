@@ -18,7 +18,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -64,146 +64,147 @@
                 android:layout_marginLeft="4dp"
                 android:text="Personal Profile"/>
 
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:stretchColumns="1">
 
-                <TableRow
+                <TableLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="1">
 
-                    <TextView
-                        android:id="@+id/text_view_name_label"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:text="Name: "
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-                    <TextView
-                        android:id="@+id/text_view_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-                    <Button
-                        android:id="@+id/edit_name_btn"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="0dp"
-                        android:paddingRight="0dp"
-                        android:text="Edit Name" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/text_view_gender_label"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:text="Gender: "
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-                    <TextView
-                        android:id="@+id/text_view_gender"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-                    <Button
-                        android:id="@+id/edit_gender_btn"
+                    <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="Edit Gender" />
-                </TableRow>
+                        android:layout_height="match_parent"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/text_view_name_label"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="Name: "
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
-                    <TextView
-                        android:id="@+id/text_view_age_label"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:text="Age: "
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+                        <TextView
+                            android:id="@+id/textViewName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-                    <TextView
-                        android:id="@+id/text_view_age"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                    </TableRow>
 
-                    <Button
-                        android:id="@+id/edit_age_btn"
+                    <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="Edit Age" />
-                </TableRow>
+                        android:layout_height="match_parent"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/text_view_gender_label"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="Gender: "
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
-                    <TextView
-                        android:id="@+id/text_view_phone_label"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:text="Phone No: "
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+                        <TextView
+                            android:id="@+id/text_view_gender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-                    <TextView
-                        android:id="@+id/text_view_phone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                    </TableRow>
 
-                    <Button
-                        android:id="@+id/edit_phone_btn"
+                    <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="Edit Phone" />
-                </TableRow>
+                        android:layout_height="match_parent"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/text_view_age_label"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="Age: "
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
-                    <TextView
-                        android:id="@+id/text_view_email_label"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:text="Email: "
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+                        <TextView
+                            android:id="@+id/text_view_age"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-                    <TextView
-                        android:id="@+id/text_view_email"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                    </TableRow>
 
-                    <Button
-                        android:id="@+id/edit_email_btn"
+                    <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="Edit Email" />
-                </TableRow>
+                        android:layout_height="match_parent"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
 
-            </TableLayout>
+                        <TextView
+                            android:id="@+id/text_view_phone_label"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="Phone No: "
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+                        <TextView
+                            android:id="@+id/text_view_phone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:id="@+id/text_view_email_label"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="Email: "
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+                        <TextView
+                            android:id="@+id/text_view_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    </TableRow>
 
 
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:id="@+id/text_view_bio_label"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="Bio: "
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+                        <TextView
+                            android:id="@+id/text_view_bio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    </TableRow>
+
+                </TableLayout>
 
 
             <RelativeLayout
