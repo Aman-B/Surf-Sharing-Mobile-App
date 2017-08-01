@@ -1,19 +1,27 @@
 package com.surf_sharing.surfsharingmobileapp.screens;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -38,8 +46,15 @@ public class ProfileScreen extends Fragment {
     private String userGender;
     private String userDob;
     private String userImage;
+    private String userPhone;
     private String userBio;
     private User profileUser;
+    private boolean ownProfile;
+    private View view;
+
+    private ProgressDialog dialog;
+
+
 
     public ProfileScreen() {
         // Required empty public constructor
@@ -65,8 +80,15 @@ public class ProfileScreen extends Fragment {
             Log.i("Image found", base64String);
             byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            ImageView userImageView = (ImageView) getActivity().findViewById(R.id.profileImageView);
-            userImageView.setImageBitmap(decodedByte);
+            ImageView userImageView = (ImageView) getView().findViewById(R.id.profileImageView);
+            if(decodedByte !=null) {
+                userImageView.setImageBitmap(decodedByte);
+                Toast.makeText(getContext(), "image is set", Toast.LENGTH_SHORT).show();
+
+            }
+            else{
+                Toast.makeText(getContext(), "unable to set image", Toast.LENGTH_SHORT).show();
+            }
         }
         else{
             Log.i("Image NOT FOUND", "");
@@ -86,60 +108,97 @@ public class ProfileScreen extends Fragment {
         }
 
 
-
-
-
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // change the title of the activity
-        getActivity().setTitle(R.string.title_profile);
-        // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_profile, container, false);
 
+
+
+
+
+        // Inflate the layout for this fragment
+        if(userId == FirebaseAuth.getInstance().getCurrentUser().getUid()){
+            Toast.makeText(getContext(), "OWN PROFILE", Toast.LENGTH_SHORT).show();
+
+
+            view =  inflater.inflate(R.layout.fragment_profile, container, false);
+            ownProfile = true;
+
+
+        }
+        else{
+            Toast.makeText(getContext(), "OTHER'S PROFILE", Toast.LENGTH_SHORT).show();
+            view =  inflater.inflate(R.layout.fragment_users_view_profile, container, false);
+            ownProfile = false;
+
+        }
 
         final TextView profileUserName = (TextView) view.findViewById(R.id.profileNameTextView);
         final TextView profileUserGender = (TextView) view.findViewById(R.id.profileGenderTextView);
         final TextView profileUserAge = (TextView) view.findViewById(R.id.profileAgeTextView);
 
 
+        dialog = new ProgressDialog(getActivity());
+
+        dialog.setMessage("Loading...");
+        dialog.show();
+        dialog.setCanceledOnTouchOutside(false);
+
+
         Database.root.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
-                try
-                {
+
+                try {
                     DataSnapshot userRef = snapshot.child("users").child(userId);
 
                     userType = (String) userRef.child("type").getValue();
                     userName = (String) userRef.child("name").getValue();
                     userGender = (String) userRef.child("gender").getValue();
                     userEmail = (String) userRef.child("email").getValue();
-                    userDob = (String)  userRef.child("age").getValue();
+                    userDob = (String) userRef.child("age").getValue();
                     userImage = (String) userRef.child("image").getValue();
+                    userPhone = (String) userRef.child("phone").getValue();
 
 
+                    Log.i("userName", userName);
 
+                    if(ownProfile){
+                        getActivity().setTitle(R.string.title_profile);
+
+                    }else{
+                        getActivity().setTitle(userName + "'s Profile");
+
+                    }
+
+
+                    if (userImage != null) {
+                        Log.i("profile Image", userImage);
+                        DownloadImageTask downloadImageTask = new DownloadImageTask();
+                        downloadImageTask.execute(userImage);
+                        //ImageView userImageView = (ImageView) getView().findViewById(R.id.profileImageView);
+                        //  userImageView.setImageBitmap(bitmap);
+
+                        // setUserImage(userImage);
+                    }
 
                     profileUser = new User(userId, userType, userEmail);
                     profileUser.name = userName;
                     profileUser.gender = userGender;
+                    if(userDob != null){
+                        String userAge = getAge(userDob);
+                        Log.i("profile age", userAge);
+                        profileUserAge.setText(userAge);
 
-                    String userAge = getAge(userDob);
-                    Log.i("profile name", userName);
-                    Log.i("profile age", userAge);
-                    Log.i("profile gender", userName);
-                    profileUserName.setText(userName );
-                    profileUserGender.setText(userGender + " ,");
-                    profileUserAge.setText(userAge);
-                    if(userImage != null) {
-                        Log.i("profile Image", userImage);
-                        setUserImage(userImage);
                     }
+                    Log.i("profile name", userName);
+                    profileUserName.setText(userName);
+                    profileUserGender.setText(userGender + " ,");
+
 
                 }
                 catch (Exception e)
@@ -148,19 +207,28 @@ public class ProfileScreen extends Fragment {
                     e.printStackTrace();
                 }
             }
-            @Override public void onCancelled(DatabaseError error) { }
+            @Override public void onCancelled(DatabaseError error) {
+                Log.i("Database error", error.toString());
+            }
         });
 
 
-        // example of a button that replaces the current fragment with another
-        /*Button testButton = (Button) view.findViewById(R.id.offer_lift_test_button);
-        testButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                NavDrawer nd = (NavDrawer) getActivity();
-                nd.replaceContent(ManageAccount.newInstance());
-            }
-        });*/
+
+        if(!ownProfile){
+            Button callButton = (Button) view.findViewById(R.id.callUserButton);
+
+            callButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Uri number = Uri.parse("tel:" + userPhone);
+                    Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+                    startActivity(callIntent);
+                }
+            });
+
+        }
+
 
         return view;
     }
@@ -199,4 +267,57 @@ public class ProfileScreen extends Fragment {
 
         return ageS;
     }
+
+    public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+
+
+//       ProgressDialog dialog = new ProgressDialog(getActivity());
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+
+//
+//            dialog.setMessage("Loading...");
+//            dialog.show();
+//            dialog.setCanceledOnTouchOutside(false);
+
+
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            String base64String = params[0];
+            Bitmap decodedByte = null;
+
+            if(!base64String.equals("") | base64String !=null) {
+                Log.i("Image found", base64String);
+                byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
+                decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                Log.i("Image conversion", "successful");
+
+                return decodedByte;
+            }
+            else{
+                Log.i("Image conversion", "failure");
+
+            }
+            return decodedByte;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(Bitmap bitmap) {
+            if (dialog.isShowing()) dialog.dismiss();
+            ImageView userImageView = (ImageView) getView().findViewById(R.id.profileImageView);
+            userImageView.setImageBitmap(bitmap);
+
+
+        }
+    }
+
 }
+

@@ -210,7 +210,6 @@ public class NavDrawer extends AppCompatActivity
         bundle.putString("userId", userId);
         bundle.putString("liftId", liftId);
         bundle.putString("l_user", l_user);
-        bundle.putInt("l_seats", l_seats);
         bundle.putString("l_dest", l_dest);
         bundle.putString("time", time);
         bundle.putString("date", date);

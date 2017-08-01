@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Surf Sharing</string>
+    <string name="loading_text">Loding..</string>
+
     <string name="title_activity_view_lifts">Available Lifts</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"

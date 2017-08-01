@@ -175,7 +175,7 @@ public class RequestResponse extends Fragment {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 final User requestingPassenger = (User) adapterView.getAdapter().getItem(i);
-                //show the requesting pasenger's profile pic
+                //show the requesting passenger's profile pic
                 NavDrawer nd = (NavDrawer) getActivity();
                 nd.replaceContent(ProfileScreen.newInstance(requestingPassenger.getUserId()));
 
