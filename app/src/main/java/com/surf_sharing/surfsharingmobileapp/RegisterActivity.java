@@ -14,6 +14,8 @@ import android.text.InputType;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
@@ -48,12 +50,11 @@ import static com.surf_sharing.surfsharingmobileapp.data.Database.userRoot;
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText editTextName;
-    private EditText editTextGender;
     private EditText editTextPhoneNumber;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private EditText editTextPassword2;
-
+    private RadioGroup genderRadioGroup;
     private TextView textDateOfBirth;
 
     private String accountType;
@@ -98,16 +99,13 @@ public class RegisterActivity extends AppCompatActivity {
 
         accountType = getIntent().getStringExtra("ACCOUNT_TYPE");
 
-
-        progressDialog = new ProgressDialog(getApplicationContext());
-
         buttonDateOfBirth = (Button) findViewById(R.id.dateOfBirthButton);
         buttonRegister = (Button) findViewById(R.id.ok_btn);
+        genderRadioGroup = (RadioGroup) findViewById(R.id.genderRadioGroup);
 
         editTextName = (EditText) findViewById(R.id.edit_text_name);
         editTextName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
-        editTextGender = (EditText) findViewById(R.id.edit_text_gender);
         editTextPhoneNumber = (EditText) findViewById(R.id.edit_text_phone);
         editTextEmail = (EditText) findViewById(R.id.edit_text_email);
         editTextPassword = (EditText) findViewById(R.id.editText4);
@@ -185,11 +183,19 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
         String name = editTextName.getText().toString().trim();
-        String gender = editTextGender.getText().toString().trim();
         String age = textDateOfBirth.getText().toString().trim();
         String phone = editTextPhoneNumber.getText().toString().trim();
 
 
+
+
+        int selectedId = genderRadioGroup.getCheckedRadioButtonId();
+        RadioButton genderRadioButton = (RadioButton) findViewById(selectedId);
+        String gender = genderRadioButton.getText().toString();
+
+
+
+        Toast.makeText(getApplicationContext(), gender, Toast.LENGTH_SHORT).show();
 
 
         if(name.isEmpty()) {
@@ -219,8 +225,7 @@ public class RegisterActivity extends AppCompatActivity {
         if(register == true) {
             if (password.equals(password2)) {
 
-                progressDialog.setMessage("Registering User...");
-                progressDialog.show();
+
 
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -254,7 +259,6 @@ public class RegisterActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
-                                progressDialog.dismiss();
                             }
                         });
             } else
@@ -288,10 +292,16 @@ public class RegisterActivity extends AppCompatActivity {
             String userId = currentUser.getUid();
             String type = accountType;
             String name = editTextName.getText().toString().trim();
-            String gender = editTextGender.getText().toString().trim();
             String age = textDateOfBirth.getText().toString().trim();
             String phone = editTextPhoneNumber.getText().toString().trim();
             String email = editTextEmail.getText().toString().trim();
+
+
+            int selectedId = genderRadioGroup.getCheckedRadioButtonId();
+            RadioButton genderRadioButton = (RadioButton) findViewById(selectedId);
+            String gender = genderRadioButton.getText().toString();
+
+            Toast.makeText(getApplicationContext(), gender, Toast.LENGTH_SHORT).show();
 
             if(type.equals("driver")){
                 type = "pending";

@@ -93,27 +93,6 @@ public class UpgradeToDriver extends Fragment {
         View view = inflater.inflate(R.layout.fragment_upgrade_to_driver, container, false);
 
 
-
-
-
-
-
-//        BackgroundMail bm = new BackgroundMail(getActivity());
-//        bm.setGmailUserName("ammarqureshi1995@gmail.com");
-//        //"DoE/GTiYpX5sz5zmTFuoHg==" is crypted "password"
-//        bm.setGmailPassword("humsubammarublin");
-//        bm.setMailTo("qureshm@tcd.ie");
-//        bm.setFormSubject("email from android");
-//        bm.setFormBody("hi, this is an email from android");
-
-        // this is optional
-        //
-        // bm.setSendingMessage("Loading...);
-        // bm.setSendingMessageSuccess("Your message was sent successfully.");
-        // bm.setProcessVisibility(false);
-        // bm.setAttachment(Environment.getExternalStorageDirectory().getPath()+File.pathSeparator+"somefile.txt");
-//        bm.send();
-
         Button submitButton = (Button) view.findViewById(R.id.submitDriverUpgrade);
 
 

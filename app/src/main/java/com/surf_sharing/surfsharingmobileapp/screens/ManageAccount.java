@@ -187,7 +187,7 @@ public class ManageAccount extends Fragment{
         byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0,decodedString.length);
         ImageView userImageView = (ImageView) getActivity().findViewById(R.id.profileImageView);
-            userImageView.setImageBitmap(decodedByte);
+        userImageView.setImageBitmap(decodedByte);
 
 
     }

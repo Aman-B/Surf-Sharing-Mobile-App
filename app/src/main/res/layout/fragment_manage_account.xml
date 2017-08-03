@@ -31,7 +31,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:onClick="addPhoto"
-                    android:text="change photo" />
+                    android:text="change photo"
+                    android:layout_alignBottom="@+id/upgrade_btn" />
 
                 <ImageView
                     android:id="@+id/profileImageView"
