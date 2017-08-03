@@ -2,20 +2,44 @@ package com.surf_sharing.surfsharingmobileapp.screens;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Message;
+import android.service.textservice.SpellCheckerService;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.text.TextUtils;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.surf_sharing.surfsharingmobileapp.R;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
+import com.surf_sharing.surfsharingmobileapp.utils.BackgroundMail;
+import com.surf_sharing.surfsharingmobileapp.utils.SendMailActivity;
+import com.surf_sharing.surfsharingmobileapp.utils.SendMailTask;
+import com.surf_sharing.surfsharingmobileapp.utils.Utils;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.SendFailedException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+import static java.security.AccessController.getContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,6 +96,24 @@ public class UpgradeToDriver extends Fragment {
 
 
 
+
+
+//        BackgroundMail bm = new BackgroundMail(getActivity());
+//        bm.setGmailUserName("ammarqureshi1995@gmail.com");
+//        //"DoE/GTiYpX5sz5zmTFuoHg==" is crypted "password"
+//        bm.setGmailPassword("humsubammarublin");
+//        bm.setMailTo("qureshm@tcd.ie");
+//        bm.setFormSubject("email from android");
+//        bm.setFormBody("hi, this is an email from android");
+
+        // this is optional
+        //
+        // bm.setSendingMessage("Loading...);
+        // bm.setSendingMessageSuccess("Your message was sent successfully.");
+        // bm.setProcessVisibility(false);
+        // bm.setAttachment(Environment.getExternalStorageDirectory().getPath()+File.pathSeparator+"somefile.txt");
+//        bm.send();
+
         Button submitButton = (Button) view.findViewById(R.id.submitDriverUpgrade);
 
 
@@ -119,6 +161,35 @@ public class UpgradeToDriver extends Fragment {
 
                 Database.upgradeToDriver(carMakeModel, carRegistration, licenceNumber, maxPassengers);
 
+
+
+                //send email with the driver's detail to verify legitimacy
+
+
+                try {
+                    Log.i("SendMailActivity", "Send Button Clicked.");
+
+                    String fromEmail = "your@gmail.com";
+                    String fromPassword = "yourPassword";
+                    String toEmails = "ammarqureshi1995@gmail.com, agnewl@tcd.ie";
+                    List toEmailList = Arrays.asList(toEmails
+                            .split("\\s*,\\s*"));
+                    Log.i("SendMailActivity", "To List: " + toEmailList);
+                    String emailSubject = "NEED DRIVER VERIFICATION FOR ID:" + FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    String emailBody =
+                            "car make model: " + carMakeModel + "\n" +
+                                    "\n\ncar registration: " + carRegistration + "\n" +
+                                    "\n\nlicence number: " + licenceNumber + "\n" +
+                                    "\n\nmax passengers:" + maxPassengers;
+                    new com.surf_sharing.surfsharingmobileapp.utils.SendMailTask(getActivity()).execute(fromEmail,
+                            fromPassword, toEmailList, emailSubject, emailBody);
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+
+
+
                 //go to LiftsYouAreOffering fragment
 
                 Fragment upgradeToDriver = LiftsYouAreOffering.newInstance();
@@ -138,6 +209,43 @@ public class UpgradeToDriver extends Fragment {
         return view;
     }
 
+    protected void sendMail() {
+        final String username = "ammarqurehsi1995@gmail.com";
+        final String password = "humsubammardublin";
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+
+        try {
+
+            javax.mail.Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(javax.mail.Message.RecipientType.TO, InternetAddress.parse("qureshm@tcd.ie"));
+            message.setSubject("Sent from MobileApp");
+         //   message.setText("Message : ," + "hello this is an email from android");
+
+            new SendMailTask().execute(message);
+
+        } catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
+
+
+    }
+
+
+
+
 
     @Override
     public void onAttach(Context context) {
@@ -148,4 +256,79 @@ public class UpgradeToDriver extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
+
+
+
+public class SendMailTask extends AsyncTask<javax.mail.Message,String, String> {
+//    private ProgressDialog progressDialog;
+
+    @Override
+    protected String doInBackground(javax.mail.Message... messages) {
+        try {
+            Transport.send(messages[0]);
+            return "Success";
+        } catch (SendFailedException ee) {
+            return "error1";
+        } catch (MessagingException e) {
+
+            return "error2";
+        }
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+    }
+
+
+    @Override
+    protected void onPostExecute(String result) {
+        if (result.equals("Success")) {
+            super.onPostExecute(result);
+            Log.i("email result:", "success");
+        } else if (result.equals("error1"))
+            Log.i("email result:", "error");
+        else if (result.equals("error2"))
+            Log.i("email result:", "error");
+    }
+
+
+    protected void sendMail() {
+        final String username = "ammarqurehsi1995@gmail.com";
+        final String password = "humsubammardublin";
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+
+        try {
+
+            javax.mail.Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(javax.mail.Message.RecipientType.TO, InternetAddress.parse("qureshm@tcd.ie"));
+            message.setSubject("Sent from MobileApp");
+            message.setText("Message : ,"
+                    + "\n\n" + "hello this is an email from android");
+
+            new SendMailTask().execute((Runnable) message);
+
+        } catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
+
+
+    }
 }
+}
+
+
+

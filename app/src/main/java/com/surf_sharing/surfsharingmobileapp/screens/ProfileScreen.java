@@ -139,7 +139,7 @@ public class ProfileScreen extends Fragment {
         final TextView profileUserName = (TextView) view.findViewById(R.id.profileNameTextView);
         final TextView profileUserGender = (TextView) view.findViewById(R.id.profileGenderTextView);
         final TextView profileUserAge = (TextView) view.findViewById(R.id.profileAgeTextView);
-
+        final TextView profileUserBio = (TextView) view.findViewById(R.id.bioTextView);
 
         dialog = new ProgressDialog(getActivity());
 
@@ -163,6 +163,7 @@ public class ProfileScreen extends Fragment {
                     userDob = (String) userRef.child("age").getValue();
                     userImage = (String) userRef.child("image").getValue();
                     userPhone = (String) userRef.child("phone").getValue();
+                    userBio = (String) userRef.child("bio").getValue();
 
 
                     Log.i("userName", userName);
@@ -189,15 +190,16 @@ public class ProfileScreen extends Fragment {
                     profileUser = new User(userId, userType, userEmail);
                     profileUser.name = userName;
                     profileUser.gender = userGender;
+
                     if(userDob != null){
                         String userAge = getAge(userDob);
                         Log.i("profile age", userAge);
                         profileUserAge.setText(userAge);
 
                     }
-                    Log.i("profile name", userName);
                     profileUserName.setText(userName);
                     profileUserGender.setText(userGender + " ,");
+                    profileUserBio.setText(userBio);
 
 
                 }

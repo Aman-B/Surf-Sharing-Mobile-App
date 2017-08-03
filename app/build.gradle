@@ -18,6 +18,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        pickFirst 'META-INF/LICENSE.txt' // picks the JavaMail license file
+    }
 }
 
 dependencies {
@@ -36,5 +39,15 @@ dependencies {
     compile 'com.google.firebase:firebase-storage:10.0.1'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile files('BackgroundMail/BackgroundMailLibrary/libs/activation.jar')
+    compile files('BackgroundMail/BackgroundMailLibrary/libs/additionnal.jar')
+    compile files('BackgroundMail/BackgroundMailLibrary/libs/mail.jar')
+}
+
+repositories {
+    jcenter()
+    maven {
+        url "https://maven.java.net/content/groups/public/"
+    }
 }
 apply plugin: 'com.google.gms.google-services'

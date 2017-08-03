@@ -37,6 +37,7 @@ import com.surf_sharing.surfsharingmobileapp.utils.Display;
 import com.surf_sharing.surfsharingmobileapp.utils.FirebaseError;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,6 +64,33 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+
+
+    private String getAge(String dateOfBirth){
+
+        String[] parts = dateOfBirth.split("/");
+
+        int day = Integer.parseInt(parts[0]);
+        int month = Integer.parseInt(parts[1]);
+        int year = Integer.parseInt(parts[2]);
+
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+
+        Integer ageInt = new Integer(age);
+        String ageS = ageInt.toString();
+
+        return ageS;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,141 +98,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         accountType = getIntent().getStringExtra("ACCOUNT_TYPE");
 
-        /*
 
-        if (accountType.equals("passenger"))
-        {
-            setContentView(R.layout.activity_register_passenger);
-
-            progressDialog = new ProgressDialog(this);
-
-            buttonDateOfBirth = (Button) findViewById(R.id.dateOfBirthButton);
-            buttonRegister = (Button) findViewById(R.id.ok_btn);
-
-            editTextName = (EditText) findViewById(R.id.edit_text_name);
-            editTextName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-
-            editTextGender = (EditText) findViewById(R.id.edit_text_gender);
-            editTextPhoneNumber = (EditText) findViewById(R.id.edit_text_phone);
-            editTextEmail = (EditText) findViewById(R.id.edit_text_email);
-            editTextPassword = (EditText) findViewById(R.id.editText4);
-            editTextPassword2 = (EditText) findViewById(R.id.editText5);
-
-            textDateOfBirth = (TextView) findViewById(R.id.dateOfBirth);
-
-            buttonDateOfBirth.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Calendar mcurrentDate = Calendar.getInstance();
-                    int dayOfMonth = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-                    int month = mcurrentDate.get(Calendar.MONTH);
-                    int year = mcurrentDate.get(Calendar.YEAR);
-                    DatePickerDialog mDatePicker;
-                    mDatePicker = new DatePickerDialog(RegisterActivity.this, new DatePickerDialog.OnDateSetListener() {
-
-                        @Override
-
-                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                            textDateOfBirth.setText(String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year));
-                        }
-
-                    }, year, month, dayOfMonth);
-                    mDatePicker.show();
-                }
-            });
-
-            buttonRegister.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //calling register method on click
-                    registerUser();
-                }
-            });
-
-            mAuth = FirebaseAuth.getInstance();
-            mAuthListener = new FirebaseAuth.AuthStateListener() {
-                @Override
-                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                    FirebaseUser user = firebaseAuth.getCurrentUser();
-                    if (user != null) {
-                        // user is logged in
-                        // Send user to NavDrawer when
-                        gotoNavDrawer();
-                    } else {
-                        // user is logged out
-                    }
-                }
-            };
-
-        }
-        else
-        {
-            setContentView(R.layout.activity_register_driver);
-
-            progressDialog = new ProgressDialog(this);
-
-            buttonDateOfBirth = (Button) findViewById(R.id.driverDateOfBirthButton);
-            buttonRegister = (Button) findViewById(R.id.ok_driver_btn);
-
-            editTextName = (EditText) findViewById(R.id.edit_text_driver_name);
-            editTextName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-
-            editTextGender = (EditText) findViewById(R.id.edit_text_driver_gender);
-            editTextPhoneNumber = (EditText) findViewById(R.id.edit_text_driver_phone);
-            editTextEmail = (EditText) findViewById(R.id.edit_text_driver_email);
-            editTextPassword = (EditText) findViewById(R.id.edit_text_driver_password);
-            editTextPassword2 = (EditText) findViewById(R.id.edit_text_driver_password_confirm);
-
-            textDateOfBirth = (TextView) findViewById(R.id.driverDateOfBirth);
-
-            buttonDateOfBirth.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Calendar mcurrentDate = Calendar.getInstance();
-                    int dayOfMonth = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-                    int month = mcurrentDate.get(Calendar.MONTH);
-                    int year = mcurrentDate.get(Calendar.YEAR);
-                    DatePickerDialog mDatePicker;
-                    mDatePicker = new DatePickerDialog(RegisterActivity.this, new DatePickerDialog.OnDateSetListener() {
-
-                        @Override
-
-                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                            textDateOfBirth.setText(String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year));
-                        }
-
-                    }, year, month, dayOfMonth);
-                    mDatePicker.show();
-                }
-            });
-
-            buttonRegister.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //calling register method on click
-                    registerUser();
-                }
-            });
-
-            mAuth = FirebaseAuth.getInstance();
-            mAuthListener = new FirebaseAuth.AuthStateListener() {
-                @Override
-                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                    FirebaseUser user = firebaseAuth.getCurrentUser();
-                    if (user != null) {
-                        // user is logged in
-                        // Send user to NavDrawer when
-                        gotoNavDrawer();
-                    } else {
-                        // user is logged out
-                    }
-                }
-            };
-        }
-
-         */
-
-        progressDialog = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(getApplicationContext());
 
         buttonDateOfBirth = (Button) findViewById(R.id.dateOfBirthButton);
         buttonRegister = (Button) findViewById(R.id.ok_btn);
@@ -234,6 +129,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         textDateOfBirth.setText(String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year));
+
                     }
 
                 }, year, month, dayOfMonth);
@@ -293,6 +189,9 @@ public class RegisterActivity extends AppCompatActivity {
         String age = textDateOfBirth.getText().toString().trim();
         String phone = editTextPhoneNumber.getText().toString().trim();
 
+
+
+
         if(name.isEmpty()) {
             Display.popup(RegisterActivity.this, "Please enter your Name");
             register = false;
@@ -309,6 +208,11 @@ public class RegisterActivity extends AppCompatActivity {
             Display.popup(RegisterActivity.this, "Please enter your Phone Number");
             register = false;
         }
+//        else if(Integer.parseInt(getAge(age)) < 18){
+//            Display.popup(RegisterActivity.this, "Must be over 18 to register");
+//            register = false;
+//        }
+
 
 
 
@@ -402,5 +306,8 @@ public class RegisterActivity extends AppCompatActivity {
 
             Database.setUserValue(user);
         }
+
+
+
     }
 }
