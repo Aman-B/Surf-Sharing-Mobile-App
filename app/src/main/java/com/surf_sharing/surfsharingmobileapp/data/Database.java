@@ -62,7 +62,7 @@ public class Database {
 
             //add a Lift to a User
             final DatabaseReference usersRef = userRoot.child(userId);
-            usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            usersRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
 

@@ -4,8 +4,11 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Surf-Sharing-Mobile-App.iml" filepath="$PROJECT_DIR$/Surf-Sharing-Mobile-App.iml" />
       <module fileurl="file://$PROJECT_DIR$/activation/activation.iml" filepath="$PROJECT_DIR$/activation/activation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/activation/activation.iml" filepath="$PROJECT_DIR$/activation/activation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/additionnal/additionnal.iml" filepath="$PROJECT_DIR$/additionnal/additionnal.iml" />
       <module fileurl="file://$PROJECT_DIR$/additionnal/additionnal.iml" filepath="$PROJECT_DIR$/additionnal/additionnal.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mail/mail.iml" filepath="$PROJECT_DIR$/mail/mail.iml" />
       <module fileurl="file://$PROJECT_DIR$/mail/mail.iml" filepath="$PROJECT_DIR$/mail/mail.iml" />
     </modules>
   </component>

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,8 @@ public class AvailableLifts extends Fragment {
 
     private DatabaseReference liftRoot;
     private ValueEventListener liftListener;
+    String userId;
+    boolean alreadyRequested;
 
     //Globals glob;
     public AvailableLifts() {
@@ -82,6 +85,7 @@ public class AvailableLifts extends Fragment {
 
         }
         liftRoot = FirebaseDatabase.getInstance().getReference("lifts");
+        alreadyRequested = false;
     }
 
     @Override
@@ -96,6 +100,8 @@ public class AvailableLifts extends Fragment {
         liftList = (ListView) view.findViewById(R.id.liftList);
         lifts_list = new ArrayList<Lift>();
 
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        userId = currentUser.getUid();
 
         // added by Sean, working on requestLift
         liftList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -105,14 +111,12 @@ public class AvailableLifts extends Fragment {
                 //Intent myIntent = new Intent(getActivity(), NextActivity.class);
                 //startActivity(myIntent);
 
-                Lift l = (Lift) parent.getAdapter().getItem(position);
+                final Lift l = (Lift) parent.getAdapter().getItem(position);
 
                 NavDrawer nd = (NavDrawer) getActivity();
                 //nd.replaceContent(RequestLift.newInstance());
                 nd.setupRequestLift(RequestLift.newInstance(), l);
                 // get lift id
-
-
 
             }
         });
@@ -163,6 +167,11 @@ public class AvailableLifts extends Fragment {
                             String passengerId = snapshot.getKey();
                             String passengerState = (String) snapshot.getValue();
 
+                            //if (passengerId.equals(userId))
+                            //{
+                                //alreadyRequested = true;
+                            //}
+
                             if (passengerState.equals("pending"))
                             {
                                 lift.pendingPassengers.add(passengerId);
@@ -173,7 +182,10 @@ public class AvailableLifts extends Fragment {
                             }
                         }
 
-                        lifts_list.add(lift);
+                        //if (!alreadyRequested)
+                        //{
+                            lifts_list.add(lift);
+                        //}
                     }
                     catch (Exception e)
                     {

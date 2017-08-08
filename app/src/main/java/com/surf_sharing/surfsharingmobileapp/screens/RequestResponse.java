@@ -25,6 +25,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 import com.surf_sharing.surfsharingmobileapp.NavDrawer;
 import com.surf_sharing.surfsharingmobileapp.R;
 import com.surf_sharing.surfsharingmobileapp.RequestItemAdapter;
@@ -37,6 +39,7 @@ import com.surf_sharing.surfsharingmobileapp.utils.Display;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -51,14 +54,15 @@ public class RequestResponse extends Fragment {
     ListView requestingUsers;
     ArrayList<User> requesting_users_list;
 
+    String driverId;
     String userId;
     String liftId;
+    String liftDate;
+    String liftDestination;
 
+    private String SENDER_ID = "561530043428";
     private DatabaseReference liftRoot;
     private ValueEventListener liftListener;
-
-    User requestingUser;
-    Lift requestedLift;
 
     NavDrawer nd;
 
@@ -89,6 +93,9 @@ public class RequestResponse extends Fragment {
 
             userId = getArguments().getString("userId");
             liftId = getArguments().getString("liftId");
+
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            driverId = currentUser.getUid();
 
             nd = (NavDrawer) getActivity();
 
@@ -121,16 +128,14 @@ public class RequestResponse extends Fragment {
                 {
 //                    Toast.makeText(getContext(), "liftId: " + liftId, Toast.LENGTH_SHORT).show();
                     DataSnapshot liftRef = snapshot.child("lifts").child(liftId);
+                    liftDate = liftRef.child("date").getValue().toString();
+                    liftDestination = liftRef.child("destination").getValue().toString();
                     DataSnapshot passengersRef = liftRef.child("passengers");
-
-
 
                     for (DataSnapshot passengersSnapshot : passengersRef.getChildren()) {
 
                         String passengerId = passengersSnapshot.getKey();
                         String passengerState = (String) passengersSnapshot.getValue();
-
-
 
                         if (passengerState.equals("pending"))
                         {
@@ -168,8 +173,6 @@ public class RequestResponse extends Fragment {
 
         liftRoot.addValueEventListener(liftListener);
 
-
-
         requestingUsers.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -191,9 +194,6 @@ public class RequestResponse extends Fragment {
                 //startActivity(myIntent);
 
                 final User requestingPassenger = (User) parent.getAdapter().getItem(position);
-
-
-
 
                 new AlertDialog.Builder(getContext())
                         .setTitle("Accept Passenger")
@@ -233,8 +233,6 @@ public class RequestResponse extends Fragment {
                         //.setCancelable(true)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
-
-
 
             }
         });
@@ -296,10 +294,26 @@ public class RequestResponse extends Fragment {
                 // Wherever the user has an entry representing their pending lift
                 // request, change it to show that they are now on this lift and
                 // send a notification to inform them.
-                //Database.acceptLiftRequest(liftId, userId);
+                // Database.acceptLiftRequest(liftId, userId);
 
                 // TODO send notification message to user informing them
                 // that their request was accepted
+
+                String messageTitle = "Lift Request Accepted";
+                String message = "Your request for a seat on the lift to " + liftDestination + " on the " + liftDate + " has been accepted";
+                String actionType = "com.surfsharing.MESSAGE";
+
+                FirebaseMessaging fm = FirebaseMessaging.getInstance();
+                AtomicInteger msgId = new AtomicInteger();
+                fm.send(new RemoteMessage.Builder(SENDER_ID + "@gcm.googleapis.com")
+                        .setMessageId(Integer.toString(msgId.incrementAndGet()))
+                        .addData("message_title", messageTitle)
+                        .addData("message", message)
+                        .addData("action", actionType)
+                        .addData("lift", liftDestination)
+                        .addData("recipient", userId)
+                        .addData("sender", driverId)
+                        .build());
 
         }
         else
@@ -307,10 +321,26 @@ public class RequestResponse extends Fragment {
                 // Wherever the user has an entry representing their pending lift
                 // request, remove it to show that they have not secured a seat
                 // on this lift and send a notification to inform them.
-                //Database.rejectLiftRequest(liftId, userId);
+                // Database.rejectLiftRequest(liftId, userId);
 
                 // TODO send notification message to user informing them
                 // that their request was rejected.
+
+                String messageTitle = "Lift Request Rejected";
+                String message = "Unfortunately your request for a seat on the lift to " + liftDestination + " on the " + liftDate + " has been rejected by the Driver";
+                String actionType = "com.surfsharing.MESSAGE";
+
+                FirebaseMessaging fm = FirebaseMessaging.getInstance();
+                AtomicInteger msgId = new AtomicInteger();
+                fm.send(new RemoteMessage.Builder(SENDER_ID + "@gcm.googleapis.com")
+                    .setMessageId(Integer.toString(msgId.incrementAndGet()))
+                    .addData("message_title", messageTitle)
+                    .addData("message", message)
+                        .addData("action", actionType)
+                    .addData("lift", liftDestination)
+                    .addData("recipient", userId)
+                    .addData("sender", driverId)
+                    .build());
         }
 
     }

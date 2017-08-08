@@ -51,6 +51,7 @@ public class RequestLift extends Fragment {
     Lift requestedLift;
     String driverId, driverName, idText, userId, dateStr, timeStr, liftStr, seatsStr;
     int seatsVal;
+    boolean alreadyRequested;
 
     private DatabaseReference liftRoot;
     private ValueEventListener liftListener;
@@ -71,6 +72,7 @@ public class RequestLift extends Fragment {
         RequestLift fragment = new RequestLift();
         Bundle args = new Bundle();
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -88,6 +90,7 @@ public class RequestLift extends Fragment {
             timeStr=getArguments().getString("time");
             liftStr=getArguments().getString("liftStr");
             seatsStr=getArguments().getString("seatsStr");
+            alreadyRequested = false;
 
         }
     }
@@ -97,111 +100,150 @@ public class RequestLift extends Fragment {
                              Bundle savedInstanceState) {
         // change the title of the activity
         getActivity().setTitle(R.string.title_request_lift);
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_request_lift, container, false);
-
-        locationText = (TextView) view.findViewById(R.id.requestLiftLocation);
-        timeText = (TextView) view.findViewById(R.id.requestLiftTime);
-        dateText = (TextView) view.findViewById(R.id.requestLiftDate);
-        driverNameText = (TextView) view.findViewById(R.id.requestLiftDriverName);
-        seatsText = (TextView) view.findViewById(R.id.requestLiftSeats);
-
-        // set the driver and lift info
-        locationText.setText(liftStr);
-        timeText.setText(timeStr);
-        dateText.setText(dateStr);
-        driverNameText.setText(driverName);
-        //driverNameText.setText(driverId);
-        seatsText.setText(String.format("(%s seats remaining)", seatsStr));
-
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        userId = currentUser.getUid();
-        userId = currentUser.toString();
-        userId = currentUser.getEmail();
-
-        Button reqButton = (Button) view.findViewById(R.id.requestButton);
-        Button viewProfileButton = (Button) view.findViewById(R.id.viewProfileButton);
 
 
-
-
-        viewProfileButton.setOnClickListener(new View.OnClickListener() {
+        /*Database.root.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
+            public void onDataChange(DataSnapshot snapshot) {
 
-                //go to driver's profile screen
-                NavDrawer nd = (NavDrawer) getActivity();
-                nd.replaceContent(ProfileScreen.newInstance(driverId));
+                try {
+                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    userId = currentUser.getUid();
 
+                    Log.d("RequestLift Activity", userId);
+
+                    DataSnapshot liftRef = snapshot.child("lifts").child(idText);
+
+                    DataSnapshot passengersRef = liftRef.child("passengers");
+
+                    for (DataSnapshot passengerSnapshot : passengersRef.getChildren()) {
+
+                        String passengerId = passengerSnapshot.getKey();
+                        Log.d("RequestLift Activity", passengerId);
+                        String passengerState = (String) passengerSnapshot.getValue();
+
+                        if (passengerId.equals(userId) && (passengerState.equals("pending") || passengerState.equals("accepted"))) {
+
+                            Log.d("RequestLift Activity", "Reached here!");
+                            alreadyRequested = true;
+
+                        }
+                    }
+
+                } catch (Exception e) {
+
+                }
             }
-        });
 
-
-
-        reqButton.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view) {
-
-//                Toast.makeText(getContext(), "request Lift: " + idText, Toast.LENGTH_SHORT).show();
-                Display.popup(getActivity(), "Seat on lift requested!");
-                Database.makeLiftRequest(idText);
-
-                //-------------------------------------------------------------------------------------
-                //Database.acceptLiftRequest(idText, "apMGnPrP8bXyIwztxjMcukxrEve2");
-                //Database.rejectLiftRequest(idText, "apMGnPrP8bXyIwztxjMcukxrEve2");
-
-                //Database.findUser("apMGnPrP8bXyIwztxjMcukxrEve2");
-                //-------------------------------------------------------------------------------------
-
-                // request the lift
-                String messageTitle = "New Lift Request";
-                String messageDetail = "Request for seat on Lift: "+liftStr+" from User: "+userId;
-                sendNotification(getContext(), messageTitle, messageDetail);
-
-
-
-
-
-                FirebaseMessaging fm = FirebaseMessaging.getInstance();
-                AtomicInteger msgId = new AtomicInteger();
-                fm.send(new RemoteMessage.Builder(SENDER_ID + "@gcm.googleapis.com")
-                        .setMessageId(Integer.toString(msgId.incrementAndGet()))
-                        .addData("my_message", "Hello World")
-                        .addData("my_action","SAY_HELLO")
-                        .build());
-
-
-
-                NavDrawer nd = (NavDrawer) getActivity();
-                nd.replaceContent(AvailableLifts.newInstance());
-
+            public void onCancelled(DatabaseError error) {
             }
-        });
+        });*/
+
+        if (alreadyRequested) {
+
+                Log.d("RequestLift Activity", "We even got here somehow!");
+
+                View view = inflater.inflate(R.layout.fragment_already_requested, container, false);
+
+                locationText = (TextView) view.findViewById(R.id.requestLiftLocation);
+                timeText = (TextView) view.findViewById(R.id.requestLiftTime);
+                dateText = (TextView) view.findViewById(R.id.requestLiftDate);
+                seatsText = (TextView) view.findViewById(R.id.requestLiftSeats);
+
+                // set the driver and lift info
+                locationText.setText(liftStr);
+                timeText.setText(timeStr);
+                dateText.setText(dateStr);
+                seatsText.setText(String.format("(%s seats remaining)", seatsStr));
+
+                return view;
+
+        } else {
+
+                Log.d("RequestLift Activity", "But this was the one that was executed...");
+                // Inflate the layout for this fragment
+                View view = inflater.inflate(R.layout.fragment_request_lift, container, false);
+
+                locationText = (TextView) view.findViewById(R.id.requestLiftLocation);
+                timeText = (TextView) view.findViewById(R.id.requestLiftTime);
+                dateText = (TextView) view.findViewById(R.id.requestLiftDate);
+                driverNameText = (TextView) view.findViewById(R.id.requestLiftDriverName);
+                seatsText = (TextView) view.findViewById(R.id.requestLiftSeats);
+
+                // set the driver and lift info
+                locationText.setText(liftStr);
+                timeText.setText(timeStr);
+                dateText.setText(dateStr);
+                driverNameText.setText(driverName);
+                seatsText.setText(String.format("(%s seats remaining)", seatsStr));
+
+                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                userId = currentUser.getUid();
+                userId = currentUser.toString();
+                userId = currentUser.getEmail();
+
+                Button viewProfileButton = (Button) view.findViewById(R.id.viewProfileButton);
+
+                viewProfileButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        //go to driver's profile screen
+                        NavDrawer nd = (NavDrawer) getActivity();
+                        nd.replaceContent(ProfileScreen.newInstance(driverId));
+
+                    }
+                });
 
 
-        return view;
+                Button reqButton = (Button) view.findViewById(R.id.requestButton);
+
+                reqButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        // Toast.makeText(getContext(), "request Lift: " + idText, Toast.LENGTH_SHORT).show();
+                        Display.popup(getActivity(), "Seat on lift requested!");
+                        Database.makeLiftRequest(idText);
+
+                        //-------------------------------------------------------------------------------------
+                        //Database.acceptLiftRequest(idText, "apMGnPrP8bXyIwztxjMcukxrEve2");
+                        //Database.rejectLiftRequest(idText, "apMGnPrP8bXyIwztxjMcukxrEve2");
+
+                        //Database.findUser("apMGnPrP8bXyIwztxjMcukxrEve2");
+                        //-------------------------------------------------------------------------------------
+
+                        // request the lift
+                        String messageTitle = "New Lift Request";
+                        String message = "You have received a new seat request for your Lift to: " + liftStr;
+                        String actionType = "com.surfsharing.MESSAGE";
+
+                        FirebaseMessaging fm = FirebaseMessaging.getInstance();
+                        AtomicInteger msgId = new AtomicInteger();
+                        fm.send(new RemoteMessage.Builder(SENDER_ID + "@gcm.googleapis.com")
+                                .setMessageId(Integer.toString(msgId.incrementAndGet()))
+                                .addData("message_title", messageTitle)
+                                .addData("message", message)
+                                .addData("action", actionType)
+                                .addData("lift", liftStr)
+                                .addData("recipient", driverId)
+                                .addData("sender", userId)
+                                .build());
+
+
+
+                        NavDrawer nd = (NavDrawer) getActivity();
+                        nd.replaceContent(AvailableLifts.newInstance());
+
+                    }
+                });
+
+
+            return view;
+        }
+
     }
-
-    public static void sendNotification(Context context, String message, String messageText) {
-
-        PendingIntent notificationIntent = PendingIntent.getActivities(context, 0, new Intent[]{new Intent(context, AppCompatActivity.class)}, 0);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setSmallIcon(R.mipmap.ic_launcher);
-        builder.setContentTitle(message);
-        builder.setTicker("Alert Message");
-        builder.setVibrate(new long[]{0, 200, 200, 200, 200});
-        builder.setLights(Color.BLUE, 3000, 3000);
-        builder.setContentText(messageText);
-        builder.setContentIntent(notificationIntent);
-        builder.setDefaults(NotificationCompat.DEFAULT_SOUND);
-        builder.setAutoCancel(true);
-
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationManager.notify(1, builder.build());
-    }
-
 
     @Override
     public void onAttach(Context context) {
