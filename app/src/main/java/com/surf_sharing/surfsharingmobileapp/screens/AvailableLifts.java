@@ -61,7 +61,8 @@ public class AvailableLifts extends Fragment {
     private Menu menu;
 
 
-
+    String userId;
+    boolean alreadyRequested;
 
     //Globals glob;
     public AvailableLifts() {
@@ -101,6 +102,7 @@ public class AvailableLifts extends Fragment {
         setHasOptionsMenu(true);
 
         liftRoot = FirebaseDatabase.getInstance().getReference("lifts");
+        alreadyRequested = false;
     }
 
     @Override
@@ -116,6 +118,9 @@ public class AvailableLifts extends Fragment {
         lifts_list = new ArrayList<Lift>();
         origLiftList = new ArrayList<Lift>();
 
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        userId = currentUser.getUid();
+
         // added by Sean, working on requestLift
         liftList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
@@ -124,7 +129,7 @@ public class AvailableLifts extends Fragment {
                 //Intent myIntent = new Intent(getActivity(), NextActivity.class);
                 //startActivity(myIntent);
 
-                Lift l = (Lift) parent.getAdapter().getItem(position);
+                final Lift l = (Lift) parent.getAdapter().getItem(position);
 
                 NavDrawer nd = (NavDrawer) getActivity();
                 //nd.replaceContent(RequestLift.newInstance());
@@ -180,6 +185,11 @@ public class AvailableLifts extends Fragment {
                             String passengerId = snapshot.getKey();
                             String passengerState = (String) snapshot.getValue();
 
+                            //if (passengerId.equals(userId))
+                            //{
+                                //alreadyRequested = true;
+                            //}
+
                             if (passengerState.equals("pending"))
                             {
                                 lift.pendingPassengers.add(passengerId);
@@ -192,6 +202,10 @@ public class AvailableLifts extends Fragment {
 
                         lifts_list.add(lift);
                         origLiftList.add(lift);
+                        //if (!alreadyRequested)
+                        //{
+                            lifts_list.add(lift);
+                        //}
                     }
                     catch (Exception e)
                     {

@@ -35,6 +35,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.User;
+import com.surf_sharing.surfsharingmobileapp.data.Driver;
 import com.surf_sharing.surfsharingmobileapp.utils.Display;
 import com.surf_sharing.surfsharingmobileapp.utils.FirebaseError;
 
@@ -52,6 +53,10 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText editTextName;
     private EditText editTextPhoneNumber;
     private EditText editTextEmail;
+    private EditText editTextCarMakeModel;
+    private EditText editTextDriverReg;
+    private EditText editTextLicenceNo;
+    private EditText editTextMaxPassengers;
     private EditText editTextPassword;
     private EditText editTextPassword2;
     private RadioGroup genderRadioGroup;
@@ -103,9 +108,146 @@ public class RegisterActivity extends AppCompatActivity {
         buttonRegister = (Button) findViewById(R.id.ok_btn);
         genderRadioGroup = (RadioGroup) findViewById(R.id.genderRadioGroup);
 
+        if (accountType.equals("passenger"))
+        {
+            setContentView(R.layout.activity_register_passenger);
+
+            progressDialog = new ProgressDialog(this);
+
+            buttonDateOfBirth = (Button) findViewById(R.id.dateOfBirthButton);
+            buttonRegister = (Button) findViewById(R.id.ok_btn);
+
+            editTextName = (EditText) findViewById(R.id.edit_text_name);
+            editTextName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+
+            editTextPhoneNumber = (EditText) findViewById(R.id.edit_text_phone);
+            editTextEmail = (EditText) findViewById(R.id.edit_text_email);
+            editTextPassword = (EditText) findViewById(R.id.editText4);
+            editTextPassword2 = (EditText) findViewById(R.id.editText5);
+
+            textDateOfBirth = (TextView) findViewById(R.id.dateOfBirth);
+
+            buttonDateOfBirth.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Calendar mcurrentDate = Calendar.getInstance();
+                    int dayOfMonth = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+                    int month = mcurrentDate.get(Calendar.MONTH);
+                    int year = mcurrentDate.get(Calendar.YEAR);
+                    DatePickerDialog mDatePicker;
+                    mDatePicker = new DatePickerDialog(RegisterActivity.this, new DatePickerDialog.OnDateSetListener() {
+
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                            textDateOfBirth.setText(String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year));
+                        }
+
+                    }, year, month, dayOfMonth);
+                        mDatePicker.show();
+                }
+            });
+
+            buttonRegister.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //calling register method on click
+                    registerUser();
+                }
+            });
+
+            mAuth = FirebaseAuth.getInstance();
+            mAuthListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    if (user != null) {
+                        // user is logged in
+                        // Send user to NavDrawer when
+                        gotoNavDrawer();
+                    } else {
+                        // user is logged out
+                    }
+                }
+            };
+
+        }
+        else
+        {
+            setContentView(R.layout.activity_register_driver);
+
+            progressDialog = new ProgressDialog(this);
+
+            buttonDateOfBirth = (Button) findViewById(R.id.driverDateOfBirthButton);
+            buttonRegister = (Button) findViewById(R.id.ok_driver_btn);
+
+            editTextName = (EditText) findViewById(R.id.edit_text_driver_name);
+            editTextName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+
+            editTextPhoneNumber = (EditText) findViewById(R.id.edit_text_driver_phone);
+            editTextEmail = (EditText) findViewById(R.id.edit_text_driver_email);
+            editTextCarMakeModel = (EditText) findViewById(R.id.edit_text_car_make_model);
+            editTextDriverReg = (EditText) findViewById(R.id.edit_text_driver_registration);
+            editTextLicenceNo = (EditText) findViewById(R.id.edit_text_driver_licence);
+            editTextMaxPassengers = (EditText) findViewById(R.id.edit_text_max_passengers);
+            editTextPassword = (EditText) findViewById(R.id.edit_text_driver_password);
+            editTextPassword2 = (EditText) findViewById(R.id.edit_text_driver_password_confirm);
+
+            textDateOfBirth = (TextView) findViewById(R.id.driverDateOfBirth);
+
+            buttonDateOfBirth.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Calendar mcurrentDate = Calendar.getInstance();
+                    int dayOfMonth = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+                    int month = mcurrentDate.get(Calendar.MONTH);
+                    int year = mcurrentDate.get(Calendar.YEAR);
+                    DatePickerDialog mDatePicker;
+                    mDatePicker = new DatePickerDialog(RegisterActivity.this, new DatePickerDialog.OnDateSetListener() {
+
+                        @Override
+
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                            textDateOfBirth.setText(String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year));
+                        }
+
+                    }, year, month, dayOfMonth);
+                    mDatePicker.show();
+                }
+            });
+
+            buttonRegister.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //calling register method on click
+                    registerUser();
+                }
+            });
+
+            mAuth = FirebaseAuth.getInstance();
+            mAuthListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    if (user != null) {
+                        // user is logged in
+                        // Send user to NavDrawer when
+                        gotoNavDrawer();
+                    } else {
+                        // user is logged out
+                    }
+                }
+            };
+        }
+
+        /*progressDialog = new ProgressDialog(this);
+
+        buttonDateOfBirth = (Button) findViewById(R.id.dateOfBirthButton);
+        buttonRegister = (Button) findViewById(R.id.ok_btn);
+
         editTextName = (EditText) findViewById(R.id.edit_text_name);
         editTextName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
+        editTextGender = (EditText) findViewById(R.id.edit_text_gender);
         editTextPhoneNumber = (EditText) findViewById(R.id.edit_text_phone);
         editTextEmail = (EditText) findViewById(R.id.edit_text_email);
         editTextPassword = (EditText) findViewById(R.id.editText4);
@@ -156,7 +298,7 @@ public class RegisterActivity extends AppCompatActivity {
                     // user is logged out
                 }
             }
-        };
+        };*/
     }
 
     private void gotoNavDrawer() {
@@ -186,14 +328,9 @@ public class RegisterActivity extends AppCompatActivity {
         String age = textDateOfBirth.getText().toString().trim();
         String phone = editTextPhoneNumber.getText().toString().trim();
 
-
-
-
         int selectedId = genderRadioGroup.getCheckedRadioButtonId();
         RadioButton genderRadioButton = (RadioButton) findViewById(selectedId);
         String gender = genderRadioButton.getText().toString();
-
-
 
         Toast.makeText(getApplicationContext(), gender, Toast.LENGTH_SHORT).show();
 
@@ -220,12 +357,35 @@ public class RegisterActivity extends AppCompatActivity {
 //        }
 
 
+        if (accountType.equals("driver"))
+        {
+            String carMakeModel = editTextCarMakeModel.getText().toString().trim();
+            String licenceNo = editTextLicenceNo.getText().toString().trim();
+            String driverReg = editTextDriverReg.getText().toString().trim();
+            String maxPassengers = editTextMaxPassengers.getText().toString().trim();
+
+            if (carMakeModel.isEmpty()) {
+                Display.popup(RegisterActivity.this, "Please enter your Car Make and Model");
+                register = false;
+            }
+            else if (licenceNo.isEmpty()) {
+                Display.popup(RegisterActivity.this, "Please enter your Licence Number");
+                register = false;
+            }
+            else if (driverReg.isEmpty()) {
+                Display.popup(RegisterActivity.this, "Please enter your Driver Registration");
+                register = false;
+            }
+            else if (maxPassengers.isEmpty())
+            {
+                Display.popup(RegisterActivity.this, "Please enter the Maximum number of passengers you can take");
+                register = false;
+            }
+        }
 
 
         if(register == true) {
             if (password.equals(password2)) {
-
-
 
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -271,24 +431,21 @@ public class RegisterActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) {
-            user.sendEmailVerification()
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+            user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Toast.makeText(RegisterActivity.this, "SignUp Succssful, Email Verification Sent", Toast.LENGTH_SHORT).show();
                         }
                     }
-        });
+            });
 
+        }
     }
-}
     public void registerUserInfo(){
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        User newUserValue = null;
 
-        if(currentUser != null)
-        {
+        if(currentUser != null) {
             String userId = currentUser.getUid();
             String type = accountType;
             String name = editTextName.getText().toString().trim();
@@ -303,21 +460,30 @@ public class RegisterActivity extends AppCompatActivity {
 
             Toast.makeText(getApplicationContext(), gender, Toast.LENGTH_SHORT).show();
 
-            if(type.equals("driver")){
+            if (type.equals("driver")) {
                 type = "pending";
+                String carMakeModel = editTextCarMakeModel.getText().toString().trim();
+                String licenceNo = editTextLicenceNo.getText().toString().trim();
+                String driverReg = editTextDriverReg.getText().toString().trim();
+                int maxPassengers = Integer.parseInt(editTextMaxPassengers.getText().toString().trim());
+                Driver driver = new Driver(userId, type, email, carMakeModel, licenceNo, driverReg, maxPassengers);
+
+                driver.setGender(gender);
+                driver.setAge(age);
+                driver.setName(name);
+                driver.setPhone(phone);
+
+                Database.setUserValue(driver);
+            } else {
+                User user = new User(userId, type, email);
+                user.setGender(gender);
+                user.setAge(age);
+                user.setName(name);
+                user.setPhone(phone);
+
+                Database.setUserValue(user);
             }
-
-            User user = new User(userId, type, email);
-            user.gender = gender;
-            user.age = age;
-            user.name = name;
-            user.phone = phone;
-            user.type = type;
-
-            Database.setUserValue(user);
         }
-
-
 
     }
 }

@@ -75,7 +75,6 @@ public class ManageAccount extends Fragment{
 
 
     //get the state of image.
-
     @Override
     public void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -106,7 +105,7 @@ public class ManageAccount extends Fragment{
 
 
 
-//get the photo from the gallery
+    //get the photo from the gallery
     public void getPhoto(){
 
         Log.i("here", "here");
@@ -117,7 +116,7 @@ public class ManageAccount extends Fragment{
 
     }
 
-//gallery permission result
+    //gallery permission result
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -137,7 +136,6 @@ public class ManageAccount extends Fragment{
 
 
     //When the user is done with the subsequent activity and returns, the system calls your activity's onActivityResult() method.
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -150,7 +148,6 @@ public class ManageAccount extends Fragment{
             Uri selectedImage = data.getData();
             //convert to a bitmap image
             try {
-
 
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
 
@@ -250,11 +247,6 @@ public class ManageAccount extends Fragment{
 
 
 
-
-
-
-
-
     public ManageAccount() {
         // Required empty public constructor
     }
@@ -285,6 +277,7 @@ public class ManageAccount extends Fragment{
                              Bundle savedInstanceState) {
         // change the title of the activity
         getActivity().setTitle(R.string.title_manage_account);
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_manage_account, container, false);
 
@@ -292,8 +285,7 @@ public class ManageAccount extends Fragment{
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        final TextView nameText = (TextView) view.findViewById(R.id.textViewName);
-
+        final TextView nameText = (TextView) view.findViewById(R.id.text_view_name);
         final TextView genderText = (TextView) view.findViewById(R.id.text_view_gender);
         final TextView ageText = (TextView) view.findViewById(R.id.text_view_age);
         final TextView phoneText = (TextView) view.findViewById(R.id.text_view_phone);
@@ -306,7 +298,8 @@ public class ManageAccount extends Fragment{
         {
             return null;
         }
-        else {
+        else
+        {
             final String userId = currentUser.getUid();
             DatabaseReference usersRefChild = Database.userRoot.child(userId);
 
@@ -421,10 +414,6 @@ public class ManageAccount extends Fragment{
                    upgradeAccountToDriver();
                }
             });
-
-
-
-
 
 
 
@@ -894,7 +883,6 @@ public class ManageAccount extends Fragment{
 
                     String newBio = bioText.getText().toString();
 
-
                     User updatedUser = new User(userId, user.type, newEmail);
                     updatedUser.setName(newName);
                     updatedUser.setGender(newGender);
@@ -905,8 +893,6 @@ public class ManageAccount extends Fragment{
 
                     Log.i("new Image", userLastSavedImage);
                     updatedUser.setImage(userLastSavedImage);
-
-
 
                     Database.setUserValue(updatedUser);
 
@@ -949,10 +935,6 @@ public class ManageAccount extends Fragment{
 
         return view;
     }
-
-
-
-
 
 
 

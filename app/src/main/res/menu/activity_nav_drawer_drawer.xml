@@ -5,6 +5,10 @@
         android:id="@+id/passenger_nav_menu"
         android:checkableBehavior="none">
         <item
+            android:id="@+id/nav_home"
+            android:title="Home"
+            />
+        <item
             android:id="@+id/nav_available_lifts"
             android:title="Available Lifts" />
         <item

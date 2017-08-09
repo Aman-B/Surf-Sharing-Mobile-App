@@ -18,6 +18,10 @@ public class User {
         this.email = email;
         this.lifts = new ArrayList<Lift>();
         this.lifts.clear();
+        this.phone = "";
+        this.bio = "";
+        this.age = "";
+        this.image = "";
     }
 
     public void requestLift(Lift lift){

@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.data.User;
+import com.surf_sharing.surfsharingmobileapp.screens.Home;
 import com.surf_sharing.surfsharingmobileapp.screens.AvailableLifts;
 import com.surf_sharing.surfsharingmobileapp.screens.LiftsYouAreOffering;
 import com.surf_sharing.surfsharingmobileapp.screens.LiftsYouAreOn;
@@ -63,7 +64,10 @@ public class NavDrawer extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // Display available lifts as default fragment
-        replaceContent(AvailableLifts.newInstance());
+        // replaceContent(AvailableLifts.newInstance());
+
+        // Display Home as default fragment
+        replaceContent(Home.newInstance());
 
         // listen for sign out event and go to login screen
         mAuth = FirebaseAuth.getInstance();
@@ -136,6 +140,9 @@ public class NavDrawer extends AppCompatActivity
 
         Fragment fragment = null;
         switch (id) {
+            case R.id.nav_home:
+                fragment = Home.newInstance();
+                break;
             case R.id.nav_available_lifts:
                 fragment = AvailableLifts.newInstance();
                 break;
@@ -196,9 +203,7 @@ public class NavDrawer extends AppCompatActivity
                 .commit();
     }
 
-    public void setupRequestResponse(Fragment fragment,
-                                     String userId,
-                                     String liftId,
+    public void setupRequestResponse(Fragment fragment, String userId, String liftId,
                                      String l_user,
                                      int l_seats,
                                      String l_dest,
