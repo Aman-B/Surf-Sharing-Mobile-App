@@ -7,7 +7,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -32,7 +36,12 @@ import com.surf_sharing.surfsharingmobileapp.data.LiftContainer;
 import com.surf_sharing.surfsharingmobileapp.NavDrawer;
 import com.surf_sharing.surfsharingmobileapp.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,9 +53,15 @@ public class AvailableLifts extends Fragment {
 
     ListView liftList;
     ArrayList<Lift> lifts_list;
+    ArrayList<Lift> origLiftList;
 
     private DatabaseReference liftRoot;
     private ValueEventListener liftListener;
+    private ArrayAdapter adapter;
+    private Menu menu;
+
+
+
 
     //Globals glob;
     public AvailableLifts() {
@@ -69,6 +84,8 @@ public class AvailableLifts extends Fragment {
         return fragment;
     }
 
+
+
     // Interface for passing lift id to activity
     public interface OnLiftSelectedListener {
         public void onArticleSelected( int liftId );
@@ -81,6 +98,8 @@ public class AvailableLifts extends Fragment {
             // handle bundle arguments
 
         }
+        setHasOptionsMenu(true);
+
         liftRoot = FirebaseDatabase.getInstance().getReference("lifts");
     }
 
@@ -95,7 +114,7 @@ public class AvailableLifts extends Fragment {
 
         liftList = (ListView) view.findViewById(R.id.liftList);
         lifts_list = new ArrayList<Lift>();
-
+        origLiftList = new ArrayList<Lift>();
 
         // added by Sean, working on requestLift
         liftList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -111,8 +130,6 @@ public class AvailableLifts extends Fragment {
                 //nd.replaceContent(RequestLift.newInstance());
                 nd.setupRequestLift(RequestLift.newInstance(), l);
                 // get lift id
-
-
 
             }
         });
@@ -174,6 +191,7 @@ public class AvailableLifts extends Fragment {
                         }
 
                         lifts_list.add(lift);
+                        origLiftList.add(lift);
                     }
                     catch (Exception e)
                     {
@@ -183,7 +201,7 @@ public class AvailableLifts extends Fragment {
 
                 try
                 {
-                    ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, lifts_list);
+                    adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, lifts_list);
                     //You can use my custom list view and custom array adaptor to display driver icon and text instead of just text
                     //here is an example psudocode. you would need to get the images from the firebase and reference them
                     // the adaptor takes two lists. the text one you have created and a list of string references to the downloaded icons
@@ -192,8 +210,14 @@ public class AvailableLifts extends Fragment {
                     // CustomArrayAdaptor adapter=new CustomArrayAdaptor(this, itemname, imgid);
                     //list=(ListView)findViewById(R.id.listviewicontext);
                     //list.setAdapter(adapter);
+                  //  Collections.copy(origLiftList, lifts_list);
+
+//
+
 
                     liftList.setAdapter(adapter);
+                    //sortByDestination();
+                    sortByRemainingSeats();
                 }
                 catch (Exception e)
                 { }
@@ -212,6 +236,7 @@ public class AvailableLifts extends Fragment {
 
         liftRoot.addValueEventListener(liftListener);
 
+
         return view;
     }
 
@@ -226,4 +251,137 @@ public class AvailableLifts extends Fragment {
         liftRoot.removeEventListener(liftListener);
     }
 
+
+    public void sortByDestination(){
+
+        //sorting
+        Collections.sort(lifts_list, new Comparator<Lift>() {
+            @Override
+            public int compare(Lift lift1, Lift lift2) {
+                return lift1.destination.toLowerCase().compareTo(lift2.destination.toLowerCase());
+            }
+        });
+
+
+        adapter.notifyDataSetChanged();
+
+
+    }
+
+
+
+//    public static final Comparator<Lift> ASCENDING_COMPARATOR = new Comparator<Lift>() {
+//        @Override
+//        public int compare(Lift lift1, Lift lift2) {
+//            return lift1.seatsAvailable - lift2.seatsAvailable;
+//        }
+//    };
+
+    public void sortByRemainingSeats(){
+
+        Collections.sort(lifts_list, new Comparator<Lift>() {
+            @Override
+            public int compare(Lift lift1, Lift lift2) {
+
+                return ((Integer) lift1.seatsAvailable).compareTo(lift2.seatsAvailable);
+            }
+        });
+
+
+        adapter.notifyDataSetChanged();
+
+    }
+
+    public void sortByLatestAdded(){
+
+
+      lifts_list.clear();
+
+        for (int i = 0; i < origLiftList.size(); i++) {
+            lifts_list.add(origLiftList.get(i));
+        }
+
+        adapter.notifyDataSetChanged();
+
+
+    }
+
+
+    public long getMillis(Lift lift){
+
+        String strDate = lift.getDate() + " " + lift.getTime();
+        long millis = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        try {
+            Date date = sdf.parse(strDate);
+            millis =  date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+            return millis;
+    }
+
+    public void sortByTime(){
+
+            Collections.sort(lifts_list, new Comparator<Lift>() {
+                @Override
+                public int compare(Lift lift1, Lift lift2) {
+                    return ((Long) getMillis(lift1)).compareTo(getMillis(lift2));
+                }
+            });
+
+        adapter.notifyDataSetChanged();
+
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        inflater.inflate(R.menu.sort_by, menu);
+        this.menu = menu;
+        super.onCreateOptionsMenu(menu, inflater);
+
+
+        for(int i=0; i<menu.size(); i++){
+            if(menu.getItem(i).getItemId() != R.id.sortByLatestAdded){
+                menu.getItem(i).setChecked(false);
+
+            }
+            else{
+                menu.getItem(i).setChecked(true);
+            }
+        }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        super.onOptionsItemSelected(item);
+        check(item);
+
+        switch(item.getItemId()){
+
+            case R.id.sortByDestination: sortByDestination(); return true;
+            case R.id.sortByAvailableSeats: sortByRemainingSeats(); return true;
+            case R.id.sortByLatestAdded: sortByLatestAdded(); return true;
+            case R.id.sortByTime: sortByTime(); return true;
+            default: return false;
+        }
+
+    }
+
+
+    public void check( MenuItem item) {
+        for(int i=0; i<menu.size(); i++){
+            if(menu.getItem(i).getItemId() != item.getItemId()){
+                menu.getItem(i).setChecked(false);
+
+            }
+        }
+
+        item.setChecked(true);
+
+    }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/sortByDestination"
+        android:checkable="true"
+        android:title="sort by destination" />
+
+
+    <item
+        android:id="@+id/sortByAvailableSeats"
+        android:checkable="true"
+        android:title="sort by seats" />
+    <item
+        android:id="@+id/sortByLatestAdded"
+        android:checkable="true"
+        android:title="sort by latest lift" />
+    <item
+        android:id="@+id/sortByTime"
+        android:checkable="true"
+        android:title="sort by time" />
+
+
+
+
+</menu>
