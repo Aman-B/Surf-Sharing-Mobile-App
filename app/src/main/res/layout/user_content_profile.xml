@@ -46,7 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
+                    android:clickable="false"
                     android:padding="@dimen/activity_horizontal_margin">
 
                     <LinearLayout
@@ -136,8 +136,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignTop="@+id/ageTextView"
-                        android:layout_toEndOf="@+id/profileNameTextView"
-                        android:layout_toRightOf="@+id/profileNameTextView" />
+                        android:layout_toEndOf="@+id/aboutTextView"
+                        android:layout_toRightOf="@+id/aboutTextView"
+                        android:text="-"
+                        tools:text="-" />
 
                     <TextView
                         android:id="@+id/profileGenderTextView"
@@ -146,7 +148,9 @@
                         android:layout_below="@+id/profileAgeTextView"
                         android:layout_marginTop="5dp"
                         android:layout_toEndOf="@+id/genderTextView"
-                        android:layout_toRightOf="@+id/genderTextView" />
+                        android:layout_toRightOf="@+id/genderTextView"
+                        android:text="-"
+                        tools:text="-" />
 
                     <TextView
                         android:id="@+id/bioTextView"
@@ -155,8 +159,7 @@
                         android:layout_alignLeft="@+id/aboutTextView"
                         android:layout_alignStart="@+id/aboutTextView"
                         android:layout_below="@+id/aboutTextView"
-                        android:layout_marginTop="5dp"
-                        android:text="TextView" />
+                        android:layout_marginTop="5dp" />
 
                 </RelativeLayout>
 
@@ -169,11 +172,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
+                    android:clickable="false"
                     android:padding="@dimen/activity_horizontal_margin">
 
                     <ImageView
-                        android:id="@+id/ivContactItem1"
+                        android:id="@+id/ivPhone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -188,8 +191,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="64dp"
                         android:layout_marginStart="@dimen/activity_horizontal_margin"
-                        android:layout_toEndOf="@id/ivContactItem1"
-                        android:layout_toRightOf="@id/ivContactItem1"
+                        android:layout_toEndOf="@id/ivPhone"
+                        android:layout_toRightOf="@id/ivPhone"
                         android:text="(123) 456-7890"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -200,8 +203,8 @@
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:layout_marginTop="8dp"
-                        android:layout_toEndOf="@id/ivContactItem1"
-                        android:layout_toRightOf="@id/ivContactItem1"
+                        android:layout_toEndOf="@id/ivPhone"
+                        android:layout_toRightOf="@id/ivPhone"
                         android:text="Home"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#727272" />
@@ -229,11 +232,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
+                    android:clickable="false"
+                    android:contextClickable="false"
                     android:padding="@dimen/activity_horizontal_margin">
 
                     <ImageView
-                        android:id="@+id/ivContactItem3"
+                        android:id="@+id/ivEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -248,9 +252,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_marginStart="@dimen/activity_horizontal_margin"
-                        android:layout_toEndOf="@id/ivContactItem3"
+                        android:layout_toEndOf="@id/ivEmail"
                         android:layout_toLeftOf="@+id/chkState3"
-                        android:layout_toRightOf="@id/ivContactItem3"
+                        android:layout_toRightOf="@id/ivEmail"
                         android:layout_toStartOf="@+id/chkState3"
                         android:ellipsize="end"
                         android:maxLines="1"
@@ -264,8 +268,8 @@
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:layout_marginTop="8dp"
-                        android:layout_toEndOf="@id/ivContactItem3"
-                        android:layout_toRightOf="@id/ivContactItem3"
+                        android:layout_toEndOf="@id/ivEmail"
+                        android:layout_toRightOf="@id/ivEmail"
                         android:text="Home"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#727272" />
@@ -293,11 +297,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
+                    android:clickable="false"
+                    android:contextClickable="false"
                     android:padding="@dimen/activity_horizontal_margin">
 
                     <ImageView
-                        android:id="@+id/ivContactItem5"
+                        android:id="@+id/ivLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -313,9 +318,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_marginStart="@dimen/activity_horizontal_margin"
-                        android:layout_toEndOf="@id/ivContactItem5"
+                        android:layout_toEndOf="@id/ivLocation"
                         android:layout_toLeftOf="@+id/chkState5"
-                        android:layout_toRightOf="@id/ivContactItem5"
+                        android:layout_toRightOf="@id/ivLocation"
                         android:layout_toStartOf="@+id/chkState5"
                         android:ellipsize="end"
                         android:maxLines="1"
@@ -329,8 +334,8 @@
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:layout_marginTop="8dp"
-                        android:layout_toEndOf="@id/ivContactItem5"
-                        android:layout_toRightOf="@id/ivContactItem5"
+                        android:layout_toEndOf="@id/ivLocation"
+                        android:layout_toRightOf="@id/ivLocation"
                         android:text="Home"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#727272" />

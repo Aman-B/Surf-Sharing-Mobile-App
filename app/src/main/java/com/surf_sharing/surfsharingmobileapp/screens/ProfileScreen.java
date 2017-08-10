@@ -145,6 +145,10 @@ public class ProfileScreen extends Fragment {
         final TextView profileUserAge = (TextView) view.findViewById(R.id.profileAgeTextView);
         final TextView profileUserBio = (TextView) view.findViewById(R.id.bioTextView);
         final ImageView profileImageView = (ImageView) view.findViewById(R.id.profileImageView);
+        final ImageView phoneIcon = (ImageView) view.findViewById(R.id.ivPhone);
+        final ImageView emailIcon = (ImageView) view.findViewById(R.id.ivEmail);
+        final ImageView locIcon = (ImageView) view.findViewById(R.id.ivLocation);
+
 
         dialog = new ProgressDialog(getActivity());
 
@@ -207,8 +211,9 @@ public class ProfileScreen extends Fragment {
 
                     if(userDob != null){
                         String userAge = getAge(userDob);
+                        System.out.print("age is:" + userAge);
                         Log.i("profile age", userAge);
-                        profileUserAge.setText(userAge);
+                        profileUserAge.setText(userAge.replaceAll("\\s+",""));
 
                     }
                     profileUserName.setText(userName);
@@ -227,6 +232,43 @@ public class ProfileScreen extends Fragment {
                 Log.i("Database error", error.toString());
             }
         });
+
+
+
+
+        //open the dial when the phone icon is clicked
+        phoneIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("phone icon", "working");
+                Uri number = Uri.parse("tel:" + userPhone);
+                Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+                startActivity(callIntent);
+            }
+        });
+
+
+        //open email application to send email to the users who profile was being viewed
+        emailIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("email icon", "working");
+            }
+        });
+
+
+        locIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("loc icon", "working");
+            }
+        });
+
+
+
+
+
+
 
 
 
@@ -286,7 +328,7 @@ public class ProfileScreen extends Fragment {
         }
 
         Integer ageInt = new Integer(age);
-        String ageS = ageInt.toString();
+        String ageS = ageInt.toString().trim();
 
         return ageS;
     }
