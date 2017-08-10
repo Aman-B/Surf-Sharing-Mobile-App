@@ -28,6 +28,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.surf_sharing.surfsharingmobileapp.R;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.User;
+import com.surf_sharing.surfsharingmobileapp.utils.ImageHelper;
+
 
 import java.util.Calendar;
 
@@ -53,6 +55,8 @@ public class ProfileScreen extends Fragment {
     private View view;
 
     private ProgressDialog dialog;
+
+
 
 
 
@@ -124,14 +128,14 @@ public class ProfileScreen extends Fragment {
             Toast.makeText(getContext(), "OWN PROFILE", Toast.LENGTH_SHORT).show();
 
 
-            view =  inflater.inflate(R.layout.fragment_profile, container, false);
+            view =  inflater.inflate(R.layout.user_content_profile, container, false);
             ownProfile = true;
 
 
         }
         else{
             Toast.makeText(getContext(), "OTHER'S PROFILE", Toast.LENGTH_SHORT).show();
-            view =  inflater.inflate(R.layout.fragment_users_view_profile, container, false);
+            view =  inflater.inflate(R.layout.user_content_profile, container, false);
             ownProfile = false;
 
         }
@@ -140,6 +144,7 @@ public class ProfileScreen extends Fragment {
         final TextView profileUserGender = (TextView) view.findViewById(R.id.profileGenderTextView);
         final TextView profileUserAge = (TextView) view.findViewById(R.id.profileAgeTextView);
         final TextView profileUserBio = (TextView) view.findViewById(R.id.bioTextView);
+        final ImageView profileImageView = (ImageView) view.findViewById(R.id.profileImageView);
 
         dialog = new ProgressDialog(getActivity());
 
@@ -180,7 +185,16 @@ public class ProfileScreen extends Fragment {
                     if (userImage != null) {
                         Log.i("profile Image", userImage);
                         DownloadImageTask downloadImageTask = new DownloadImageTask();
-                        downloadImageTask.execute(userImage);
+                        Bitmap userBitmap = downloadImageTask.execute(userImage).get();
+
+                        //set the image obtained from ImageView
+                        Bitmap roundedBitmap = ImageHelper.getRoundedCornerBitmap(userBitmap, 100);
+                       // Bitmap roundedBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cliffs_of_moher);
+
+                        profileImageView.setImageBitmap(roundedBitmap);
+
+
+
                         //ImageView userImageView = (ImageView) getView().findViewById(R.id.profileImageView);
                         //  userImageView.setImageBitmap(bitmap);
 
@@ -198,7 +212,7 @@ public class ProfileScreen extends Fragment {
 
                     }
                     profileUserName.setText(userName);
-                    profileUserGender.setText(userGender + " ,");
+                    profileUserGender.setText(userGender );
                     profileUserBio.setText(userBio);
 
 
@@ -216,20 +230,27 @@ public class ProfileScreen extends Fragment {
 
 
 
-        if(!ownProfile){
-            Button callButton = (Button) view.findViewById(R.id.callUserButton);
 
-            callButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
 
-                    Uri number = Uri.parse("tel:" + userPhone);
-                    Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
-                    startActivity(callIntent);
-                }
-            });
 
-        }
+
+
+
+
+//        if(!ownProfile){
+//            Button callButton = (Button) view.findViewById(R.id.callUserButton);
+//
+//            callButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//                    Uri number = Uri.parse("tel:" + userPhone);
+//                    Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+//                    startActivity(callIntent);
+//                }
+//            });
+//
+//        }
 
 
         return view;
@@ -314,8 +335,7 @@ public class ProfileScreen extends Fragment {
          * **/
         protected void onPostExecute(Bitmap bitmap) {
             if (dialog.isShowing()) dialog.dismiss();
-            ImageView userImageView = (ImageView) getView().findViewById(R.id.profileImageView);
-            userImageView.setImageBitmap(bitmap);
+
 
 
         }
