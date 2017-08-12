@@ -165,6 +165,7 @@ public class Database {
             mapChild.put("type", newUserValue.type);
             mapChild.put("phone", newUserValue.phone);
             mapChild.put("bio", newUserValue.bio);
+            mapChild.put("address", newUserValue.address);
             mapChild.put("lifts", "");
 
             if(newUserValue.image == null){

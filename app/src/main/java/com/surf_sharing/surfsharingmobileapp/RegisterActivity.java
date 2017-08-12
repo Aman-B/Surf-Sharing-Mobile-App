@@ -3,6 +3,7 @@ package com.surf_sharing.surfsharingmobileapp;
 import android.app.DatePickerDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.app.ProgressDialog;
 import android.net.Uri;
@@ -45,6 +46,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.surf_sharing.surfsharingmobileapp.R.id.email;
+import static com.surf_sharing.surfsharingmobileapp.R.id.locEditText;
 import static com.surf_sharing.surfsharingmobileapp.data.Database.userRoot;
 
 
@@ -59,6 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText editTextMaxPassengers;
     private EditText editTextPassword;
     private EditText editTextPassword2;
+    private EditText editTextLocation;
     private RadioGroup genderRadioGroup;
     private TextView textDateOfBirth;
 
@@ -106,7 +109,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         buttonDateOfBirth = (Button) findViewById(R.id.dateOfBirthButton);
         buttonRegister = (Button) findViewById(R.id.ok_btn);
-        genderRadioGroup = (RadioGroup) findViewById(R.id.genderRadioGroup);
 
         if (accountType.equals("passenger"))
         {
@@ -119,13 +121,13 @@ public class RegisterActivity extends AppCompatActivity {
 
             editTextName = (EditText) findViewById(R.id.edit_text_name);
             editTextName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-
-            editTextPhoneNumber = (EditText) findViewById(R.id.edit_text_phone);
+            editTextLocation = (EditText) findViewById(R.id.editTextLocation);
+            editTextPhoneNumber =   (EditText) findViewById(R.id.edit_text_phone);
             editTextEmail = (EditText) findViewById(R.id.edit_text_email);
             editTextPassword = (EditText) findViewById(R.id.editText4);
             editTextPassword2 = (EditText) findViewById(R.id.editText5);
-
             textDateOfBirth = (TextView) findViewById(R.id.dateOfBirth);
+            genderRadioGroup = (RadioGroup) findViewById(R.id.genderRadioGroup);
 
             buttonDateOfBirth.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -191,6 +193,8 @@ public class RegisterActivity extends AppCompatActivity {
             editTextMaxPassengers = (EditText) findViewById(R.id.edit_text_max_passengers);
             editTextPassword = (EditText) findViewById(R.id.edit_text_driver_password);
             editTextPassword2 = (EditText) findViewById(R.id.edit_text_driver_password_confirm);
+            editTextLocation = (EditText) findViewById(R.id.editTextLocation);
+            genderRadioGroup = (RadioGroup) findViewById(R.id.genderRadioGroup);
 
             textDateOfBirth = (TextView) findViewById(R.id.driverDateOfBirth);
 
@@ -239,66 +243,7 @@ public class RegisterActivity extends AppCompatActivity {
             };
         }
 
-        /*progressDialog = new ProgressDialog(this);
 
-        buttonDateOfBirth = (Button) findViewById(R.id.dateOfBirthButton);
-        buttonRegister = (Button) findViewById(R.id.ok_btn);
-
-        editTextName = (EditText) findViewById(R.id.edit_text_name);
-        editTextName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-
-        editTextGender = (EditText) findViewById(R.id.edit_text_gender);
-        editTextPhoneNumber = (EditText) findViewById(R.id.edit_text_phone);
-        editTextEmail = (EditText) findViewById(R.id.edit_text_email);
-        editTextPassword = (EditText) findViewById(R.id.editText4);
-        editTextPassword2 = (EditText) findViewById(R.id.editText5);
-
-        textDateOfBirth = (TextView) findViewById(R.id.dateOfBirth);
-
-        buttonDateOfBirth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar mcurrentDate = Calendar.getInstance();
-                int dayOfMonth = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-                int month = mcurrentDate.get(Calendar.MONTH);
-                int year = mcurrentDate.get(Calendar.YEAR);
-                DatePickerDialog mDatePicker;
-                mDatePicker = new DatePickerDialog(RegisterActivity.this, new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        textDateOfBirth.setText(String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year));
-
-                    }
-
-                }, year, month, dayOfMonth);
-                mDatePicker.show();
-            }
-        });
-
-        buttonRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //calling register method on click
-                registerUser();
-            }
-        });
-
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // user is logged in
-                    // Send user to NavDrawer when
-                    gotoNavDrawer();
-                } else {
-                    // user is logged out
-                }
-            }
-        };*/
     }
 
     private void gotoNavDrawer() {
@@ -327,12 +272,14 @@ public class RegisterActivity extends AppCompatActivity {
         String name = editTextName.getText().toString().trim();
         String age = textDateOfBirth.getText().toString().trim();
         String phone = editTextPhoneNumber.getText().toString().trim();
+        String loc = editTextLocation.getText().toString().trim();
 
         int selectedId = genderRadioGroup.getCheckedRadioButtonId();
         RadioButton genderRadioButton = (RadioButton) findViewById(selectedId);
         String gender = genderRadioButton.getText().toString();
 
         Toast.makeText(getApplicationContext(), gender, Toast.LENGTH_SHORT).show();
+
 
 
         if(name.isEmpty()) {
@@ -350,6 +297,11 @@ public class RegisterActivity extends AppCompatActivity {
         else if(phone.isEmpty()) {
             Display.popup(RegisterActivity.this, "Please enter your Phone Number");
             register = false;
+        }
+        else if(loc.isEmpty()){
+            Display.popup(RegisterActivity.this, "Please enter your address");
+            register = false;
+
         }
 //        else if(Integer.parseInt(getAge(age)) < 18){
 //            Display.popup(RegisterActivity.this, "Must be over 18 to register");
@@ -381,6 +333,12 @@ public class RegisterActivity extends AppCompatActivity {
                 Display.popup(RegisterActivity.this, "Please enter the Maximum number of passengers you can take");
                 register = false;
             }
+            else if(loc.isEmpty()){
+                Display.popup(RegisterActivity.this, "Please enter your address");
+                register = false;
+
+            }
+
         }
 
 
@@ -452,7 +410,11 @@ public class RegisterActivity extends AppCompatActivity {
             String age = textDateOfBirth.getText().toString().trim();
             String phone = editTextPhoneNumber.getText().toString().trim();
             String email = editTextEmail.getText().toString().trim();
+            String loc = editTextLocation.getText().toString().trim();
 
+
+
+            Log.i("user adr", loc);
 
             int selectedId = genderRadioGroup.getCheckedRadioButtonId();
             RadioButton genderRadioButton = (RadioButton) findViewById(selectedId);
@@ -460,6 +422,9 @@ public class RegisterActivity extends AppCompatActivity {
 
             Toast.makeText(getApplicationContext(), gender, Toast.LENGTH_SHORT).show();
 
+
+
+            //add the user's info into firebase
             if (type.equals("driver")) {
                 type = "pending";
                 String carMakeModel = editTextCarMakeModel.getText().toString().trim();
@@ -472,15 +437,16 @@ public class RegisterActivity extends AppCompatActivity {
                 driver.setAge(age);
                 driver.setName(name);
                 driver.setPhone(phone);
-
+                driver.setAddress(loc);
                 Database.setUserValue(driver);
+
             } else {
                 User user = new User(userId, type, email);
                 user.setGender(gender);
                 user.setAge(age);
                 user.setName(name);
                 user.setPhone(phone);
-
+                user.setAddress(loc);
                 Database.setUserValue(user);
             }
         }

@@ -71,7 +71,7 @@ public class ManageAccount extends Fragment{
     private DatabaseReference ref;
     private String nameInput, genderInput, dobInput, phoneInput, emailInput, image, bioInput;
     public static String userLastSavedImage;
-
+    String adr;
 
 
     //get the state of image.
@@ -329,7 +329,7 @@ public class ManageAccount extends Fragment{
                     String phone = (String) dataSnapshot.child("phone").getValue();
                     String bio = (String) dataSnapshot.child("bio").getValue();
                     String img64 = (String) dataSnapshot.child("image").getValue();
-
+                    adr = (String) dataSnapshot.child("address").getValue();
 
 
                     if(img64.equals("")) {
@@ -348,6 +348,7 @@ public class ManageAccount extends Fragment{
                     user.phone = phone;
                     user.image = img64;
                     user.bio = bio;
+                    user.address = adr;
 
                     final String userID = user.getUserId();
                     final String userType = user.getUserType();
@@ -889,6 +890,7 @@ public class ManageAccount extends Fragment{
                     updatedUser.setAge(newAge);
                     updatedUser.setPhone(newPhone);
                     updatedUser.setBio(newBio);
+                    updatedUser.setAddress(adr);
                     //set to latest image set
 
                     Log.i("new Image", userLastSavedImage);
