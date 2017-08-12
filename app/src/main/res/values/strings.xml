@@ -132,4 +132,5 @@
     <string name="title_activity_test_request_lift">TestRequestLiftActivity</string>
     <string name="title_lifts_offering">Lifts You Are Offering</string>
     <string name="title_request_responce">Requesting Passengers</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
