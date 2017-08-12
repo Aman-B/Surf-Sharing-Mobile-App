@@ -12,8 +12,7 @@
         android:orientation="vertical"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="12dp">
+        android:layout_alignParentStart="true">
 
 
         <LinearLayout
@@ -90,6 +89,28 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:id="@+id/text_view_age_label"
+                            android:layout_width="65dp"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="Address:"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+                        <TextView
+                            android:id="@+id/textViewAddress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                     </TableRow>
