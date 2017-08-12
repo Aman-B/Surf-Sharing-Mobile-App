@@ -264,7 +264,7 @@ Database.root.addListenerForSingleValueEvent(new ValueEventListener() {
             });
 
 
-
+            userAdr = "108 shrewsbury park, dublin";
             //open google maps with the specified location
             locIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -275,7 +275,7 @@ Database.root.addListenerForSingleValueEvent(new ValueEventListener() {
                             double latitude = 0.0;
                             Geocoder coder = new Geocoder(getContext());
                             try {
-                                ArrayList<Address> adresses = (ArrayList<Address>) coder.getFromLocationName("108 Shrewsbury Park, Dublin", 1);
+                                ArrayList<Address> adresses = (ArrayList<Address>) coder.getFromLocationName(userAdr, 1);
                                 for(Address add : adresses){
                                     if (add !=null) {//Controls to ensure it is right address such as country etc.
                                         longitude = add.getLongitude();
@@ -294,6 +294,7 @@ Database.root.addListenerForSingleValueEvent(new ValueEventListener() {
                     LatLng latLng = new LatLng(latitude, longitude);
                    Intent intent = new Intent(getContext(), MapsActivity.class);
                    intent.putExtra("LatLng", latLng);
+                    intent.putExtra("adr", userAdr);
                     startActivity(intent);
 
 
