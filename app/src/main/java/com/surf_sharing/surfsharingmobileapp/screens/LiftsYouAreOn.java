@@ -163,10 +163,6 @@ public class LiftsYouAreOn extends Fragment {
         });
 
 
-
-
-
-
         return view;
     }
 

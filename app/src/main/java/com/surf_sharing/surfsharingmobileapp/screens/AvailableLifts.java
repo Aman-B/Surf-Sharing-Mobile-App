@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +36,9 @@ import com.surf_sharing.surfsharingmobileapp.temp.Globals;
 import com.surf_sharing.surfsharingmobileapp.data.LiftContainer;
 import com.surf_sharing.surfsharingmobileapp.NavDrawer;
 import com.surf_sharing.surfsharingmobileapp.R;
+import com.surf_sharing.surfsharingmobileapp.utils.CustomizedAdapter;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,7 +54,7 @@ import java.util.Date;
  */
 public class AvailableLifts extends Fragment {
 
-    ListView liftList;
+    //ListView liftList;
     ArrayList<Lift> lifts_list;
     ArrayList<Lift> origLiftList;
 
@@ -59,6 +62,9 @@ public class AvailableLifts extends Fragment {
     private ValueEventListener liftListener;
     private ArrayAdapter adapter;
     private Menu menu;
+    private CustomizedAdapter customizedAdapter;
+    private ListView listView;
+    private SearchView searchView;
 
 
     String userId;
@@ -110,19 +116,23 @@ public class AvailableLifts extends Fragment {
         // change the title of the activity
         getActivity().setTitle(R.string.title_available_lift);
         // Inflate the layout for this fragment
-        final View view =  inflater.inflate(R.layout.fragment_available_lifts, container, false);
+      //  final View view =  inflater.inflate(R.layout.fragment_available_lifts, container, false);
 
+        final View view = inflater.inflate(R.layout.list_item_layout, container, false);
         // populate list with lifts
 
-        liftList = (ListView) view.findViewById(R.id.liftList);
+        listView = (ListView) view.findViewById(R.id.liftList);
+        searchView = (SearchView) view.findViewById(R.id.searchView);
+
+
+
         lifts_list = new ArrayList<Lift>();
         origLiftList = new ArrayList<Lift>();
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         userId = currentUser.getUid();
 
-        // added by Sean, working on requestLift
-        liftList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
@@ -185,10 +195,6 @@ public class AvailableLifts extends Fragment {
                             String passengerId = snapshot.getKey();
                             String passengerState = (String) snapshot.getValue();
 
-                            //if (passengerId.equals(userId))
-                            //{
-                                //alreadyRequested = true;
-                            //}
 
                             if (passengerState.equals("pending"))
                             {
@@ -202,10 +208,7 @@ public class AvailableLifts extends Fragment {
 
                         lifts_list.add(lift);
                         origLiftList.add(lift);
-                        //if (!alreadyRequested)
-                        //{
-                            lifts_list.add(lift);
-                        //}
+
                     }
                     catch (Exception e)
                     {
@@ -215,23 +218,30 @@ public class AvailableLifts extends Fragment {
 
                 try
                 {
-                    adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, lifts_list);
-                    //You can use my custom list view and custom array adaptor to display driver icon and text instead of just text
-                    //here is an example psudocode. you would need to get the images from the firebase and reference them
-                    // the adaptor takes two lists. the text one you have created and a list of string references to the downloaded icons
-                    //
-                    //
-                    // CustomArrayAdaptor adapter=new CustomArrayAdaptor(this, itemname, imgid);
-                    //list=(ListView)findViewById(R.id.listviewicontext);
-                    //list.setAdapter(adapter);
-                  //  Collections.copy(origLiftList, lifts_list);
 
-//
+//                    Lift lift1 = new Lift(null,"Place", 2, "123", "23/1/2017", "5");
+//                    ArrayList<Lift> list = new ArrayList<>();
+//                    list.add(lift1);
+
+                    customizedAdapter = new CustomizedAdapter(getContext(), lifts_list);
+
+                    listView.setAdapter(customizedAdapter);
+
+                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String s) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String s) {
+                            customizedAdapter.getFilter().filter(s);
+                            return false;
+                        }
+                    });
 
 
-                    liftList.setAdapter(adapter);
-                    //sortByDestination();
-                    sortByRemainingSeats();
+                    sortByDestination();
                 }
                 catch (Exception e)
                 { }
@@ -277,7 +287,7 @@ public class AvailableLifts extends Fragment {
         });
 
 
-        adapter.notifyDataSetChanged();
+        customizedAdapter.notifyDataSetChanged();
 
 
     }
@@ -302,7 +312,7 @@ public class AvailableLifts extends Fragment {
         });
 
 
-        adapter.notifyDataSetChanged();
+        customizedAdapter.notifyDataSetChanged();
 
     }
 
@@ -315,7 +325,7 @@ public class AvailableLifts extends Fragment {
             lifts_list.add(origLiftList.get(i));
         }
 
-        adapter.notifyDataSetChanged();
+        customizedAdapter.notifyDataSetChanged();
 
 
     }
@@ -344,7 +354,7 @@ public class AvailableLifts extends Fragment {
                 }
             });
 
-        adapter.notifyDataSetChanged();
+        customizedAdapter.notifyDataSetChanged();
 
     }
 
@@ -358,7 +368,7 @@ public class AvailableLifts extends Fragment {
 
 
         for(int i=0; i<menu.size(); i++){
-            if(menu.getItem(i).getItemId() != R.id.sortByLatestAdded){
+            if(menu.getItem(i).getItemId() != R.id.sortByDestination){
                 menu.getItem(i).setChecked(false);
 
             }
@@ -379,7 +389,7 @@ public class AvailableLifts extends Fragment {
 
             case R.id.sortByDestination: sortByDestination(); return true;
             case R.id.sortByAvailableSeats: sortByRemainingSeats(); return true;
-            case R.id.sortByLatestAdded: sortByLatestAdded(); return true;
+            //case R.id.sortByLatestAdded: sortByLatestAdded(); return true;
             case R.id.sortByTime: sortByTime(); return true;
             default: return false;
         }

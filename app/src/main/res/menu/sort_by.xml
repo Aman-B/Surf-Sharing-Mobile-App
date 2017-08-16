@@ -13,10 +13,6 @@
         android:checkable="true"
         android:title="sort by seats" />
     <item
-        android:id="@+id/sortByLatestAdded"
-        android:checkable="true"
-        android:title="sort by latest lift" />
-    <item
         android:id="@+id/sortByTime"
         android:checkable="true"
         android:title="sort by time" />

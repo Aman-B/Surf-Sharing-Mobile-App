@@ -9,6 +9,7 @@ import java.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -132,6 +133,7 @@ public class OfferLift extends Fragment {
         pickTimeButton = (Button) view.findViewById(R.id.offerLiftTimeButton);
         enterButton = (Button) view.findViewById(R.id.buttonEnter);
 
+       // editTextDest.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 

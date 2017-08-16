@@ -54,29 +54,29 @@ public class Home extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-
-        final ViewPager mViewPager = (ViewPager) view.findViewById(R.id.viewPageAndroid);
-        AndroidImageAdapter adapterView = new AndroidImageAdapter(getContext());
-        mViewPager.setAdapter(adapterView);
-
-        NUM_PAGES = adapterView.sliderImagesId.length;
-
-        final Handler handler = new Handler();
-        final Runnable Update = new Runnable() {
-            public void run() {
-                if (currentPage == NUM_PAGES) {
-                    currentPage = 0;
-                }
-                mViewPager.setCurrentItem(currentPage++, true);
-            }
-        };
-        Timer swipeTimer = new Timer();
-        swipeTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(Update);
-            }
-        }, 3000, 3000);
+//
+//        final ViewPager mViewPager = (ViewPager) view.findViewById(R.id.viewPageAndroid);
+//        AndroidImageAdapter adapterView = new AndroidImageAdapter(getContext());
+//        mViewPager.setAdapter(adapterView);
+//
+//        NUM_PAGES = adapterView.sliderImagesId.length;
+//
+//        final Handler handler = new Handler();
+//        final Runnable Update = new Runnable() {
+//            public void run() {
+//                if (currentPage == NUM_PAGES) {
+//                    currentPage = 0;
+//                }
+//                mViewPager.setCurrentItem(currentPage++, true);
+//            }
+//        };
+//        Timer swipeTimer = new Timer();
+//        swipeTimer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                handler.post(Update);
+//            }
+//        }, 3000, 3000);
 
 
         return view;

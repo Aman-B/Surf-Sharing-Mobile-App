@@ -97,5 +97,17 @@ public class Lift {
     public String getTime() {
         return this.time;
     }
+
+    public String getSeatsAvailable() {
+        return String.valueOf(seatsAvailable);
+    }
+
+    public static ArrayList<String> getPendingPassengers() {
+        return pendingPassengers;
+    }
+
+    public static ArrayList<String> getPassengers() {
+        return passengers;
+    }
 }
 
