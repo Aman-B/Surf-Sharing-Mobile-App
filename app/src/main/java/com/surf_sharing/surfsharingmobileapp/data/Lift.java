@@ -109,5 +109,7 @@ public class Lift {
     public static ArrayList<String> getPassengers() {
         return passengers;
     }
+
+
 }
 

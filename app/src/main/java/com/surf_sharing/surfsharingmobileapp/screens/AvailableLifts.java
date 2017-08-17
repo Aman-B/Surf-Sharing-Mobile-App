@@ -142,9 +142,9 @@ public class AvailableLifts extends Fragment {
                 final Lift l = (Lift) parent.getAdapter().getItem(position);
 
                 NavDrawer nd = (NavDrawer) getActivity();
-                //nd.replaceContent(RequestLift.newInstance());
+
+                //pass in the lift
                 nd.setupRequestLift(RequestLift.newInstance(), l);
-                // get lift id
 
             }
         });
@@ -160,6 +160,7 @@ public class AvailableLifts extends Fragment {
                     try
                     {
                         String id = postSnapshot.getKey();
+                        Log.i("availableLift-ID", id);
                         int seatsAvailable = Integer.parseInt((String) postSnapshot.child("seatsAvailable").getValue());
                         String car = (String) postSnapshot.child("car").getValue();
                         String destination = (String) postSnapshot.child("destination").getValue();
@@ -176,6 +177,9 @@ public class AvailableLifts extends Fragment {
                         String driverPhone = (String) driverRef.child("phone").getValue();
                         String driverBio = (String) driverRef.child("bio").getValue();
 
+                        Log.i("availableLiftDriverName", driverName);
+                        Log.i("driverMail", driverEmail);
+
                         User driver = new User(driverId, driverType, driverEmail);
                         driver.name = driverName;
                         driver.age = driverAge;
@@ -190,11 +194,17 @@ public class AvailableLifts extends Fragment {
                         lift.passengers = new ArrayList<String>();
                         lift.pendingPassengers = new ArrayList<String>();
 
+
+
+                        //iterate over the passengers
                         for (DataSnapshot snapshot : passengersRef.getChildren()) {
 
                             String passengerId = snapshot.getKey();
-                            String passengerState = (String) snapshot.getValue();
+                            Log.i("passengerId", passengerId);
+                            String passengerState = snapshot.child("status").getValue().toString();
+                            String passengerBoardLen = snapshot.child("board length").getValue().toString();
 
+                            Log.i("pass-boardLen", passengerBoardLen);
 
                             if (passengerState.equals("pending"))
                             {
@@ -206,7 +216,14 @@ public class AvailableLifts extends Fragment {
                             }
                         }
 
+                        Log.i("liftDes", destination);
+                        Log.i("liftDriver", driver.name);
+
                         lifts_list.add(lift);
+                        for(int i=0;i<lifts_list.size();i++){
+                            Log.i("lift " + i, lifts_list.get(i).getDestination());
+                        }
+                        Log.i("size", lifts_list.size() + "");
                         origLiftList.add(lift);
 
                     }
@@ -219,9 +236,6 @@ public class AvailableLifts extends Fragment {
                 try
                 {
 
-//                    Lift lift1 = new Lift(null,"Place", 2, "123", "23/1/2017", "5");
-//                    ArrayList<Lift> list = new ArrayList<>();
-//                    list.add(lift1);
 
                     customizedAdapter = new CustomizedAdapter(getContext(), lifts_list);
 

@@ -10,10 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.PendingIntent;
@@ -57,6 +59,9 @@ public class RequestLift extends Fragment {
     private ValueEventListener liftListener;
     private TextView locationText, timeText, dateText, driverNameText, seatsText, driverIDText;
     private String SENDER_ID = "561530043428";
+    private Spinner spinner;
+    private static final String[] boardLengths = {"5'2", "5'4", "5'8", "5'10", "6'2"};
+    private int selectedBoard;
 
     public RequestLift() {
         // Required empty public constructor
@@ -93,6 +98,8 @@ public class RequestLift extends Fragment {
             alreadyRequested = false;
 
         }
+
+        selectedBoard = -1;
     }
 
     @Override
@@ -101,44 +108,6 @@ public class RequestLift extends Fragment {
         // change the title of the activity
         getActivity().setTitle(R.string.title_request_lift);
 
-
-        /*Database.root.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-
-                try {
-                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                    userId = currentUser.getUid();
-
-                    Log.d("RequestLift Activity", userId);
-
-                    DataSnapshot liftRef = snapshot.child("lifts").child(idText);
-
-                    DataSnapshot passengersRef = liftRef.child("passengers");
-
-                    for (DataSnapshot passengerSnapshot : passengersRef.getChildren()) {
-
-                        String passengerId = passengerSnapshot.getKey();
-                        Log.d("RequestLift Activity", passengerId);
-                        String passengerState = (String) passengerSnapshot.getValue();
-
-                        if (passengerId.equals(userId) && (passengerState.equals("pending") || passengerState.equals("accepted"))) {
-
-                            Log.d("RequestLift Activity", "Reached here!");
-                            alreadyRequested = true;
-
-                        }
-                    }
-
-                } catch (Exception e) {
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-            }
-        });*/
 
         if (alreadyRequested) {
 
@@ -165,11 +134,53 @@ public class RequestLift extends Fragment {
                 // Inflate the layout for this fragment
                 View view = inflater.inflate(R.layout.fragment_request_lift, container, false);
 
+
                 locationText = (TextView) view.findViewById(R.id.requestLiftLocation);
                 timeText = (TextView) view.findViewById(R.id.requestLiftTime);
                 dateText = (TextView) view.findViewById(R.id.requestLiftDate);
                 driverNameText = (TextView) view.findViewById(R.id.requestLiftDriverName);
                 seatsText = (TextView) view.findViewById(R.id.requestLiftSeats);
+
+
+                //set the drop down lest menu/spinner
+                spinner = (Spinner) view.findViewById(R.id.spinner);
+                //array adapter will convert the arrayList into view objects for the spinner
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, boardLengths);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner.setAdapter(adapter);
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+                        switch(pos){
+
+                            case 0:
+                                selectedBoard = 0;
+                                break;
+                            case 1:
+                                selectedBoard = 1;
+                                break;
+                            case 2:
+                                selectedBoard = 2;
+                                break;
+                            case 3:
+                                selectedBoard = 3;
+                                break;
+                            case 4:
+                                selectedBoard = 4;
+                                break;
+                            default:
+                                selectedBoard = -1;
+
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                        Toast.makeText(getContext(), "Select your surfboard length", Toast.LENGTH_LONG);
+
+                    }
+                });
+
 
                 // set the driver and lift info
                 locationText.setText(liftStr);
@@ -203,38 +214,39 @@ public class RequestLift extends Fragment {
                     @Override
                     public void onClick(View view) {
 
-                        // Toast.makeText(getContext(), "request Lift: " + idText, Toast.LENGTH_SHORT).show();
-                        Display.popup(getActivity(), "Seat on lift requested!");
-                        Database.makeLiftRequest(idText);
-
-                        //-------------------------------------------------------------------------------------
-                        //Database.acceptLiftRequest(idText, "apMGnPrP8bXyIwztxjMcukxrEve2");
-                        //Database.rejectLiftRequest(idText, "apMGnPrP8bXyIwztxjMcukxrEve2");
-
-                        //Database.findUser("apMGnPrP8bXyIwztxjMcukxrEve2");
-                        //-------------------------------------------------------------------------------------
-
-                        // request the lift
-                        String messageTitle = "New Lift Request";
-                        String message = "You have received a new seat request for your Lift to: " + liftStr;
-                        String actionType = "com.surfsharing.MESSAGE";
-
-                        FirebaseMessaging fm = FirebaseMessaging.getInstance();
-                        AtomicInteger msgId = new AtomicInteger();
-                        fm.send(new RemoteMessage.Builder(SENDER_ID + "@gcm.googleapis.com")
-                                .setMessageId(Integer.toString(msgId.incrementAndGet()))
-                                .addData("message_title", messageTitle)
-                                .addData("message", message)
-                                .addData("action", actionType)
-                                .addData("lift", liftStr)
-                                .addData("recipient", driverId)
-                                .addData("sender", userId)
-                                .build());
 
 
+                        if(selectedBoard !=-1) {
 
-                        NavDrawer nd = (NavDrawer) getActivity();
-                        nd.replaceContent(AvailableLifts.newInstance());
+                            Display.popup(getActivity(), "Seat on lift requested!");
+                            //send the lift id and the length of the surfboard of the passenger
+                            Database.makeLiftRequest(idText, boardLengths[selectedBoard]);
+
+                            // request the lift
+                            String messageTitle = "New Lift Request";
+                            String message = "You have received a new seat request for your Lift to: " + liftStr;
+                            String actionType = "com.surfsharing.MESSAGE";
+
+                            FirebaseMessaging fm = FirebaseMessaging.getInstance();
+                            AtomicInteger msgId = new AtomicInteger();
+                            fm.send(new RemoteMessage.Builder(SENDER_ID + "@gcm.googleapis.com")
+                                    .setMessageId(Integer.toString(msgId.incrementAndGet()))
+                                    .addData("message_title", messageTitle)
+                                    .addData("message", message)
+                                    .addData("action", actionType)
+                                    .addData("lift", liftStr)
+                                    .addData("recipient", driverId)
+                                    .addData("sender", userId)
+                                    .build());
+
+
+                            NavDrawer nd = (NavDrawer) getActivity();
+                            nd.replaceContent(AvailableLifts.newInstance());
+                        }
+                        else{
+                            Toast.makeText(getContext(), "Select your surfboard length", Toast.LENGTH_LONG);
+
+                        }
 
                     }
                 });

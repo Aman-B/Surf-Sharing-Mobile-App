@@ -101,31 +101,6 @@ public class LiftsYouAreOffering extends Fragment {
         lifts_list = new ArrayList<Lift>();
 
 
-        // added by Sean, working on requestLift
-        liftList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                //Intent myIntent = new Intent(getActivity(), NextActivity.class);
-                //startActivity(myIntent);
-
-                //Toast.makeText(getContext(), "Test ", Toast.LENGTH_SHORT).show();
-
-                Lift l = (Lift) parent.getAdapter().getItem(position);
-                // TODO replace with actual condtion which will check if a request has been made for this lift
-                if(true){
-                    NavDrawer nd = (NavDrawer) getActivity();
-                    nd.setupRequestResponse(RequestResponse.newInstance(), userId, l.id, userId, l.seatsAvailable, l.destination, l.time, l.date, l.driver.email);
-                }
-
-
-                //nd.replaceContent(RequestResponse.newInstance());
-                // get lift id
-
-
-
-            }
-        });
 
         final ArrayAdapter<Lift> arrayAdapter = new ArrayAdapter<Lift>(getActivity(), android.R.layout.simple_list_item_1, lifts_list);
         //liftRoot = FirebaseDatabase.getInstance().getReference("lifts");
@@ -138,28 +113,38 @@ public class LiftsYouAreOffering extends Fragment {
                 {
                     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                     userId = currentUser.getUid();
+                    Log.i("offerLift-userId:", userId);
 
                     DataSnapshot userRef = snapshot.child("users").child(userId);
 
-                    DataSnapshot liftsRef = userRef.child("lifts");
+                    DataSnapshot userLiftsRef = userRef.child("lifts");
 
-                    for (DataSnapshot lifttSnapshot : liftsRef.getChildren()) {
+                    //get all the lifts where the user is the driver
+                    for (DataSnapshot lifttSnapshot : userLiftsRef.getChildren()) {
 
                         String liftId = lifttSnapshot.getKey();
                         String liftState = (String) lifttSnapshot.getValue();
+                        Log.i("offerLift-liftID:", liftId);
 
                         if (liftState.equals("driver"))
                         {
+                            Log.i("offerLift-liftState:", liftState);
+
+                            //goto lift root
                             DataSnapshot liftRef = snapshot.child("lifts").child(liftId);
 
                             String id = liftRef.getKey();
-                            int seatsAvailable = Integer.parseInt((String) liftRef.child("seatsAvailable").getValue());
                             String car = (String) liftRef.child("car").getValue();
                             String destination = (String) liftRef.child("destination").getValue();
                             String date = (String) liftRef.child("date").getValue();
                             String time = (String) liftRef.child("time").getValue();
 
+                            int seatsAvailable = Integer.parseInt((String) liftRef.child("seatsAvailable").getValue());
+
+                            //get all the driver's information
                             DataSnapshot driverRef = liftRef.child("driver");
+
+
                             String driverId = (String) driverRef.child("id").getValue();
                             String driverName = (String) driverRef.child("name").getValue();
                             String driverAge = (String) driverRef.child("age").getValue();
@@ -183,10 +168,28 @@ public class LiftsYouAreOffering extends Fragment {
                             lift.passengers = new ArrayList<String>();
                             lift.pendingPassengers = new ArrayList<String>();
 
-                            for (DataSnapshot passengerSnapshot : passengersRef.getChildren()) {
 
-                                String passengerId = passengerSnapshot.getKey();
-                                String passengerState = (String) passengerSnapshot.getValue();
+                            //iterate over the passengers
+                            //--passengers
+                            //|------passenger1
+                            //|             |
+                            //|             |status:"pending|accepted"
+                            //|             |boardLength
+                            //|
+                            //|------passenger2
+
+                            //iterate over the passengers
+                            for (DataSnapshot passengersSnapshot : passengersRef.getChildren()) {
+
+                                String passengerId = passengersSnapshot.getKey();
+
+                                //get individual passenger
+                                DataSnapshot passengerSnapshot = passengersRef.child(passengerId);
+                                String passengerState =  passengerSnapshot.child("status").getValue().toString();
+                                String passengerBoardLength = passengerSnapshot.child("board length").getValue().toString();
+                                Log.i("board len:lift offer", passengerBoardLength);
+                                Log.i("passenger status offer:", passengerState);
+                                //String passengerState = (String) passengerSnapshot.getValue();
 
                                 if (passengerState.equals("pending"))
                                 {
@@ -196,6 +199,10 @@ public class LiftsYouAreOffering extends Fragment {
                                 {
                                     lift.passengers.add(passengerId);
                                 }
+                            }
+
+                            for(int i=0;i<lift.pendingPassengers.size();i++){
+                                Log.i("passenger " + i, lift.pendingPassengers.get(i));
                             }
 
                             lifts_list.add(lift);
@@ -212,6 +219,32 @@ public class LiftsYouAreOffering extends Fragment {
                 }
             }
             @Override public void onCancelled(DatabaseError error) { }
+        });
+
+
+        liftList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                //Intent myIntent = new Intent(getActivity(), NextActivity.class);
+                //startActivity(myIntent);
+
+                //Toast.makeText(getContext(), "Test ", Toast.LENGTH_SHORT).show();
+
+                Lift l = (Lift) parent.getAdapter().getItem(position);
+                // TODO replace with actual condtion which will check if a request has been made for this lift
+                if(true){
+                    NavDrawer nd = (NavDrawer) getActivity();
+                    nd.setupRequestResponse(RequestResponse.newInstance(), userId, l.id, userId, l.seatsAvailable, l.destination, l.time, l.date, l.driver.email);
+                }
+
+
+                //nd.replaceContent(RequestResponse.newInstance());
+                // get lift id
+
+
+
+            }
         });
 
 

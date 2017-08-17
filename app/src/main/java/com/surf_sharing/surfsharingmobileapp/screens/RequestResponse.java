@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ import com.surf_sharing.surfsharingmobileapp.data.User;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.screens.LiftsYouAreOn;
+import com.surf_sharing.surfsharingmobileapp.utils.CustomRequestPassengersAdapter;
 import com.surf_sharing.surfsharingmobileapp.utils.Display;
 
 import java.util.ArrayList;
@@ -51,8 +53,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class RequestResponse extends Fragment {
 
-    ListView requestingUsers;
+    ListView requestingUsersListView;
     ArrayList<User> requesting_users_list;
+
 
     String driverId;
     String userId;
@@ -63,7 +66,7 @@ public class RequestResponse extends Fragment {
     private String SENDER_ID = "561530043428";
     private DatabaseReference liftRoot;
     private ValueEventListener liftListener;
-
+    private CustomRequestPassengersAdapter customAdapter;
     NavDrawer nd;
 
     public RequestResponse() {
@@ -105,40 +108,66 @@ public class RequestResponse extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_request_response, container, false);
 
         getActivity().setTitle(R.string.title_request_responce);
 
 
-        requestingUsers = (ListView) view.findViewById(R.id.passengerRequestList);
+        requestingUsersListView = (ListView) view.findViewById(R.id.passengerRequestList);
         //requesting_users_list = Database.getRequestingUsers();
 
-        final RequestItemAdapter arrayAdapter = new RequestItemAdapter(
-                getActivity(), requesting_users_list);
+
+        customAdapter = new CustomRequestPassengersAdapter(getContext(),requesting_users_list);
+
+
+//        final RequestItemAdapter arrayAdapter = new RequestItemAdapter(
+//                getActivity(), requesting_users_list);
+
 
         liftRoot = Database.root;
+
         liftListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
-                arrayAdapter.clear(); // remove all the items from previous event
+               // customAdapter.clear(); // remove all the items from previous event
 
                 try
                 {
-//                    Toast.makeText(getContext(), "liftId: " + liftId, Toast.LENGTH_SHORT).show();
                     DataSnapshot liftRef = snapshot.child("lifts").child(liftId);
                     liftDate = liftRef.child("date").getValue().toString();
                     liftDestination = liftRef.child("destination").getValue().toString();
                     DataSnapshot passengersRef = liftRef.child("passengers");
 
+                    //iterate over the passengers
                     for (DataSnapshot passengersSnapshot : passengersRef.getChildren()) {
 
-                        String passengerId = passengersSnapshot.getKey();
-                        String passengerState = (String) passengersSnapshot.getValue();
 
-                        if (passengerState.equals("pending"))
-                        {
+                        //get the information of individual passenger
+                        String passengerId = passengersSnapshot.getKey();
+
+                        String passengerState = passengersRef.child(passengerId).child("status").getValue().toString();
+                        String passengerBoardLength = passengersRef.child(passengerId).child("board length").getValue().toString();
+
+                        Log.i("requestResponse id:", passengerId);
+                        Log.i("req resp board len:", passengerBoardLength);
+                       // DataSnapshot passengerRef = passengersRef.child(passengerId);
+                      //  for (DataSnapshot passengerSnapshot : passengerRef.getChildren()) {
+
+//                            String passengerState = passengerSnapshot.child("state").getValue().toString();
+//                            String passengerBoardLength = passengerSnapshot.child("board length").getValue().toString();
+//                      //  }
+//
+//
+//                            Log.i("passenger id:", passengerId);
+//                            Log.i("board length:", passengerBoardLength);
+
+//                        String passengerId = passengersSnapshot.getKey();
+//                        String passengerState = (String) passengersSnapshot.getValue();
+
+                        if (passengerState.equals("pending")) {
                             DataSnapshot userRef = snapshot.child("users").child(passengerId);
                             String passengerName = (String) userRef.child("name").getValue();
                             String passengerAge = (String) userRef.child("age").getValue();
@@ -148,20 +177,23 @@ public class RequestResponse extends Fragment {
                             String passengerPhone = (String) userRef.child("phone").getValue();
                             String passengerBio = (String) userRef.child("bio").getValue();
 
+                            //get the passenger's surfboard length
+
+
                             User passenger = new User(passengerId, passengerType, passengerEmail);
                             passenger.name = passengerName;
                             passenger.age = passengerAge;
                             passenger.gender = passengerGender;
                             passenger.phone = passengerPhone;
                             passenger.bio = passengerBio;
-
+                            passenger.boardLength = passengerBoardLength;
                             requesting_users_list.add(passenger);
+                        } else {
                         }
-                        else
-                        { }
+                  //   }
                     }
 
-                    requestingUsers.setAdapter(arrayAdapter);
+                    requestingUsersListView.setAdapter(customAdapter);
                 }
                 catch (Exception e)
                 {
@@ -173,7 +205,9 @@ public class RequestResponse extends Fragment {
 
         liftRoot.addValueEventListener(liftListener);
 
-        requestingUsers.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+
+        requestingUsersListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
@@ -186,9 +220,9 @@ public class RequestResponse extends Fragment {
             }
         });
 
-        requestingUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        requestingUsersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+                                    final int position, long id) {
 
                 //Intent myIntent = new Intent(getActivity(), NextActivity.class);
                 //startActivity(myIntent);
@@ -203,7 +237,12 @@ public class RequestResponse extends Fragment {
                                 notifyUser(requestingPassenger, true);
 
                                 Database.acceptLiftRequest(liftId, requestingPassenger.getUserId());
+
+
                                 Display.popup(getActivity(), "Passenger Accepted!");
+
+                                requesting_users_list.remove(position);
+                                customAdapter.notifyDataSetChanged();
 
                                 //requestedLift.addPassenger(requestingPassenger.getUserId());
                                 // TODO undo comment below
@@ -211,6 +250,10 @@ public class RequestResponse extends Fragment {
 
                                 //Database.setUserValue(requestingPassenger);
                                 //Database.setLiftValue(requestedLift); // Database function not implemented yet
+
+
+
+
 
                             }
                         })
@@ -238,51 +281,6 @@ public class RequestResponse extends Fragment {
         });
 
 
-
-        /*Button viewProfileButton = (Button) view.findViewById(R.id.view_full_profile_btn);
-        viewProfileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                nd = (NavDrawer) getActivity();
-                Fragment userProfileScreen = ProfileScreen.newInstance(requestingUser.getUserId());
-                nd.replaceContent(userProfileScreen);
-
-            }
-        });
-
-        Button rejectButton = (Button) view.findViewById(R.id.reject_btn);
-        rejectButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-
-                notifyUser(requestingUser, false);
-
-                nd = (NavDrawer) getActivity();
-                Fragment liftsYouAreOfferingScreen = LiftsYouAreOffering.newInstance();
-
-                nd.replaceContent(liftsYouAreOfferingScreen);
-
-            }
-        });
-
-
-        Button acceptButton = (Button) view.findViewById(R.id.accept_btn);
-        acceptButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-
-                notifyUser(requestingUser, true);
-
-                requestedLift.addPassenger(requestingUser.id);
-                // TODO undo comment below
-                //requestingUser.addLift(requestedLift);
-
-                Database.setUserValue(requestingUser);
-                //Database.setLiftValue(requestedLift); // Database function not implemented yet
-
-            }
-        });*/
 
         return view;
     }

@@ -331,12 +331,13 @@ public class ManageAccount extends Fragment{
                     String adr = (String) dataSnapshot.child("address").getValue();
 
 
-                    if(img64.equals("")) {
-                        Log.i("image from firebase:", "nothing");
-                    }
-                    else{
-                        Log.i("image from firebase:", img64);
+                    if(img64 != null) {
+                        if (img64.equals("")) {
+                            Log.i("image from firebase:", "nothing");
+                        } else {
+                            Log.i("image from firebase:", img64);
 
+                        }
                     }
 
                     user.name = name;
@@ -372,23 +373,24 @@ public class ManageAccount extends Fragment{
                     bioText.setText(userBio);
 
 
-                    //set user's image
-                    if(!userImage.equals("")) {
+                    if(userImage != null) {
+                        //set user's image
+                        if (!userImage.equals("")) {
 
 //                        byte[] data = userImage.getBytes();
 //                        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
 //                        ImageView userImageView = (ImageView) getActivity().findViewById(R.id.imageView);
 //                        userImageView.setImageBitmap(bitmap);
 
-                        setUserImage(userImage);
-                        userLastSavedImage = userImage;
+                            setUserImage(userImage);
+                            userLastSavedImage = userImage;
 
 
-                        Toast.makeText(getActivity(), "image restored from firebase", Toast.LENGTH_LONG).show();
-                    }
-                    else{
-                        Toast.makeText(getActivity(), "image NOT restored from firebase", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "image restored from firebase", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getActivity(), "image NOT restored from firebase", Toast.LENGTH_LONG).show();
 
+                        }
                     }
 
                     //bioText.setText(userBio + "");
