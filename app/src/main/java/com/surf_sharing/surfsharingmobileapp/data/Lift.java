@@ -82,7 +82,13 @@ public class Lift {
 
         }
 
-        s = destination + ", " + seatsAvailable + " seats\n" + day + ", " + date + " at " + time;
+        if(seatsAvailable >0) {
+            s = destination + ", " + seatsAvailable + " seats\n" + day + ", " + date + " at " + time;
+        }
+        else{
+            s = destination + ", " + "seats filled\n" + day + ", " + date + " at " + time;
+
+        }
         return s;
     }
 

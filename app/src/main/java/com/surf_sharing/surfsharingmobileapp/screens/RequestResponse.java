@@ -41,7 +41,10 @@ import com.surf_sharing.surfsharingmobileapp.utils.Display;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.surf_sharing.surfsharingmobileapp.data.Database.root;
 
 
 /**
@@ -64,7 +67,7 @@ public class RequestResponse extends Fragment {
     String liftDestination;
 
     private String SENDER_ID = "561530043428";
-    private DatabaseReference liftRoot;
+    public static DatabaseReference liftRoot = root.child("lifts");
     private ValueEventListener liftListener;
     private CustomRequestPassengersAdapter customAdapter;
     NavDrawer nd;
@@ -126,7 +129,7 @@ public class RequestResponse extends Fragment {
 //                getActivity(), requesting_users_list);
 
 
-        liftRoot = Database.root;
+        liftRoot = root;
 
         liftListener = new ValueEventListener() {
             @Override
@@ -236,6 +239,39 @@ public class RequestResponse extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 notifyUser(requestingPassenger, true);
 
+
+
+                                //subtract remaining seats by 1.
+                                //DataSnapshot liftRef = snapshot.child("lifts").child(liftId);
+
+                                final DatabaseReference liftRef = liftRoot.child("lifts").child(liftId);
+
+                                Log.i("liftID",liftId);
+
+                                liftRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                        DataSnapshot liftSnapshot = dataSnapshot.child("seatsAvailable");
+                                        String remainingSeats = liftSnapshot.getValue().toString();
+                                        Log.i("remaining seats before", remainingSeats);
+                                        int seats = Integer.parseInt(remainingSeats) - 1;
+                                        Map<String,Object> mapLift = new HashMap<>();
+                                        String updatedRemainingSeats = Integer.toString(seats);
+                                        Log.i("remainingSeats now", updatedRemainingSeats);
+                                        mapLift.put("seatsAvailable",updatedRemainingSeats );
+                                        liftRef.updateChildren(mapLift);
+
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+
                                 Database.acceptLiftRequest(liftId, requestingPassenger.getUserId());
 
 
@@ -250,8 +286,6 @@ public class RequestResponse extends Fragment {
 
                                 //Database.setUserValue(requestingPassenger);
                                 //Database.setLiftValue(requestedLift); // Database function not implemented yet
-
-
 
 
 

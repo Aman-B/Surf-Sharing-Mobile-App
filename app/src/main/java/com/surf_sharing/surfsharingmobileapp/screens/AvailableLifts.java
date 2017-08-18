@@ -157,11 +157,14 @@ public class AvailableLifts extends Fragment {
 
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
-                    try
-                    {
+                    try {
                         String id = postSnapshot.getKey();
                         Log.i("availableLift-ID", id);
+
+                        //check if the seatsAvailable is greater than 0
                         int seatsAvailable = Integer.parseInt((String) postSnapshot.child("seatsAvailable").getValue());
+                        if (seatsAvailable > 0) {
+
                         String car = (String) postSnapshot.child("car").getValue();
                         String destination = (String) postSnapshot.child("destination").getValue();
                         String date = (String) postSnapshot.child("date").getValue();
@@ -195,7 +198,6 @@ public class AvailableLifts extends Fragment {
                         lift.pendingPassengers = new ArrayList<String>();
 
 
-
                         //iterate over the passengers
                         for (DataSnapshot snapshot : passengersRef.getChildren()) {
 
@@ -206,12 +208,9 @@ public class AvailableLifts extends Fragment {
 
                             Log.i("pass-boardLen", passengerBoardLen);
 
-                            if (passengerState.equals("pending"))
-                            {
+                            if (passengerState.equals("pending")) {
                                 lift.pendingPassengers.add(passengerId);
-                            }
-                            else
-                            {
+                            } else {
                                 lift.passengers.add(passengerId);
                             }
                         }
@@ -220,12 +219,13 @@ public class AvailableLifts extends Fragment {
                         Log.i("liftDriver", driver.name);
 
                         lifts_list.add(lift);
-                        for(int i=0;i<lifts_list.size();i++){
+                        for (int i = 0; i < lifts_list.size(); i++) {
                             Log.i("lift " + i, lifts_list.get(i).getDestination());
                         }
                         Log.i("size", lifts_list.size() + "");
                         origLiftList.add(lift);
 
+                     }
                     }
                     catch (Exception e)
                     {

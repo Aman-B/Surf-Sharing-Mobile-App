@@ -41,6 +41,8 @@ public class Database {
     public static DatabaseReference userRoot = root.child("users");
     public static DatabaseReference liftRoot = root.child("lifts");
 
+
+
     /**
      * Function to post a new lift to the database and it makes a driver refference inside the driver object
      *
@@ -210,22 +212,9 @@ public class Database {
                         Map<String,Object> mapUserLiftChild = new HashMap<String, Object>();
                         mapUserLiftChild.put(liftId, "pending");
 
-
-
                         //in the Lifts field, add the passenger as pending
                         DatabaseReference liftRef = liftRoot.child(liftId);
                         DatabaseReference liftPassengerChild = liftRef.child("passengers");
-
-//                        Map<String,Object> mapLiftPassengerChild = new HashMap<String, Object>();
-//
-//                        mapLiftPassengerChild.put(userId, "pending");
-//
-//                        liftPassengerChild.updateChildren(mapLiftPassengerChild);
-
-
-                       // DatabaseReference passengerChild = liftPassengerChild.child("passenger");
-
-
                         DatabaseReference passengerChild = liftPassengerChild.child(userId);
 
                         Map<String, Object> passengerDetailMap = new HashMap<>();
@@ -233,15 +222,11 @@ public class Database {
                         //add board length
                         passengerDetailMap.put("board length", boardLength);
                         passengerDetailMap.put("status", "pending");
-
-
-
                         passengerChild.updateChildren(passengerDetailMap);
 
                         DatabaseReference passenger = liftPassengerChild.child(userId);
 
                        // passengerChild.updateChildren(mapLiftPassengerChild);
-
                         userLiftsChild.updateChildren(mapUserLiftChild);
 
                     }
@@ -274,6 +259,10 @@ public class Database {
 
     public static void acceptLiftRequest(String liftId, String userId) {
 
+        liftId = liftId;
+        final DatabaseReference liftRef = liftRoot.child(liftId);
+
+
         DatabaseReference usersRef = userRoot.child(userId);
         DatabaseReference userLiftsChild = usersRef.child("lifts");
 
@@ -282,19 +271,26 @@ public class Database {
         mapUserLiftsChild.put(liftId, "passenger");
         userLiftsChild.updateChildren(mapUserLiftsChild);
 
-        DatabaseReference liftRef = liftRoot.child(liftId);
         DatabaseReference liftPassengers = liftRef.child("passengers");
-
         DatabaseReference passenger = liftPassengers.child(userId);
         Map<String,Object> mapPassengerState = new HashMap<String, Object>();
         mapPassengerState.put("status", "accepted");
-       // mapPassengerState.put("status")
-
-      //  passenger.child("status").setValue("accepted");
-
-        //mapPassengerState.put("")
         passenger.updateChildren(mapPassengerState);
-        //liftPassengers.updateChildren(mapPassengerState);
+
+
+
+
+//        DatabaseReference liftSeats = liftRef.child("seatsAvailable");
+//
+//
+//        String remainingSeats = liftSeats.getV
+//        Map<String,Object> mapLift = new HashMap<>();
+//        int seats = Integer.parseInt(remainingSeats) - 1;
+//        String updatedRemainingSeats = Integer.toString(seats);
+//        mapLift.put("seatsAvailable",updatedRemainingSeats );
+//        liftRef.
+
+
 
     }
 
