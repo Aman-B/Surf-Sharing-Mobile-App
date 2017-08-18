@@ -26,19 +26,41 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/profileImageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="153dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
-                    app:srcCompat="@drawable/ic_perm_identity_black" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="35dp"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profileImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:paddingTop="15dp"
+                    android:src="@drawable/driver_avatar"
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2dp" />
+
+                <TextView
+                    android:id="@+id/profileNameTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/profileGenderTextView"
+                    android:layout_toRightOf="@+id/profileGenderTextView"
+                    android:autoText="true"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textSize="30sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="25dp"
                 android:orientation="vertical">
 
 
@@ -63,26 +85,11 @@
                         android:layout_marginRight="@dimen/activity_horizontal_margin"
                         android:src="@drawable/ic_perm_identity_black" />
 
-                    <TextView
-                        android:id="@+id/profileNameTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
-                        android:layout_marginLeft="64dp"
-                        android:layout_marginStart="@dimen/activity_horizontal_margin"
-                        android:layout_toEndOf="@id/ivIdentity"
-                        android:layout_toRightOf="@id/ivIdentity"
-                        android:autoText="true"
-                        android:text="Name"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textSize="30sp" />
-
 
                     <TextView
                         android:id="@+id/ageTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/profileNameTextView"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:layout_marginTop="8dp"
@@ -149,9 +156,7 @@
                 </RelativeLayout>
 
 
-                <include
-                    layout="@layout/item_divider"
-                    />
+                <include layout="@layout/item_divider" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -178,7 +183,7 @@
                         android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:layout_toEndOf="@id/ivPhone"
                         android:layout_toRightOf="@id/ivPhone"
-                        android:text="(123) 456-7890"
+                        android:text="-"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                     <TextView
@@ -228,7 +233,7 @@
                         android:layout_toStartOf="@+id/chkState3"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="chintan@letsnurture.com"
+                        android:text="-"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                     <TextView
@@ -279,7 +284,7 @@
                         android:layout_toStartOf="@+id/chkState5"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="202 Park Street, Los Angeles"
+                        android:text="-"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                     <TextView

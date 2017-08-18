@@ -28,11 +28,14 @@
     import com.google.firebase.database.DataSnapshot;
     import com.google.firebase.database.DatabaseError;
     import com.google.firebase.database.ValueEventListener;
+   // import com.pkmmte.view.CircularImageView;
+
     import com.surf_sharing.surfsharingmobileapp.MapsActivity;
     import com.surf_sharing.surfsharingmobileapp.R;
     import com.surf_sharing.surfsharingmobileapp.data.Database;
     import com.surf_sharing.surfsharingmobileapp.data.User;
     import com.surf_sharing.surfsharingmobileapp.utils.ImageHelper;
+    import com.surf_sharing.surfsharingmobileapp.utils.RoundedImageView;
 
 
     import java.io.IOException;
@@ -157,10 +160,14 @@
     final TextView profileUserPhone = (TextView) view.findViewById(R.id.phoneTextView);
     final TextView profileUserAdr = (TextView) view.findViewById(R.id.locationTextView);
 
+    //final ImageView imgView = (ImageView) view.findViewById(R.id.profile_image);
+
+
     final ImageView profileImageView = (ImageView) view.findViewById(R.id.profileImageView);
     final ImageView phoneIcon = (ImageView) view.findViewById(R.id.ivPhone);
     final ImageView emailIcon = (ImageView) view.findViewById(R.id.ivEmail);
     final ImageView locIcon = (ImageView) view.findViewById(R.id.ivLocation);
+
 
 
 
@@ -206,13 +213,17 @@
                     Bitmap userBitmap = downloadImageTask.execute(userImage).get();
 
                     //set the image obtained from ImageView
-                    Bitmap roundedBitmap = ImageHelper.getRoundedCornerBitmap(userBitmap, 100);
+                    //Bitmap roundedBitmap = ImageHelper.getRoundedCornerBitmap(userBitmap, 100);
                    // Bitmap roundedBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cliffs_of_moher);
 
-                    profileImageView.setImageBitmap(roundedBitmap);
+                  //  profileImageView.setImageBitmap(roundedBitmap);
 
 
+//                    RoundedImageView roundedImageView = new RoundedImageView(userBitmap);
+//                    profileImageView.setImageDrawable(roundedImageView);
 
+                    profileImageView.setImageBitmap(userBitmap);
+                //    imgView.setImageBitmap(userBitmap);
                     //ImageView userImageView = (ImageView) getView().findViewById(R.id.profileImageView);
                     //  userImageView.setImageBitmap(bitmap);
 

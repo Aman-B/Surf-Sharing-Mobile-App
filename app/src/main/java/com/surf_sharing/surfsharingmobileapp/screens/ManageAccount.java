@@ -658,33 +658,46 @@ public class ManageAccount extends Fragment{
                     builder.show();
                 }
             });
+
+
+
+
 //
 
 
-            Button addPhotoButton = (Button) view.findViewById(R.id.addPhotoButton);
-            addPhotoButton.setOnClickListener(new View.OnClickListener() {
+            ImageView profileImgView = (ImageView) view.findViewById(R.id.profileImageView);
+            profileImgView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.i("Button has been ","clicked");
-
-                    //first ask the user to access photo folder
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-
-                 //   getPhoto();
-                    addUserPhoto(getView());
-                           // requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-//                        } else {
-//                            getPhoto();
-//                        }
-//                    } else {
-//                        //permission has already been granted
-//                        getPhoto();
-//                    }
-
-
+                    addUserPhoto(view);
                 }
             });
+
+
+//            Button addPhotoButton = (Button) view.findViewById(R.id.addPhotoButton);
+//            addPhotoButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Log.i("Button has been ","clicked");
+//
+//                    //first ask the user to access photo folder
+////                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+////                        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//
+//                 //   getPhoto();
+//                    addUserPhoto(getView());
+//                           // requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+////                        } else {
+////                            getPhoto();
+////                        }
+////                    } else {
+////                        //permission has already been granted
+////                        getPhoto();
+////                    }
+//
+//
+//                }
+//            });
 
             Button okButton = (Button) view.findViewById(R.id.ok_btn);
             okButton.setOnClickListener(new View.OnClickListener() {
