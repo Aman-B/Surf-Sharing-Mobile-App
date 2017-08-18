@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -19,12 +20,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -219,28 +222,28 @@ public class ManageAccount extends Fragment{
 
 
 //    //allow the user to upload their photo when the user clicks on the imageView
-//    public void addUserPhoto(View view){
-//
-//        ImageView userImageView = (ImageView) view.findViewById(R.id.userImageView);
-//
-//        //first ask the user to access photo folder
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-//
-//                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-//
-//            }
-//            else{
-//                getPhoto();
-//            }
-//        }
-//
-//        else{
-//            //permission has already been granted
-//            getPhoto();
-//        }
-//        return view;
-//    }
+    public void addUserPhoto(View view){
+
+      //  ImageView userImageView = (ImageView) view.findViewById(R.id.userImageView);
+
+        //first ask the user to access photo folder
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+
+            }
+            else{
+                getPhoto();
+            }
+        }
+
+        else{
+            //permission has already been granted
+            getPhoto();
+        }
+
+    }
 
 
 
@@ -668,7 +671,8 @@ public class ManageAccount extends Fragment{
 //                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //                        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-                    getPhoto();
+                 //   getPhoto();
+                    addUserPhoto(getView());
                            // requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
 //                        } else {
 //                            getPhoto();
