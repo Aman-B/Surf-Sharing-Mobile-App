@@ -2,11 +2,15 @@ package com.surf_sharing.surfsharingmobileapp.screens;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -69,6 +73,9 @@ public class AvailableLifts extends Fragment {
 
     String userId;
     boolean alreadyRequested;
+    private AlertDialog.Builder alertDlg;
+
+
 
     //Globals glob;
     public AvailableLifts() {
@@ -109,21 +116,56 @@ public class AvailableLifts extends Fragment {
 
         liftRoot = FirebaseDatabase.getInstance().getReference("lifts");
         alreadyRequested = false;
+        alertDlg = new AlertDialog.Builder(getContext());
+
     }
+
+
+    //check if a network connection is available
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+    }
+
+
+    private boolean hasConnectivity(){
+        if (!isNetworkAvailable()) {
+
+            alertDlg.setTitle("Something went wrong");
+            alertDlg.setMessage("Could not retrieve information from database, please check your internet connection.");
+            alertDlg.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                    hasConnectivity();
+
+                }
+            });
+            alertDlg.show();
+            return false;
+        }
+        return true;
+    }
+
+
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // change the title of the activity
         getActivity().setTitle(R.string.title_available_lift);
         // Inflate the layout for this fragment
-      //  final View view =  inflater.inflate(R.layout.fragment_available_lifts, container, false);
+        //  final View view =  inflater.inflate(R.layout.fragment_available_lifts, container, false);
 
         final View view = inflater.inflate(R.layout.list_item_layout, container, false);
         // populate list with lifts
 
         listView = (ListView) view.findViewById(R.id.liftList);
         searchView = (SearchView) view.findViewById(R.id.searchView);
-
 
 
         lifts_list = new ArrayList<Lift>();
@@ -149,6 +191,26 @@ public class AvailableLifts extends Fragment {
             }
         });
 
+
+
+        hasConnectivity();
+
+//        if (!isNetworkAvailable()) {
+//
+//            alertDlg.setTitle("Something went wrong");
+//            alertDlg.setMessage("Could not retrieve information from database, please check your internet connection.");
+//            alertDlg.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialogInterface, int i) {
+//
+//
+//                }
+//            });
+//            alertDlg.show();
+//        }
+//        else{
+
+
         liftListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -165,76 +227,73 @@ public class AvailableLifts extends Fragment {
                         int seatsAvailable = Integer.parseInt((String) postSnapshot.child("seatsAvailable").getValue());
                         if (seatsAvailable > 0) {
 
-                        String car = (String) postSnapshot.child("car").getValue();
-                        String destination = (String) postSnapshot.child("destination").getValue();
-                        String date = (String) postSnapshot.child("date").getValue();
-                        String time = (String) postSnapshot.child("time").getValue();
+                            String car = (String) postSnapshot.child("car").getValue();
+                            String destination = (String) postSnapshot.child("destination").getValue();
+                            String date = (String) postSnapshot.child("date").getValue();
+                            String time = (String) postSnapshot.child("time").getValue();
 
-                        DataSnapshot driverRef = postSnapshot.child("driver");
-                        String driverId = (String) driverRef.child("id").getValue();
-                        String driverName = (String) driverRef.child("name").getValue();
-                        String driverAge = (String) driverRef.child("age").getValue();
-                        String driverGender = (String) driverRef.child("gender").getValue();
-                        String driverEmail = (String) driverRef.child("email").getValue();
-                        String driverType = (String) driverRef.child("type").getValue();
-                        String driverPhone = (String) driverRef.child("phone").getValue();
-                        String driverBio = (String) driverRef.child("bio").getValue();
+                            DataSnapshot driverRef = postSnapshot.child("driver");
+                            String driverId = (String) driverRef.child("id").getValue();
+                            String driverName = (String) driverRef.child("name").getValue();
+                            String driverAge = (String) driverRef.child("age").getValue();
+                            String driverGender = (String) driverRef.child("gender").getValue();
+                            String driverEmail = (String) driverRef.child("email").getValue();
+                            String driverType = (String) driverRef.child("type").getValue();
+                            String driverPhone = (String) driverRef.child("phone").getValue();
+                            String driverBio = (String) driverRef.child("bio").getValue();
 
-                        Log.i("availableLiftDriverName", driverName);
-                        Log.i("driverMail", driverEmail);
+                            Log.i("availableLiftDriverName", driverName);
+                            Log.i("driverMail", driverEmail);
 
-                        User driver = new User(driverId, driverType, driverEmail);
-                        driver.name = driverName;
-                        driver.age = driverAge;
-                        driver.gender = driverGender;
-                        driver.phone = driverPhone;
-                        driver.bio = driverBio;
+                            User driver = new User(driverId, driverType, driverEmail);
+                            driver.name = driverName;
+                            driver.age = driverAge;
+                            driver.gender = driverGender;
+                            driver.phone = driverPhone;
+                            driver.bio = driverBio;
 
-                        Lift lift = new Lift(driver, destination, seatsAvailable, id, time, date);
-                        lift.car = car;
+                            Lift lift = new Lift(driver, destination, seatsAvailable, id, time, date);
+                            lift.car = car;
 
-                        DataSnapshot passengersRef = postSnapshot.child("passengers");
-                        lift.passengers = new ArrayList<String>();
-                        lift.pendingPassengers = new ArrayList<String>();
+                            DataSnapshot passengersRef = postSnapshot.child("passengers");
+                            lift.passengers = new ArrayList<String>();
+                            lift.pendingPassengers = new ArrayList<String>();
 
 
-                        //iterate over the passengers
-                        for (DataSnapshot snapshot : passengersRef.getChildren()) {
+                            //iterate over the passengers
+                            for (DataSnapshot snapshot : passengersRef.getChildren()) {
 
-                            String passengerId = snapshot.getKey();
-                            Log.i("passengerId", passengerId);
-                            String passengerState = snapshot.child("status").getValue().toString();
-                            String passengerBoardLen = snapshot.child("board length").getValue().toString();
+                                String passengerId = snapshot.getKey();
+                                Log.i("passengerId", passengerId);
+                                String passengerState = snapshot.child("status").getValue().toString();
+                                String passengerBoardLen = snapshot.child("board length").getValue().toString();
 
-                            Log.i("pass-boardLen", passengerBoardLen);
+                                Log.i("pass-boardLen", passengerBoardLen);
 
-                            if (passengerState.equals("pending")) {
-                                lift.pendingPassengers.add(passengerId);
-                            } else {
-                                lift.passengers.add(passengerId);
+                                if (passengerState.equals("pending")) {
+                                    lift.pendingPassengers.add(passengerId);
+                                } else {
+                                    lift.passengers.add(passengerId);
+                                }
                             }
+
+                            Log.i("liftDes", destination);
+                            Log.i("liftDriver", driver.name);
+
+                            lifts_list.add(lift);
+                            for (int i = 0; i < lifts_list.size(); i++) {
+                                Log.i("lift " + i, lifts_list.get(i).getDestination());
+                            }
+                            Log.i("size", lifts_list.size() + "");
+                            origLiftList.add(lift);
+
                         }
-
-                        Log.i("liftDes", destination);
-                        Log.i("liftDriver", driver.name);
-
-                        lifts_list.add(lift);
-                        for (int i = 0; i < lifts_list.size(); i++) {
-                            Log.i("lift " + i, lifts_list.get(i).getDestination());
-                        }
-                        Log.i("size", lifts_list.size() + "");
-                        origLiftList.add(lift);
-
-                     }
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
 
                     }
                 }
 
-                try
-                {
+                try {
 
 
                     customizedAdapter = new CustomizedAdapter(getContext(), lifts_list);
@@ -256,9 +315,8 @@ public class AvailableLifts extends Fragment {
 
 
                     sortByDestination();
+                } catch (Exception e) {
                 }
-                catch (Exception e)
-                { }
 
             }
 
@@ -269,12 +327,21 @@ public class AvailableLifts extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+                alertDlg.setTitle("Something went wrong");
+                alertDlg.setMessage("Could not retrieve information from database, please check your internet connection.");
+                alertDlg.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                alertDlg.show();
             }
         };
 
         liftRoot.addValueEventListener(liftListener);
 
-
+    //}
         return view;
     }
 
@@ -307,13 +374,6 @@ public class AvailableLifts extends Fragment {
     }
 
 
-
-//    public static final Comparator<Lift> ASCENDING_COMPARATOR = new Comparator<Lift>() {
-//        @Override
-//        public int compare(Lift lift1, Lift lift2) {
-//            return lift1.seatsAvailable - lift2.seatsAvailable;
-//        }
-//    };
 
     public void sortByRemainingSeats(){
 

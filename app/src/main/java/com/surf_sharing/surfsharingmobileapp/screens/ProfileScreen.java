@@ -1,7 +1,9 @@
     package com.surf_sharing.surfsharingmobileapp.screens;
 
+    import android.app.AlertDialog;
     import android.app.ProgressDialog;
     import android.content.Context;
+    import android.content.DialogInterface;
     import android.content.Intent;
     import android.graphics.Bitmap;
     import android.graphics.BitmapFactory;
@@ -67,7 +69,7 @@
     private View view;
 
     private ProgressDialog dialog;
-
+    private AlertDialog.Builder alertDlg;
 
 
 
@@ -123,6 +125,7 @@
         Log.i("userId", userId);
     }
 
+    alertDlg = new AlertDialog.Builder(getContext());
 
     }
 
@@ -323,42 +326,22 @@
         }
         @Override public void onCancelled(DatabaseError error) {
             Log.i("Database error", error.toString());
+            if (dialog.isShowing()) dialog.dismiss();
+
+            alertDlg.setTitle("Something went wrong");
+            alertDlg.setMessage("Could not retrieve information from database, please check your internet connection.");
+            alertDlg.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                }
+            });
+            alertDlg.show();
         }
     });
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //        if(!ownProfile){
-    //            Button callButton = (Button) view.findViewById(R.id.callUserButton);
-    //
-    //            callButton.setOnClickListener(new View.OnClickListener() {
-    //                @Override
-    //                public void onClick(View view) {
-    //
-    //                    Uri number = Uri.parse("tel:" + userPhone);
-    //                    Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
-    //                    startActivity(callIntent);
-    //                }
-    //            });
-    //
-    //        }
 
 
     return view;
