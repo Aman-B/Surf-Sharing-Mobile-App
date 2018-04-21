@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:weightSum="2"
+    tools:context="com.surf_sharing.surfsharingmobileapp.screens.Home">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/image1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/nav_drawer_header" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/homeIntroLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome to Surf Sharing\n\nInterested in getting a Lift? Have a look at the Lifts being offered under the 'Available Lifts' page"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:textColor="#000000"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:layout_margin="5dp" />
+    </LinearLayout>
+
+
+</LinearLayout>

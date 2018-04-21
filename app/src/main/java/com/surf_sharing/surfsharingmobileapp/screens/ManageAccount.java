@@ -1,19 +1,10 @@
 package com.surf_sharing.surfsharingmobileapp.screens;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -21,15 +12,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,9 +29,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.app.AlertDialog;
-import android.text.InputType;
-import android.content.DialogInterface;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,18 +36,21 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-
 import com.google.firebase.database.ValueEventListener;
-import com.surf_sharing.surfsharingmobileapp.MainActivity;
+import com.surf_sharing.surfsharingmobileapp.BackPressedInFragmentVisibleOnTopOfViewPager;
 import com.surf_sharing.surfsharingmobileapp.R;
-
-import static android.app.Activity.RESULT_OK;
-import static android.content.Context.NOTIFICATION_SERVICE;
-import static android.support.design.R.id.icon;
-
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.User;
-import com.surf_sharing.surfsharingmobileapp.NavDrawer;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -69,13 +58,15 @@ import com.surf_sharing.surfsharingmobileapp.NavDrawer;
  * Use the {@link ManageAccount#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ManageAccount extends Fragment{
+public class ManageAccount extends Fragment {
 
     private DatabaseReference ref;
     private String nameInput, genderInput, dobInput, phoneInput, emailInput, image, bioInput, adrInput;
     public static String userLastSavedImage;
 
 
+    //handle back button and show previous fragment (profile screen)
+    private BackPressedInFragmentVisibleOnTopOfViewPager mBackPressedInFragmentVisibleOnTopOfViewPager;
     //get the state of image.
     @Override
     public void onSaveInstanceState(final Bundle outState) {
@@ -283,7 +274,6 @@ public class ManageAccount extends Fragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_manage_account, container, false);
 
-        final NavDrawer nd = (NavDrawer) getActivity();
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -750,8 +740,8 @@ public class ManageAccount extends Fragment{
                         }
                     });*/
 
-                    Fragment availableLifts = AvailableLifts.newInstance();
-                    nd.replaceContent(availableLifts);
+                    //update done in firebase; detach.
+                    onDetach();
 
                 }
             });
@@ -764,8 +754,8 @@ public class ManageAccount extends Fragment{
                 @Override
                 public void onClick(View view) {
 
-                    Fragment availableLifts = AvailableLifts.newInstance();
-                    nd.replaceContent(availableLifts);
+                    //canceled by user; detach.
+                    onDetach();
                 }
             });
 
@@ -796,12 +786,21 @@ public class ManageAccount extends Fragment{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mBackPressedInFragmentVisibleOnTopOfViewPager =(BackPressedInFragmentVisibleOnTopOfViewPager)getActivity();
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        boolean isLastFragment= true;
+        mBackPressedInFragmentVisibleOnTopOfViewPager.onBackPressedInFragmentVisibleOnTopOfViewPager(isLastFragment);
+
+
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+
     }
+
 
 
 }

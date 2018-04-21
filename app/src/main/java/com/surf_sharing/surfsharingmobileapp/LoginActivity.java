@@ -116,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (user != null) {
                     // user is logged in
                     // Send user to NavDrawer when
-                    Intent intent = new Intent(LoginActivity.this, NavDrawer.class);
+                    Intent intent = new Intent(LoginActivity.this, TabActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();

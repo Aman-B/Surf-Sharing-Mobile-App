@@ -1,47 +1,36 @@
 package com.surf_sharing.surfsharingmobileapp.screens;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.app.PendingIntent;
-import android.support.v4.app.NotificationCompat;
-import android.app.NotificationManager;
-import android.content.Intent;
-import android.graphics.Color;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
-import com.surf_sharing.surfsharingmobileapp.NavDrawer;
+import com.surf_sharing.surfsharingmobileapp.BackPressedInFragmentVisibleOnTopOfViewPager;
 import com.surf_sharing.surfsharingmobileapp.R;
+import com.surf_sharing.surfsharingmobileapp.TabActivity;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
-import com.surf_sharing.surfsharingmobileapp.data.User;
 import com.surf_sharing.surfsharingmobileapp.utils.Display;
-import com.surf_sharing.surfsharingmobileapp.utils.FirebaseError;
 
-import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -63,6 +52,10 @@ public class RequestLift extends Fragment {
     private static final String[] boardLengths = {"5'2", "5'4", "5'8", "5'10", "6'2"};
     private int selectedBoard;
 
+
+    private BackPressedInFragmentVisibleOnTopOfViewPager mOnBackPressedInFragmentVisibleOnTopOfViewPager;
+
+
     public RequestLift() {
         // Required empty public constructor
     }
@@ -80,6 +73,8 @@ public class RequestLift extends Fragment {
 
         return fragment;
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,7 +94,15 @@ public class RequestLift extends Fragment {
 
         }
 
+        setHasOptionsMenu(true);
         selectedBoard = -1;
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
     }
 
     @Override
@@ -108,6 +111,18 @@ public class RequestLift extends Fragment {
         // change the title of the activity
         getActivity().setTitle(R.string.title_request_lift);
 
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+
+        Toolbar mToolbar= (Toolbar) ((AppCompatActivity) getActivity()).findViewById(R.id.toolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onDetach();
+            }
+        });
 
         if (alreadyRequested) {
 
@@ -201,8 +216,12 @@ public class RequestLift extends Fragment {
                     public void onClick(View view) {
 
                         //go to driver's profile screen
-                        NavDrawer nd = (NavDrawer) getActivity();
-                        nd.replaceContent(ProfileScreen.newInstance(driverId));
+                        /*NavDrawer nd = (NavDrawer) getActivity();
+                        nd.replaceContent(ProfileScreen.newInstance(driverId));*/
+
+                        //Changes : removed above added tab
+                        TabActivity tabActivity =(TabActivity) getActivity();
+                        tabActivity.replaceContent(ProfileScreen.newInstance(driverId));
 
                     }
                 });
@@ -240,8 +259,11 @@ public class RequestLift extends Fragment {
                                     .build());
 
 
-                            NavDrawer nd = (NavDrawer) getActivity();
-                            nd.replaceContent(AvailableLifts.newInstance());
+                           /* NavDrawer nd = (NavDrawer) getActivity();
+                            nd.replaceContent(AvailableLifts.newInstance());*/
+
+                            //Changes : removed above, added removal of this fragment after request sent.
+                            onDetach();
                         }
                         else{
                             Toast.makeText(getContext(), "Select your surfboard length", Toast.LENGTH_LONG);
@@ -260,10 +282,28 @@ public class RequestLift extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mOnBackPressedInFragmentVisibleOnTopOfViewPager =(BackPressedInFragmentVisibleOnTopOfViewPager)getActivity();
+
+
     }
+
+
 
     @Override
     public void onDetach() {
         super.onDetach();
+        //Toast.makeText(getContext(),"Detached",Toast.LENGTH_LONG).show();
+
+        //this is the last fragment to show on top of viewpager, so pass true;
+        boolean isLastFragment= true;
+        mOnBackPressedInFragmentVisibleOnTopOfViewPager.onBackPressedInFragmentVisibleOnTopOfViewPager(isLastFragment);
+
+
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+
+
     }
+
+
+
 }

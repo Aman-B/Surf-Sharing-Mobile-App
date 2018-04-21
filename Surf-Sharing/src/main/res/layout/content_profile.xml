@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:id="@+id/imageLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linearLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profileImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:paddingTop="15dp"
+                    android:src="@drawable/driver_avatar"
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2dp" />
+
+                <TextView
+                    android:id="@+id/profileNameTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/profileGenderTextView"
+                    android:layout_toRightOf="@+id/profileGenderTextView"
+                    android:autoText="true"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textSize="30sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="25dp"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="false"
+                    android:padding="@dimen/activity_horizontal_margin">
+
+                    <ImageView
+                        android:id="@+id/ivIdentityAge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:src="@drawable/ic_perm_identity_black" />
+
+
+                    <TextView
+                        android:id="@+id/ageTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_toEndOf="@id/ivIdentityAge"
+                        android:layout_toRightOf="@id/ivIdentityAge"
+                        android:text="Age:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="#727272" />
+
+                    <TextView
+                        android:id="@+id/profileAgeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_toEndOf="@id/ageTextView"
+                        android:layout_toRightOf="@id/ageTextView"
+                        android:text="-"
+                        tools:text="-" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/item_divider" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="false"
+                    android:padding="@dimen/activity_horizontal_margin">
+
+                    <ImageView
+                        android:id="@+id/ivIdentityGender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:src="@drawable/ic_perm_identity_black" />
+
+                    <TextView
+                        android:id="@+id/genderTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="5dp"
+                        android:layout_toEndOf="@+id/ivIdentityGender"
+                        android:layout_toRightOf="@+id/ivIdentityGender"
+                        android:text="Gender:" />
+
+                    <TextView
+                        android:id="@+id/profileGenderTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_toEndOf="@+id/genderTextView"
+                        android:layout_toRightOf="@+id/genderTextView"
+                        android:text="-"
+                        tools:text="-" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/item_divider" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="false"
+                    android:padding="@dimen/activity_horizontal_margin">
+
+                    <ImageView
+                        android:id="@+id/ivIdentityBio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:src="@drawable/ic_perm_identity_black" />
+
+                    <TextView
+                        android:id="@+id/aboutTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="15dp"
+                        android:layout_toEndOf="@+id/ivIdentityBio"
+                        android:layout_toRightOf="@+id/ivIdentityBio"
+                        android:text="Bio:" />
+
+
+                    <TextView
+                        android:id="@+id/bioTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/aboutTextView"
+                        android:layout_alignStart="@+id/aboutTextView"
+                        android:layout_below="@+id/aboutTextView"
+                        android:layout_marginTop="5dp" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/item_divider" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:padding="@dimen/activity_horizontal_margin">
+
+                    <ImageView
+                        android:id="@+id/ivEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:clickable="true"
+                        android:src="@drawable/ic_email_black" />
+
+                    <TextView
+                        android:id="@+id/emailLabelTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="16dp"
+                        android:layout_toEndOf="@id/ivEmail"
+                        android:layout_toRightOf="@id/ivEmail"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="Email:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    <TextView
+                        android:id="@+id/emailTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/emailLabelTextView"
+                        android:layout_toRightOf="@+id/emailLabelTextView"
+                        android:text="-"
+                        android:layout_marginTop="5dp" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/item_divider" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

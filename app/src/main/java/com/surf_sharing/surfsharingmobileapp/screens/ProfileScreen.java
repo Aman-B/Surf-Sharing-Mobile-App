@@ -13,37 +13,34 @@
     import android.os.AsyncTask;
     import android.os.Bundle;
     import android.support.v4.app.Fragment;
-    import android.support.v4.app.FragmentManager;
+    import android.support.v7.app.AppCompatActivity;
     import android.util.Base64;
     import android.util.Log;
     import android.view.LayoutInflater;
+    import android.view.Menu;
+    import android.view.MenuInflater;
     import android.view.View;
     import android.view.ViewGroup;
-    import android.widget.Button;
     import android.widget.ImageView;
     import android.widget.TextView;
     import android.widget.Toast;
 
     import com.google.android.gms.maps.model.LatLng;
     import com.google.firebase.auth.FirebaseAuth;
-    import com.google.firebase.auth.FirebaseUser;
     import com.google.firebase.database.DataSnapshot;
     import com.google.firebase.database.DatabaseError;
     import com.google.firebase.database.ValueEventListener;
-   // import com.pkmmte.view.CircularImageView;
-
+    import com.surf_sharing.surfsharingmobileapp.BackPressedInFragmentVisibleOnTopOfViewPager;
     import com.surf_sharing.surfsharingmobileapp.MapsActivity;
     import com.surf_sharing.surfsharingmobileapp.R;
     import com.surf_sharing.surfsharingmobileapp.data.Database;
     import com.surf_sharing.surfsharingmobileapp.data.User;
-    import com.surf_sharing.surfsharingmobileapp.utils.ImageHelper;
-    import com.surf_sharing.surfsharingmobileapp.utils.RoundedImageView;
-
 
     import java.io.IOException;
     import java.util.ArrayList;
     import java.util.Calendar;
-    import java.util.Locale;
+
+// import com.pkmmte.view.CircularImageView;
 
     /**
     * A simple {@link Fragment} subclass.
@@ -72,6 +69,7 @@
     private AlertDialog.Builder alertDlg;
 
 
+    private BackPressedInFragmentVisibleOnTopOfViewPager mOnBackPressedInFragmentVisibleOnTopOfViewPager;
 
 
     public ProfileScreen() {
@@ -126,7 +124,7 @@
     }
 
     alertDlg = new AlertDialog.Builder(getContext());
-
+    setHasOptionsMenu(true);
     }
 
     @Override
@@ -134,12 +132,19 @@
                          Bundle savedInstanceState) {
     // change the title of the activity
 
+        //for back arrow on top [START]
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
+
+
+        //for back arrow on top [END]
+
 
 
 
 
     // Inflate the layout for this fragment
-    if(userId == FirebaseAuth.getInstance().getCurrentUser().getUid()){
+    if(userId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
         Toast.makeText(getContext(), "OWN PROFILE", Toast.LENGTH_SHORT).show();
 
 
@@ -154,6 +159,9 @@
         ownProfile = false;
 
     }
+
+
+
 
     final TextView profileUserName = (TextView) view.findViewById(R.id.profileNameTextView);
     final TextView profileUserGender = (TextView) view.findViewById(R.id.profileGenderTextView);
@@ -178,7 +186,7 @@
 
     dialog.setMessage("Loading...");
     dialog.show();
-    dialog.setCanceledOnTouchOutside(false);
+    dialog.setCanceledOnTouchOutside(true);
 
 
     Database.root.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -202,7 +210,7 @@
                 Log.i("userName", userName);
 
                 if(ownProfile){
-                    getActivity().setTitle(R.string.title_profile);
+                   // getActivity().setTitle(R.string.title_profile);
 
                 }else{
                     getActivity().setTitle(userName + "'s profile");
@@ -244,6 +252,7 @@
                     profileUserAge.setText(userAge.replaceAll("\\s+",""));
 
                 }
+                //Toast.makeText(getContext(),"Here here"+userAdr,Toast.LENGTH_SHORT).show();
                 profileUserName.setText(userName);
                 profileUserGender.setText(userGender );
                 profileUserBio.setText(userBio);
@@ -307,19 +316,24 @@
                         Log.i("long", String.valueOf(longitude));
                         Log.i("lat", String.valueOf(latitude));
 
-                        LatLng latLng = new LatLng(latitude, longitude);
+                       LatLng latLng = new LatLng(latitude, longitude);
                        Intent intent = new Intent(getContext(), MapsActivity.class);
                        intent.putExtra("LatLng", latLng);
-                        intent.putExtra("adr", userAdr);
-                        startActivity(intent);
+                       intent.putExtra("adr", userAdr);
+                       startActivity(intent);
 
 
 
                     }
                 });
+            //    Toast.makeText(getContext(),"Here hersdfjkjkse"+userAdr,Toast.LENGTH_SHORT).show();
+
+                if (dialog.isShowing()) dialog.dismiss();
+
             }
             catch (Exception e)
             {
+               // Toast.makeText(getContext(),"Here here errorororor"+userAdr,Toast.LENGTH_SHORT).show();
 
                 e.printStackTrace();
             }
@@ -343,18 +357,33 @@
 
 
 
-
     return view;
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+    }
+
+    @Override
     public void onAttach(Context context) {
-    super.onAttach(context);
+        super.onAttach(context);
+        mOnBackPressedInFragmentVisibleOnTopOfViewPager =(BackPressedInFragmentVisibleOnTopOfViewPager)getActivity();
+
+
     }
 
     @Override
     public void onDetach() {
-    super.onDetach();
+        super.onDetach();
+
+        //not the last fragment to show on top so pass false;
+        boolean isLastFragment=false;
+        mOnBackPressedInFragmentVisibleOnTopOfViewPager.onBackPressedInFragmentVisibleOnTopOfViewPager(isLastFragment);
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+
+
     }
 
     private String getAge(String dateOfBirth){

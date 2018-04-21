@@ -18,6 +18,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:clickable="true"
+        android:elevation="0dp"
         app:defaultQueryHint="Search.."
         app:queryHint="Search.." />
 

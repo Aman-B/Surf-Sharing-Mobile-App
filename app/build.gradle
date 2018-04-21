@@ -46,7 +46,9 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:11.0.1'
     testCompile 'junit:junit:4.12'
     compile 'de.hdodenhof:circleimageview:2.1.0'
-    compile files('/Users/ammarqureshi/Documents/Web Surf Sharing app/Surf-Sharing-Mobile-App/lib/CircleImageView-master/gradle/wrapper/gradle-wrapper.jar')
+    compile files('/Users/ab/Documents/aman_docs/ankitbhaiya_work/Surf-Sharing-Mobile-App/lib/CircleImageView-master/gradle/wrapper/gradle-wrapper.jar')
+    //TODO: comment above line and uncomment below one for Ankit Bhaiya
+    //compile files('/Users/ammarqureshi/Documents/Web Surf Sharing app/Surf-Sharing-Mobile-App/lib/CircleImageView-master/gradle/wrapper/gradle-wrapper.jar')
 }
 
 repositories {

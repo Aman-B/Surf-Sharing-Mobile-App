@@ -1,0 +1,56 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.surf_sharing.surfsharingmobileapp.screens.UpgradeToDriver">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/carMakeModelInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Car Make and Model"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/registrationInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Car Registration"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/licenceNumberInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Licence Number"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/maxPassengersInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Maximum Number of Passengers"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/submitDriverUpgrade"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="Submit"
+            android:layout_marginTop="25dp"/>
+
+    </LinearLayout>
+</FrameLayout>

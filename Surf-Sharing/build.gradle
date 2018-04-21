@@ -1,0 +1,62 @@
+apply plugin: 'com.android.application'
+
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
+    defaultConfig {
+        applicationId "com.surf_sharing.surfsharingmobileapp"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    packagingOptions {
+        pickFirst 'META-INF/LICENSE.txt' // picks the JavaMail license file
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+
+
+    compile 'com.google.firebase:firebase-core:11.0.1'
+    compile 'com.google.firebase:firebase-messaging:11.0.1'
+    compile files('BackgroundMail/BackgroundMailLibrary/libs/activation.jar')
+    compile files('BackgroundMail/BackgroundMailLibrary/libs/additionnal.jar')
+    compile files('BackgroundMail/BackgroundMailLibrary/libs/mail.jar')
+    //compile files('/Users/lukeagnew/Documents/Surf-Sharing-Mobile-App/lib/CircleImageView-master/gradle/wrapper/gradle-wrapper.jar')
+    compile 'com.google.firebase:firebase-core:11.0.1'
+    compile 'com.google.firebase:firebase-messaging:11.0.1'
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:design:25.2.0'
+    compile 'com.android.support:support-v4:25.2.0'
+    compile 'com.google.firebase:firebase-auth:11.0.1'
+    compile 'com.google.firebase:firebase-appindexing:11.0.1'
+    compile 'com.google.firebase:firebase-database:11.0.1'
+    compile 'com.google.firebase:firebase-storage:11.0.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.google.android.gms:play-services-maps:11.0.1'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    testCompile 'junit:junit:4.12'
+}
+
+repositories {
+    jcenter()
+    maven {
+        url "https://maven.java.net/content/groups/public/"
+    }
+}
+
+apply plugin: 'com.google.gms.google-services'

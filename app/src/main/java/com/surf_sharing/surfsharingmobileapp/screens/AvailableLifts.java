@@ -1,14 +1,11 @@
 package com.surf_sharing.surfsharingmobileapp.screens;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -20,29 +17,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.surf_sharing.surfsharingmobileapp.R;
+import com.surf_sharing.surfsharingmobileapp.TabActivity;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.data.User;
-import com.surf_sharing.surfsharingmobileapp.temp.Globals;
-import com.surf_sharing.surfsharingmobileapp.data.LiftContainer;
-import com.surf_sharing.surfsharingmobileapp.NavDrawer;
-import com.surf_sharing.surfsharingmobileapp.R;
 import com.surf_sharing.surfsharingmobileapp.utils.CustomizedAdapter;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -74,7 +64,7 @@ public class AvailableLifts extends Fragment {
     String userId;
     boolean alreadyRequested;
     private AlertDialog.Builder alertDlg;
-
+    private ProgressDialog dialog;
 
 
     //Globals glob;
@@ -114,7 +104,7 @@ public class AvailableLifts extends Fragment {
         }
         setHasOptionsMenu(true);
 
-        liftRoot = FirebaseDatabase.getInstance().getReference("lifts");
+        liftRoot = Database.liftRoot;
         alreadyRequested = false;
         alertDlg = new AlertDialog.Builder(getContext());
 
@@ -150,9 +140,12 @@ public class AvailableLifts extends Fragment {
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(R.string.title_available_lift);
 
-
-
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -162,10 +155,22 @@ public class AvailableLifts extends Fragment {
         //  final View view =  inflater.inflate(R.layout.fragment_available_lifts, container, false);
 
         final View view = inflater.inflate(R.layout.list_item_layout, container, false);
+
+        //Added : added PD to show while UI loads
+        dialog = new ProgressDialog(getActivity());
+
+        dialog.setMessage("Loading...");
+        dialog.show();
+        dialog.setCanceledOnTouchOutside(true);
+
+
+
         // populate list with lifts
 
         listView = (ListView) view.findViewById(R.id.liftList);
         searchView = (SearchView) view.findViewById(R.id.searchView);
+
+
 
 
         lifts_list = new ArrayList<Lift>();
@@ -173,6 +178,7 @@ public class AvailableLifts extends Fragment {
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         userId = currentUser.getUid();
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
@@ -183,10 +189,16 @@ public class AvailableLifts extends Fragment {
 
                 final Lift l = (Lift) parent.getAdapter().getItem(position);
 
-                NavDrawer nd = (NavDrawer) getActivity();
+
+                //Changes : changed from navdrawer dependency to tabactivity dependency
+
+             /*   NavDrawer nd = (NavDrawer) getActivity();
 
                 //pass in the lift
-                nd.setupRequestLift(RequestLift.newInstance(), l);
+                nd.setupRequestLift(RequestLift.newInstance(), l);*/
+
+                TabActivity tabActivity =(TabActivity) getActivity();
+                tabActivity.setupRequestLift(RequestLift.newInstance(),l);
 
             }
         });
@@ -212,20 +224,34 @@ public class AvailableLifts extends Fragment {
 
 
         liftListener = new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 lifts_list = new ArrayList<Lift>();
 
+
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
                     try {
                         String id = postSnapshot.getKey();
-                        Log.i("availableLift-ID", id);
+                        Log.i("availableLift-IDya", id);
 
+                        //Log.i("avail lifeya", "in seats avail"+postSnapshot.child("seatsAvailable").getValue());
+
+                        //Changes : changed from (String) cast to .toString.
+
+                        String seats =  postSnapshot.child("seatsAvailable").getValue().toString();
+
+                       // Log.i("avail lifeya", "in seats availa"+seats);
                         //check if the seatsAvailable is greater than 0
-                        int seatsAvailable = Integer.parseInt((String) postSnapshot.child("seatsAvailable").getValue());
-                        if (seatsAvailable > 0) {
+                        int seatsAvailable = Integer.parseInt(seats);
+
+
+
+                        if (seats!=null && seatsAvailable > 0) {
+
+
 
                             String car = (String) postSnapshot.child("car").getValue();
                             String destination = (String) postSnapshot.child("destination").getValue();
@@ -300,6 +326,14 @@ public class AvailableLifts extends Fragment {
 
                     listView.setAdapter(customizedAdapter);
 
+                    searchView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            searchView.setIconified(false);
+                        }
+                    });
+
+
                     searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                         @Override
                         public boolean onQueryTextSubmit(String s) {
@@ -316,8 +350,16 @@ public class AvailableLifts extends Fragment {
 
                     sortByDestination();
                 } catch (Exception e) {
+
+                    e.printStackTrace();
                 }
 
+                //dismiss PD
+                if(dialog.isShowing())
+                {
+                    dialog.dismiss();
+
+                }
             }
 
             public void removeListener() {
@@ -327,6 +369,11 @@ public class AvailableLifts extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+                if(dialog.isShowing())
+                {
+                    dialog.dismiss();
+
+                }
                 alertDlg.setTitle("Something went wrong");
                 alertDlg.setMessage("Could not retrieve information from database, please check your internet connection.");
                 alertDlg.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -339,9 +386,9 @@ public class AvailableLifts extends Fragment {
             }
         };
 
-        liftRoot.addValueEventListener(liftListener);
 
     //}
+        liftRoot.addValueEventListener(liftListener);
         return view;
     }
 

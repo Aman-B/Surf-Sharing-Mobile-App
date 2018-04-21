@@ -1,35 +1,35 @@
 {
   "project_info": {
-    "project_number": "561530043428",
-    "firebase_url": "https://sweng-74d9a.firebaseio.com",
-    "project_id": "sweng-74d9a",
-    "storage_bucket": "sweng-74d9a.appspot.com"
+    "project_number": "34196204028",
+    "firebase_url": "https://surf-sharing-testing.firebaseio.com",
+    "project_id": "surf-sharing-testing",
+    "storage_bucket": "surf-sharing-testing.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:561530043428:android:6474dda22989621f",
+        "mobilesdk_app_id": "1:34196204028:android:6474dda22989621f",
         "android_client_info": {
           "package_name": "com.surf_sharing.surfsharingmobileapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "561530043428-dtfapr7km4s6sdgfvmvu3ec2m1377e2s.apps.googleusercontent.com",
+          "client_id": "34196204028-aaagm5oudgg6370lecu3pu6ga0rc2904.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.surf_sharing.surfsharingmobileapp",
-            "certificate_hash": "6847eb6b7b5b110641b9a9a7f5a887d1edf3788c"
+            "certificate_hash": "b8f16de17feb39aed8ab6673f9b8a25a0d5212a7"
           }
         },
         {
-          "client_id": "561530043428-lat3geacqglfmuv83u7869g9mnafuclg.apps.googleusercontent.com",
+          "client_id": "34196204028-hme5hbqajt1lv4k0ng7tv411ll7c5pmi.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyARy-ovrcL3PQEyu4U9eAwSpibUVoq1ZZY"
+          "current_key": "AIzaSyD5peT1Cvgy3gDXw-5Ao5ETS97JiSLitvg"
         }
       ],
       "services": {
@@ -40,41 +40,17 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "561530043428-lat3geacqglfmuv83u7869g9mnafuclg.apps.googleusercontent.com",
+              "client_id": "34196204028-o9u7g14vv0fvikvia30tnuslm6n73emi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sharing-surf.www.SurfSharing-Testing"
+              }
+            },
+            {
+              "client_id": "34196204028-hme5hbqajt1lv4k0ng7tv411ll7c5pmi.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:561530043428:android:b1a4cc29ccaf378c",
-        "android_client_info": {
-          "package_name": "com.example.philip.databasetest"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "561530043428-lat3geacqglfmuv83u7869g9mnafuclg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyARy-ovrcL3PQEyu4U9eAwSpibUVoq1ZZY"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

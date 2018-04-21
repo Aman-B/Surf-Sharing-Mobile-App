@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/passenger_nav_menu"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_home"
+            android:title="Home"
+            />
+        <item
+            android:id="@+id/nav_available_lifts"
+            android:title="Available Lifts" />
+        <item
+            android:id="@+id/nav_lifts_on"
+            android:title="Lifts You Are On" />
+        </group>
+    <group
+        android:id="@+id/driver_nav_menu"
+        android:checkableBehavior="none"
+        android:visible="false">
+        <item
+            android:id="@+id/nav_offer_lift"
+            android:title="Offer Lift" />
+        <item
+            android:id="@+id/nav_lifts_offering"
+            android:title="Lifts You Are Offering" />
+    </group>
+
+    <group
+        android:id="@+id/account_nav_menu"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_profile"
+            android:title="Profile" />
+        <item
+            android:id="@+id/nav_manage_account"
+            android:title="Manage Account" />
+        <item
+            android:id="@+id/nav_logout"
+            android:title="Logout" />
+    </group>
+
+</menu>

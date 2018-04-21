@@ -166,6 +166,11 @@ public class LiftsYouAreOn extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(R.string.title_activity_lifts_you_are_on);
+    }
 
 
     @Override

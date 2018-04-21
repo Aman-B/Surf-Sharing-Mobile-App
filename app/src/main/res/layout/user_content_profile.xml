@@ -10,15 +10,17 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:paddingBottom="50dp">
 
         <LinearLayout
             android:id="@+id/imageLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="40dp">
 
             <LinearLayout
                 android:id="@+id/linearLayout1"
@@ -185,19 +187,6 @@
                         android:layout_toRightOf="@id/ivPhone"
                         android:text="-"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/phoneTextView"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginStart="@dimen/activity_horizontal_margin"
-                        android:layout_marginTop="8dp"
-                        android:layout_toEndOf="@id/ivPhone"
-                        android:layout_toRightOf="@id/ivPhone"
-                        android:text="Home"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="#727272" />
 
                 </RelativeLayout>
 

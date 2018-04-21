@@ -2,13 +2,15 @@ package com.surf_sharing.surfsharingmobileapp;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.*;
-import android.widget.*;
-import android.widget.AdapterView.*;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
@@ -120,4 +122,5 @@ public class ViewLifts extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, liftStrings);
         viewLifts.setAdapter(adapter);
     }
+
 }

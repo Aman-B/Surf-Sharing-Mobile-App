@@ -133,4 +133,8 @@
     <string name="title_lifts_offering">Lifts You Are Offering</string>
     <string name="title_request_responce">Requesting Passengers</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_tab">TabActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="submit_license">Submit License</string>
+    <string name="logout">Logout</string>
 </resources>

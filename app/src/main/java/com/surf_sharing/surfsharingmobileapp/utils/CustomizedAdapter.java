@@ -1,7 +1,6 @@
 package com.surf_sharing.surfsharingmobileapp.utils;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,6 @@ import android.widget.TextView;
 
 import com.surf_sharing.surfsharingmobileapp.R;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -74,6 +71,18 @@ public class CustomizedAdapter extends BaseAdapter implements Filterable {
         tvDate.setText(liftList.get(pos).getDate() + "at " + liftList.get(pos).getTime());
         tvSeats.setText(liftList.get(pos).getSeatsAvailable() + " seats remaining");
 
+        //Use below if asked for alternate colored list items.
+        /*if(pos %2 == 1)
+        {
+            // Set a background color for ListView regular row/item
+            view.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
+        }
+        else
+        {
+            // Set the background color for alternate row/item
+            view.setBackgroundColor(Color.parseColor("#7a7979"));
+        }*/
         return view;
     }
 
