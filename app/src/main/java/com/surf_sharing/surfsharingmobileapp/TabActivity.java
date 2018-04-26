@@ -3,9 +3,11 @@ package com.surf_sharing.surfsharingmobileapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -53,6 +55,7 @@ public class TabActivity extends AppCompatActivity implements BackPressedInFragm
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private Toolbar toolbar;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,12 @@ public class TabActivity extends AppCompatActivity implements BackPressedInFragm
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+
+        tabLayout = (TabLayout)findViewById(R.id.mytablayout);
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getApplicationContext(),R.color.colorWhite));
+        tabLayout.setTabTextColors(ContextCompat.getColor(getApplicationContext(),R.color.colorLightGrey),
+                ContextCompat.getColor(getApplicationContext(),R.color.colorWhite));
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -109,12 +118,14 @@ public class TabActivity extends AppCompatActivity implements BackPressedInFragm
 
             @Override
             public void onPageSelected(int position) {
+
                 if(USER_TYPE.equals("driver"))
                 {
                     switch (position)
                     {
                         case 0:
                             toolbar.setTitle("Offer Lift");
+
                             break;
 
                         case 1:

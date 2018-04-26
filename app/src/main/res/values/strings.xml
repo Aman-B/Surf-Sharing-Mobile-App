@@ -127,7 +127,7 @@
     <string name="title_activity_register">Sign in</string>
     <string name="title_activity_base">BaseActivity</string>
 
-    <string name="loremipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </string>
+    <string name="loremipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem </string>
     <string name="shortIpsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna  </string>
     <string name="title_activity_test_request_lift">TestRequestLiftActivity</string>
     <string name="title_lifts_offering">Lifts You Are Offering</string>
@@ -137,4 +137,5 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="submit_license">Submit License</string>
     <string name="logout">Logout</string>
+    <string name="confirm_policy_text">By ticking this box, I confirm that I have read and understood, and that I agree to, the Terms And Conditions and the Privacy Policy</string>
 </resources>

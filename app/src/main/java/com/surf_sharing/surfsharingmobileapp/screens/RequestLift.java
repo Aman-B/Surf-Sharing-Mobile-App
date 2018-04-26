@@ -160,9 +160,10 @@ public class RequestLift extends Fragment {
                 //set the drop down lest menu/spinner
                 spinner = (Spinner) view.findViewById(R.id.spinner);
                 //array adapter will convert the arrayList into view objects for the spinner
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, boardLengths);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.custom_spinner_list_item, boardLengths);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(adapter);
+
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout"
@@ -10,220 +10,553 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:paddingBottom="50dp">
 
-        <LinearLayout
+        android:fillViewport="true"
+        android:paddingBottom="2dp">
+
+        <!-- <android.support.constraint.ConstraintLayout
             android:id="@+id/imageLinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingBottom="40dp">
+            android:paddingBottom="40dp">-->
 
-            <LinearLayout
+        <!-- <LinearLayout
                 android:id="@+id/linearLayout1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_width="352dp"
+                android:layout_height="420dp"
+                android:orientation="horizontal"
+                tools:layout_editor_absoluteY="8dp"
+                tools:layout_editor_absoluteX="8dp">
 
-            </LinearLayout>
+            </LinearLayout>-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="352dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:padding="10dp"
+            >
+        <!--<android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/profileImageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:paddingTop="15dp"
-                    android:src="@drawable/driver_avatar"
-                    app:civ_border_color="#FF000000"
-                    app:civ_border_width="2dp" />
+            android:layout_height="wrap_content"
 
-                <TextView
-                    android:id="@+id/profileNameTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="5dp"
-                    android:layout_toEndOf="@+id/profileGenderTextView"
-                    android:layout_toRightOf="@+id/profileGenderTextView"
-                    android:autoText="true"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textSize="30sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="25dp"
-                android:orientation="vertical">
+            android:orientation="vertical">-->
 
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="false"
-                    android:padding="@dimen/activity_horizontal_margin">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profileImageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:paddingTop="15dp"
+                android:paddingRight="25dp"
+                android:paddingEnd="25dp"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:layout_gravity="center"
+                android:src="@drawable/driver_avatar"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.44"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                 />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"></LinearLayout>
+            <include
+                layout="@layout/item_divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.252" />
 
-                    <ImageView
-                        android:id="@+id/ivIdentity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin"
-                        android:src="@drawable/ic_perm_identity_black" />
+
+
+                <TableRow>
 
 
                     <TextView
-                        android:id="@+id/ageTextView"
+                        android:id="@+id/textView5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginStart="@dimen/activity_horizontal_margin"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
                         android:layout_marginTop="8dp"
-                        android:layout_toEndOf="@id/ivIdentity"
-                        android:layout_toRightOf="@id/ivIdentity"
-                        android:text="Age:"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="#727272" />
+                        android:text="Name:"
+                        android:textColor="@color/lightTextColor" />
+
+                    <TextView
+                        android:id="@+id/profileNameTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="8dp"
+
+                        android:text="this is name "
+                        android:textColor="@color/lightTextColor" />
+
+                </TableRow>
+
+                <include
+                    layout="@layout/item_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.343" />
+
+                <TableRow>
 
                     <TextView
                         android:id="@+id/genderTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/ageTextView"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_vertical_margin"
-                        android:layout_marginTop="5dp"
-                        android:layout_toEndOf="@+id/ivIdentity"
-                        android:layout_toRightOf="@+id/ivIdentity"
-                        android:text="Gender:" />
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
 
-                    <TextView
-                        android:id="@+id/aboutTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/genderTextView"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_vertical_margin"
-                        android:layout_marginTop="15dp"
-                        android:layout_toEndOf="@+id/ivIdentity"
-                        android:layout_toRightOf="@+id/ivIdentity"
-                        android:text="Bio:" />
+                        android:text="Gender:"
+                        android:textColor="@color/lightTextColor"
 
-                    <TextView
-                        android:id="@+id/profileAgeTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignTop="@+id/ageTextView"
-                        android:layout_toEndOf="@+id/aboutTextView"
-                        android:layout_toRightOf="@+id/aboutTextView"
-                        android:text="-"
-                        tools:text="-" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintHorizontal_bias="0.025"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.397" />
 
                     <TextView
                         android:id="@+id/profileGenderTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/profileAgeTextView"
-                        android:layout_marginTop="5dp"
-                        android:layout_toEndOf="@+id/genderTextView"
-                        android:layout_toRightOf="@+id/genderTextView"
-                        android:text="-"
-                        tools:text="-" />
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
 
-                    <TextView
-                        android:id="@+id/bioTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignLeft="@+id/aboutTextView"
-                        android:layout_alignStart="@+id/aboutTextView"
-                        android:layout_below="@+id/aboutTextView"
-                        android:layout_marginTop="5dp" />
+                        android:text="Hello"
+                        android:textColor="@color/lightTextColor"
 
-                </RelativeLayout>
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintHorizontal_bias="0.214"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.397"
+                        tools:text="Hello" />
 
 
-                <include layout="@layout/item_divider" />
+                </TableRow>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="false"
-                    android:padding="@dimen/activity_horizontal_margin">
+                <include
+                    layout="@layout/item_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.449" />
+
+                <TableRow>
 
                     <ImageView
                         android:id="@+id/ivPhone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:layout_marginBottom="8dp"
                         android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
                         android:clickable="true"
-                        android:src="@drawable/ic_phone_black" />
+                        android:src="@drawable/ic_phone_black"
+                        />
 
                     <TextView
                         android:id="@+id/phoneTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="64dp"
-                        android:layout_marginStart="@dimen/activity_horizontal_margin"
-                        android:layout_toEndOf="@id/ivPhone"
-                        android:layout_toRightOf="@id/ivPhone"
-                        android:text="-"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                        android:layout_marginBottom="8dp"
+                          android:layout_marginTop="8dp"
 
-                </RelativeLayout>
+                        android:text="hello  "
+                        android:textColor="@color/lightTextColor"
 
-                <include layout="@layout/item_divider" />
+                         />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="false"
-                    android:contextClickable="false"
-                    android:padding="@dimen/activity_horizontal_margin">
+
+                </TableRow>
+
+                <include
+                    layout="@layout/item_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.558" />
+
+                <TableRow>
+
+                    <ImageView
+                        android:id="@+id/ivLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:clickable="true"
+                        android:contentDescription=""
+                        android:src="@drawable/ic_location_on_black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintHorizontal_bias="0.023"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.616" />
+
+                    <TextView
+                        android:id="@+id/locationTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
+
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="address"
+                        android:textColor="@color/lightTextColor"
+
+                         />
+
+
+                </TableRow>
+
+                <include
+                    layout="@layout/item_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.66" />
+
+
+                <TableRow>
 
                     <ImageView
                         android:id="@+id/ivEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:layout_marginBottom="8dp"
                         android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
                         android:clickable="true"
-                        android:src="@drawable/ic_email_black" />
+                        android:src="@drawable/ic_email_black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintHorizontal_bias="0.023"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.733" />
 
                     <TextView
                         android:id="@+id/emailTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginStart="@dimen/activity_horizontal_margin"
-                        android:layout_toEndOf="@id/ivEmail"
-                        android:layout_toLeftOf="@+id/chkState3"
-                        android:layout_toRightOf="@id/ivEmail"
-                        android:layout_toStartOf="@+id/chkState3"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="-"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                        android:text="email is here "
+                        android:textColor="@color/lightTextColor"
+
+                       />
+
+
+                </TableRow>
+
+                <include
+                    layout="@layout/item_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.774" />
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/ageTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+
+                        android:text="Age:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+
+                        android:textColor="@color/lightTextColor"
+                         />
+
+                    <TextView
+                        android:id="@+id/profileAgeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
+
+                        android:text="age is here "
+                        android:textColor="@color/lightTextColor"
+
+                        />
+
+
+                </TableRow>
+
+                <include
+                    layout="@layout/item_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.876" />
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/genderTextView"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+
+                        android:text="Bio:"
+                        android:textColor="@color/lightTextColor"
+
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintHorizontal_bias="0.023"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.93" />
+
+                    <TextView
+                        android:id="@+id/bioTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="100dp"
+                        android:textColor="@color/lightTextColor"
+                       />
+
+
+                </TableRow>
+
+                <include
+                    layout="@layout/item_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.955" />
+                <!--
+            </android.support.constraint.ConstraintLayout>
+-->
+
+                <!-- <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0">-->
+
+
+                <!-- <android.support.constraint.ConstraintLayout
+                    android:layout_width="304dp"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="false"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    &lt;!&ndash;<LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="20dp"
+                        android:orientation="horizontal"
+                        tools:layout_editor_absoluteX="16dp"
+                        tools:layout_editor_absoluteY="1dp"></LinearLayout>&ndash;&gt;
+
+
+                </android.support.constraint.ConstraintLayout>-->
+
+
+                <!--<include
+                    layout="@layout/item_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    tools:layout_editor_absoluteX="64dp"
+                    tools:layout_editor_absoluteY="0dp" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="false"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:layout_editor_absoluteY="0dp">
+
+
+
+                </RelativeLayout>
+
+                <include
+                    layout="@layout/item_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    tools:layout_editor_absoluteX="64dp"
+                    tools:layout_editor_absoluteY="0dp" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:layout_editor_absoluteY="0dp">
+
+
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -240,41 +573,24 @@
 
                 </RelativeLayout>
 
-                <include layout="@layout/item_divider" />
+                <include
+                    layout="@layout/item_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    tools:layout_editor_absoluteX="64dp"
+                    tools:layout_editor_absoluteY="0dp" />
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="false"
                     android:contextClickable="false"
-                    android:padding="@dimen/activity_horizontal_margin">
+                    android:padding="@dimen/activity_horizontal_margin"
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:layout_editor_absoluteY="0dp">
 
-                    <ImageView
-                        android:id="@+id/ivLocation"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin"
-                        android:clickable="true"
-                        android:contentDescription=""
-                        android:src="@drawable/ic_location_on_black" />
 
-                    <TextView
-                        android:id="@+id/locationTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginStart="@dimen/activity_horizontal_margin"
-                        android:layout_toEndOf="@id/ivLocation"
-                        android:layout_toLeftOf="@+id/chkState5"
-                        android:layout_toRightOf="@id/ivLocation"
-                        android:layout_toStartOf="@+id/chkState5"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:text="-"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -291,10 +607,20 @@
 
                 </RelativeLayout>
 
-                <include layout="@layout/item_divider" />
+                <include
+                    layout="@layout/item_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    tools:layout_editor_absoluteX="64dp"
+                    tools:layout_editor_absoluteY="0dp" />-->
 
-            </LinearLayout>
-        </LinearLayout>
+                <!--
+            </android.support.constraint.ConstraintLayout>
+-->
+            </TableLayout>
+<!--
+        </android.support.constraint.ConstraintLayout>
+-->
     </ScrollView>
 
-</RelativeLayout>
+</FrameLayout>

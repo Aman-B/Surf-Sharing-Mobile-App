@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -27,6 +28,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.surf_sharing.surfsharingmobileapp.BackPressedInFragmentVisibleOnTopOfViewPager;
+import com.surf_sharing.surfsharingmobileapp.LoginActivity;
 import com.surf_sharing.surfsharingmobileapp.R;
 import com.surf_sharing.surfsharingmobileapp.TabActivity;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
@@ -157,7 +159,7 @@ public class NewSelfProfileScreen extends Fragment {
         final ImageView profileImageView = (ImageView) view.findViewById(R.id.profileImageView);
 
         ConstraintLayout manage_account = (ConstraintLayout) view.findViewById(R.id.manage_account_row);
-        ConstraintLayout submit_license =(ConstraintLayout) view.findViewById(R.id.submit_license_row);
+        //ConstraintLayout submit_license =(ConstraintLayout) view.findViewById(R.id.submit_license_row);
         ConstraintLayout logout = (ConstraintLayout) view.findViewById(R.id.logout_row);
 
 
@@ -169,6 +171,17 @@ public class NewSelfProfileScreen extends Fragment {
         dialog.setMessage("Loading...");
         dialog.show();
         dialog.setCanceledOnTouchOutside(true);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //show prompt dialog and confirm. Standard stuff.
+                askAgain();
+
+            }
+        });
+
+
 
 
         manage_account.setOnClickListener(new View.OnClickListener() {
@@ -284,6 +297,32 @@ public class NewSelfProfileScreen extends Fragment {
         return view;
     }
 
+    private void askAgain() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Leaving?");
+        builder.setMessage("Are you sure you want to logout?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                FirebaseAuth.getInstance().signOut();
+                Intent backToLogin = new Intent(getContext(), LoginActivity.class);
+                startActivity(backToLogin);
+            }
+        });
+
+        builder.setNegativeButton("No, Don't Logout!", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -305,8 +344,11 @@ public class NewSelfProfileScreen extends Fragment {
         //not the last fragment to show on top so pass false;
         boolean isLastFragment=false;
         mOnBackPressedInFragmentVisibleOnTopOfViewPager.onBackPressedInFragmentVisibleOnTopOfViewPager(isLastFragment);
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
 
+        if(!(getActivity().isFinishing()))
+        {
+            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        }
 
     }
 

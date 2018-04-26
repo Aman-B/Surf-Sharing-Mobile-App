@@ -2,15 +2,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context="com.surf_sharing.surfsharingmobileapp.screens.RequestLift">
 
     <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
         android:id="@+id/driverNameTextView"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
+
         android:orientation="vertical">
 
         <TextView
@@ -19,6 +22,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Location"
+            android:textColor="@color/lightTextColor"
+            android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
         <TextView
@@ -27,7 +32,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingBottom="10dp"
-            android:text="(X seats remaining)" />
+            android:paddingTop="2dp"
+            android:text="(X seats remaining)"
+            android:textColor="@color/lightTextColor" />
 
         <TableLayout
             android:layout_width="wrap_content"
@@ -43,6 +50,7 @@
                     android:id="@+id/requestLiftDriverLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/lightTextColor"
                     android:text="Driver name: "
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textSize="17sp" />
@@ -51,6 +59,7 @@
                     android:id="@+id/requestLiftDriverName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/lightTextColor"
                     android:paddingLeft="10dp"
                     android:text="DriverName"
                     android:textSize="17sp" />
@@ -65,6 +74,7 @@
                     android:id="@+id/requestLiftTimeLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/lightTextColor"
                     android:layout_weight="1"
                     android:allowUndo="true"
                     android:text="Time: "
@@ -75,6 +85,7 @@
                     android:id="@+id/requestLiftTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/lightTextColor"
                     android:paddingLeft="10dp"
                     android:text="Time"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
@@ -88,6 +99,7 @@
                     android:id="@+id/requestLiftDateLable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/lightTextColor"
                     android:layout_weight="1"
                     android:text="Date: "
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -97,6 +109,7 @@
                     android:id="@+id/requestLiftDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/lightTextColor"
                     android:paddingLeft="10dp"
                     android:text="Date"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
@@ -111,6 +124,7 @@
                     android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/lightTextColor"
                     android:layout_weight="1"
                     android:text="Driver email: "
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -120,6 +134,7 @@
                     android:id="@+id/requestLiftDriverEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/lightTextColor"
                     android:paddingLeft="10dp"
                     android:text="DriverID"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -134,23 +149,37 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_weight="1"
-            android:paddingTop="10dp"
-            android:text="View Driver's Profile" />
+            android:background="@color/colorLightGrey"
+            android:paddingTop="4dp"
+            android:text="View Driver's Profile"
+            android:textColor="@color/lightTextColor" />
 
         <Button
             android:id="@+id/requestButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorLightGrey"
+            android:textColor="@color/lightTextColor"
             android:layout_gravity="right"
             android:layout_marginTop="20dp"
             android:layout_weight="1"
             android:text="Request Seat" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Your Surfboard Length :"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/lightTextColor"
+            android:textSize="17sp" />
+
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:elevation="17dp" />
 
     </LinearLayout>
 
