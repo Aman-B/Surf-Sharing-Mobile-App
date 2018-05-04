@@ -31,11 +31,11 @@ dependencies {
     compile files('BackgroundMail/BackgroundMailLibrary/libs/activation.jar')
     compile files('BackgroundMail/BackgroundMailLibrary/libs/additionnal.jar')
     compile files('BackgroundMail/BackgroundMailLibrary/libs/mail.jar')
-    compile 'com.google.firebase:firebase-core:11.0.1'
-    compile 'com.google.firebase:firebase-messaging:11.0.1'
     compile files('/Users/ab/Documents/aman_docs/ankitbhaiya_work/Surf-Sharing-Mobile-App/lib/CircleImageView-master/gradle/wrapper/gradle-wrapper.jar')
     //TODO: comment above line and uncomment below one for Ankit Bhaiya
     //compile files('/Users/ammarqureshi/Documents/Web Surf Sharing app/Surf-Sharing-Mobile-App/lib/CircleImageView-master/gradle/wrapper/gradle-wrapper.jar')
+    compile 'com.google.firebase:firebase-core:11.0.1'
+    compile 'com.google.firebase:firebase-messaging:11.0.1'
     compile 'com.google.firebase:firebase-core:11.0.1'
     compile 'com.google.firebase:firebase-messaging:11.0.1'
     compile 'com.android.support:appcompat-v7:25.2.0'

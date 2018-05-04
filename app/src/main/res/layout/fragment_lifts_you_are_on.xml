@@ -2,11 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context="com.surf_sharing.surfsharingmobileapp.screens.LiftsYouAreOn">
 
     <ListView
         android:id="@+id/userLiftList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+
+        />
 
 </FrameLayout>

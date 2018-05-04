@@ -1,6 +1,5 @@
 package com.surf_sharing.surfsharingmobileapp;
 
-import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -92,6 +90,8 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         accountType = getIntent().getStringExtra("ACCOUNT_TYPE");
+        Display.popup(RegisterActivity.this,"type "+accountType);
+
 
         buttonDateOfBirth = (Button) findViewById(R.id.dateOfBirthButton);
         buttonRegister = (Button) findViewById(R.id.ok_btn);
@@ -214,26 +214,26 @@ public class RegisterActivity extends AppCompatActivity {
 
             progressDialog = new ProgressDialog(this);
 
-            buttonDateOfBirth = (Button) findViewById(R.id.driverDateOfBirthButton);
+           // buttonDateOfBirth = (Button) findViewById(R.id.driverDateOfBirthButton);
             buttonRegister = (Button) findViewById(R.id.ok_driver_btn);
 
             editTextName = (EditText) findViewById(R.id.edit_text_driver_name);
             editTextName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
-            editTextPhoneNumber = (EditText) findViewById(R.id.edit_text_driver_phone);
+//            editTextPhoneNumber = (EditText) findViewById(R.id.edit_text_driver_phone);
             editTextEmail = (EditText) findViewById(R.id.edit_text_driver_email);
-            editTextCarMakeModel = (EditText) findViewById(R.id.edit_text_car_make_model);
+            /*editTextCarMakeModel = (EditText) findViewById(R.id.edit_text_car_make_model);
             editTextDriverReg = (EditText) findViewById(R.id.edit_text_driver_registration);
             editTextLicenceNo = (EditText) findViewById(R.id.edit_text_driver_licence);
-            editTextMaxPassengers = (EditText) findViewById(R.id.edit_text_max_passengers);
+            editTextMaxPassengers = (EditText) findViewById(R.id.edit_text_max_passengers);*/
             editTextPassword = (EditText) findViewById(R.id.edit_text_driver_password);
             editTextPassword2 = (EditText) findViewById(R.id.edit_text_driver_password_confirm);
-            editTextLocation = (EditText) findViewById(R.id.editTextLocation);
-            genderRadioGroup = (RadioGroup) findViewById(R.id.genderRadioGroup);
+            /*editTextLocation = (EditText) findViewById(R.id.editTextLocation);
+            genderRadioGroup = (RadioGroup) findViewById(R.id.genderRadioGroup);*/
 
-            textDateOfBirth = (TextView) findViewById(R.id.driverDateOfBirth);
+            //textDateOfBirth = (TextView) findViewById(R.id.driverDateOfBirth);
 
-            buttonDateOfBirth.setOnClickListener(new View.OnClickListener() {
+            /*buttonDateOfBirth.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar mcurrentDate = Calendar.getInstance();
@@ -252,13 +252,60 @@ public class RegisterActivity extends AppCompatActivity {
                     }, year, month, dayOfMonth);
                     mDatePicker.show();
                 }
-            });
+            });*/
+
+            View checkBoxView = View.inflate(this, R.layout.register_user_tos_dialog, null);
+
+            final CheckBox checkBox = (CheckBox) checkBoxView.findViewById(R.id.checkbox);
+
+            checkBox.setChecked(false);
+
+
+
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(" Terms And Conditions ");
+            builder.setMessage(getResources().getString(R.string.confirm_policy_text))
+                    .setView(checkBoxView);
+
+            final AlertDialog mAlertDialog = builder.create();
 
             buttonRegister.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //calling register method on click
-                    registerUser();
+                    // registerUser();
+                    if(!areFieldsEmpty())
+                    {
+                        mAlertDialog.show();
+
+                    }
+
+                }
+            });
+
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                    // Save to shared preferences
+                    if(checkBox.isChecked())
+                    {
+                        //TODO :call register User here, but put only name, email and pwd.
+
+                        registerUser();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mAlertDialog.cancel();
+                            }
+                        }, 1200);
+
+                        /*Intent nextRegisterActivityIntent= new Intent(RegisterActivity.this, RegisterPassengerSecondActivity.class);
+                        startActivity(nextRegisterActivityIntent);*/
+                    }
                 }
             });
 
@@ -308,8 +355,9 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void gotoMainTabActivity() {
-//        Intent intent = new Intent(RegisterActivity.this, NavDrawer.class);
+//      Intent intent = new Intent(RegisterActivity.this, NavDrawer.class);
         Intent intent = new Intent(RegisterActivity.this, TabActivity.class);
+        intent.putExtra("userType",accountType);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
@@ -374,10 +422,9 @@ public class RegisterActivity extends AppCompatActivity {
 //            register = false;
 //        }
 
-        progressDialog.show();
         if (accountType.equals("driver"))
         {
-            String carMakeModel = editTextCarMakeModel.getText().toString().trim();
+            /*String carMakeModel = editTextCarMakeModel.getText().toString().trim();
             String licenceNo = editTextLicenceNo.getText().toString().trim();
             String driverReg = editTextDriverReg.getText().toString().trim();
             String maxPassengers = editTextMaxPassengers.getText().toString().trim();
@@ -398,7 +445,7 @@ public class RegisterActivity extends AppCompatActivity {
             {
                 Display.popup(RegisterActivity.this, "Please enter the Maximum number of passengers you can take");
                 register = false;
-            }
+            }*/
             /*else if(loc.isEmpty()){
                 Display.popup(RegisterActivity.this, "Please enter your address");
                 register = false;
@@ -410,6 +457,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         if(register == true) {
             if (password.equals(password2)) {
+                progressDialog.show();
+
 
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -423,14 +472,19 @@ public class RegisterActivity extends AppCompatActivity {
                                     if(accountType.equals("passenger"))
                                     {
 
-                                            showRegistrationSuccessfulDialog();
+                                        showRegistrationSuccessfulDialogForPassenger();
                                     }
                                     else
                                     {
-                                        gotoMainTabActivity();
+                                           // gotoMainTabActivity();
+                                        showRegistrationSuccessfulDialogForDriver();
+
+                                        //Display.popup(RegisterActivity.this, "Remove this popup!");
 
                                     }
                                 } else {
+                                    if(progressDialog.isShowing())
+                                        progressDialog.cancel();
                                     Toast.makeText(RegisterActivity.this, "Failed to Register", Toast.LENGTH_SHORT).show();
                                     if (!task.isSuccessful()) {
                                         FirebaseAuthException e = (FirebaseAuthException) task.getException();
@@ -460,7 +514,39 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void showRegistrationSuccessfulDialog() {
+    private void showRegistrationSuccessfulDialogForDriver() {
+        if(progressDialog.isShowing())
+            progressDialog.cancel();
+
+
+        AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this).create();
+        alertDialog.setTitle("Congratulations!");
+        alertDialog.setMessage("Registration Successful.");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        gotoSecondDriverActivity();
+                    }
+                });
+        alertDialog.show();
+
+
+        alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                gotoSecondDriverActivity();
+
+            }
+        });
+    }
+
+    private void gotoSecondDriverActivity() {
+        Intent secondDriverActivityIntent = new Intent(RegisterActivity.this, RegisterDriverSecondActivity.class);
+        startActivity(secondDriverActivityIntent);
+    }
+
+    private void showRegistrationSuccessfulDialogForPassenger() {
 
         if(progressDialog.isShowing())
             progressDialog.cancel();
@@ -535,11 +621,11 @@ public class RegisterActivity extends AppCompatActivity {
 
             //add the user's info into firebase
             if (type.equals("driver")) {
-                type = "pending";
-                String carMakeModel = editTextCarMakeModel.getText().toString().trim();
-                String licenceNo = editTextLicenceNo.getText().toString().trim();
-                String driverReg = editTextDriverReg.getText().toString().trim();
-                int maxPassengers = Integer.parseInt(editTextMaxPassengers.getText().toString().trim());
+                type = "driver";
+                String carMakeModel = "";
+                String licenceNo = "";
+                String driverReg = "";
+                int maxPassengers = 0;
                 Driver driver = new Driver(userId, type, email, carMakeModel, licenceNo, driverReg, maxPassengers);
 
                /* driver.setGender(gender);
@@ -551,12 +637,12 @@ public class RegisterActivity extends AppCompatActivity {
 
             } else {
                 User user = new User(userId, type, email);
-               /* user.setGender(gender);
+                /* user.setGender(gender);
                 user.setAge(age);*/
                 user.setName(name);
                 /*user.setPhone(phone);
                 user.setAddress(loc);*/
-              //  Toast.makeText(getApplicationContext(),"Here",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"Here",Toast.LENGTH_LONG).show();
                 Database.setUserValue(user);
             }
         }

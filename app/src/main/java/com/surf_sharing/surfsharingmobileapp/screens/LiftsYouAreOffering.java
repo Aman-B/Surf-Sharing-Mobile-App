@@ -1,10 +1,11 @@
 package com.surf_sharing.surfsharingmobileapp.screens;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,25 +13,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.surf_sharing.surfsharingmobileapp.BackPressedInFragmentVisibleOnTopOfViewPager;
+import com.surf_sharing.surfsharingmobileapp.R;
+import com.surf_sharing.surfsharingmobileapp.TabActivity;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.data.User;
-import com.surf_sharing.surfsharingmobileapp.temp.Globals;
-import com.surf_sharing.surfsharingmobileapp.data.LiftContainer;
-import com.surf_sharing.surfsharingmobileapp.NavDrawer;
-import com.surf_sharing.surfsharingmobileapp.R;
 import com.surf_sharing.surfsharingmobileapp.utils.Display;
 
 import java.util.ArrayList;
@@ -50,6 +47,9 @@ public class LiftsYouAreOffering extends Fragment {
     private ValueEventListener liftListener;
 
     private String userId;
+
+    private ProgressDialog mProgressDialog;
+    private BackPressedInFragmentVisibleOnTopOfViewPager mOnBackPressedInFragmentVisibleOnTopOfViewPager;
 
     //Globals glob;
     public LiftsYouAreOffering() {
@@ -100,9 +100,25 @@ public class LiftsYouAreOffering extends Fragment {
         liftList = (ListView) view.findViewById(R.id.driverLiftList);
         lifts_list = new ArrayList<Lift>();
 
+        mProgressDialog=new ProgressDialog(getActivity());
+        mProgressDialog.setMessage("Fectching Lifts You Are Offering...");
+        mProgressDialog.show();
+
+        final ArrayAdapter<Lift> arrayAdapter = new ArrayAdapter<Lift>(getActivity(), android.R.layout.simple_list_item_1, lifts_list)
+        {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+                View view =super.getView(position, convertView, parent);
+
+                TextView firstTV = (TextView) view.findViewById(android.R.id.text1);
+                firstTV.setTextColor(Color.WHITE);
 
 
-        final ArrayAdapter<Lift> arrayAdapter = new ArrayAdapter<Lift>(getActivity(), android.R.layout.simple_list_item_1, lifts_list);
+                return view;
+            }
+        };
         //liftRoot = FirebaseDatabase.getInstance().getReference("lifts");
 
         Database.root.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -212,13 +228,22 @@ public class LiftsYouAreOffering extends Fragment {
                     }
 
                     liftList.setAdapter(arrayAdapter);
+                    if(mProgressDialog.isShowing())
+                        mProgressDialog.cancel();
                 }
                 catch (Exception e)
                 {
                     e.printStackTrace();
+                    if(mProgressDialog.isShowing())
+                        mProgressDialog.cancel();
+                    Display.popup(getActivity(),"Some error occurred. Try again, later!");
                 }
             }
-            @Override public void onCancelled(DatabaseError error) { }
+            @Override public void onCancelled(DatabaseError error) {
+                if(mProgressDialog.isShowing())
+                    mProgressDialog.cancel();
+                Display.popup(getActivity(),"Some error occurred. Try again, later!");
+            }
         });
 
 
@@ -232,9 +257,9 @@ public class LiftsYouAreOffering extends Fragment {
                 //Toast.makeText(getContext(), "Test ", Toast.LENGTH_SHORT).show();
 
                 Lift l = (Lift) parent.getAdapter().getItem(position);
-                // TODO replace with actual condtion which will check if a request has been made for this lift
+                // TODO replace with actual condition which will check if a request has been made for this lift
                 if(true){
-                    NavDrawer nd = (NavDrawer) getActivity();
+                    TabActivity nd = (TabActivity) getActivity();
                     nd.setupRequestResponse(RequestResponse.newInstance(), userId, l.id, userId, l.seatsAvailable, l.destination, l.time, l.date, l.driver.email);
                 }
 
@@ -254,12 +279,23 @@ public class LiftsYouAreOffering extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mOnBackPressedInFragmentVisibleOnTopOfViewPager =(BackPressedInFragmentVisibleOnTopOfViewPager)getActivity();
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
 //        liftRoot.removeEventListener(liftListener);
+        if(!getActivity().isFinishing())
+        {
+            //this is the last fragment to show on top of viewpager, so pass true;
+            boolean isLastFragment= true;
+            mOnBackPressedInFragmentVisibleOnTopOfViewPager.onBackPressedInFragmentVisibleOnTopOfViewPager(isLastFragment,"Available Lifts");
+
+
+            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        }
     }
 
 }

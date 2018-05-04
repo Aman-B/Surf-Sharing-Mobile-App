@@ -295,12 +295,16 @@ public class RequestLift extends Fragment {
         super.onDetach();
         //Toast.makeText(getContext(),"Detached",Toast.LENGTH_LONG).show();
 
-        //this is the last fragment to show on top of viewpager, so pass true;
-        boolean isLastFragment= true;
-        mOnBackPressedInFragmentVisibleOnTopOfViewPager.onBackPressedInFragmentVisibleOnTopOfViewPager(isLastFragment);
+        if(!getActivity().isFinishing())
+        {
+            //this is the last fragment to show on top of viewpager, so pass true;
+            boolean isLastFragment= true;
+            mOnBackPressedInFragmentVisibleOnTopOfViewPager.onBackPressedInFragmentVisibleOnTopOfViewPager(isLastFragment,"Available Lifts");
 
 
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        }
+
 
 
     }

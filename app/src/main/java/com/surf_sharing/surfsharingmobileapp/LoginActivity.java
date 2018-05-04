@@ -2,10 +2,9 @@ package com.surf_sharing.surfsharingmobileapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -24,6 +23,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.utils.Display;
 import com.surf_sharing.surfsharingmobileapp.utils.FirebaseError;
 
@@ -62,6 +66,9 @@ public class LoginActivity extends AppCompatActivity {
 
         // initialise firebase app
         FirebaseApp.initializeApp(this);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Surfing the data, just a moment please...");
+        progressDialog.setCancelable(false);
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -87,7 +94,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        progressDialog = new ProgressDialog(this);
 
         passengerAccButon = (Button) findViewById(R.id.passangerAccButon);
         passengerAccButon.setOnClickListener(new OnClickListener() {
@@ -114,14 +120,37 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
+                    progressDialog.show();
                     // user is logged in
                     // Send user to NavDrawer when
-                    Intent intent = new Intent(LoginActivity.this, TabActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
+                    //get user type first
+                    final String[] user_type = new String[1];
+                    final DatabaseReference usersRef = Database.userRoot.child(user.getUid());
+                    usersRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+
+                            user_type[0] = (String) snapshot.child("type").getValue();
+                            Intent intent = new Intent(LoginActivity.this, TabActivity.class);
+                            intent.putExtra("userType",user_type[0]);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            if(progressDialog.isShowing())
+                                progressDialog.cancel();
+                            startActivity(intent);
+                            finish();
+
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                        });
+
+
                 } else {
                     // user is logged out
+                    if(progressDialog.isShowing())
+                    progressDialog.cancel();
                 }
             }
         };

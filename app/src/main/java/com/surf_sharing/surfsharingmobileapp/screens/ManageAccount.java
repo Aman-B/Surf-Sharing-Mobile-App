@@ -793,11 +793,15 @@ public class ManageAccount extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        boolean isLastFragment= true;
-        mBackPressedInFragmentVisibleOnTopOfViewPager.onBackPressedInFragmentVisibleOnTopOfViewPager(isLastFragment);
+
+        if(!getActivity().isFinishing())
+        {
+            boolean isLastFragment= true;
+            mBackPressedInFragmentVisibleOnTopOfViewPager.onBackPressedInFragmentVisibleOnTopOfViewPager(isLastFragment,"Profile");
 
 
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        }
 
     }
 

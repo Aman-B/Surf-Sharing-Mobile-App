@@ -138,4 +138,6 @@
     <string name="submit_license">Submit License</string>
     <string name="logout">Logout</string>
     <string name="confirm_policy_text">By ticking this box, I confirm that I have read and understood, and that I agree to, the Terms And Conditions and the Privacy Policy</string>
+    <string name="offer_lift">Offer Lift</string>
+    <string name="lifts_you_are_offering">Lifts You Are Offering</string>
 </resources>

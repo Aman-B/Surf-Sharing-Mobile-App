@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
 
-    <ScrollView
+    <!--<ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
         android:fillViewport="true"
-        android:paddingBottom="2dp">
+        android:paddingBottom="2dp">-->
 
         <!-- <android.support.constraint.ConstraintLayout
             android:id="@+id/imageLinearLayout"
@@ -33,7 +34,7 @@
 
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="352dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
@@ -621,6 +622,8 @@
 <!--
         </android.support.constraint.ConstraintLayout>
 -->
+<!--
     </ScrollView>
+-->
 
-</FrameLayout>
+</android.support.v4.widget.NestedScrollView>

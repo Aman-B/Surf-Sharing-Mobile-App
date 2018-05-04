@@ -6,6 +6,6 @@ package com.surf_sharing.surfsharingmobileapp;
 
 public  interface BackPressedInFragmentVisibleOnTopOfViewPager
 {
-    void onBackPressedInFragmentVisibleOnTopOfViewPager(boolean isLastFragment);
+    void onBackPressedInFragmentVisibleOnTopOfViewPager(boolean isLastFragment,String toolbarTitle);
 
 }

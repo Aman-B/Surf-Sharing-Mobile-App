@@ -1,7 +1,6 @@
 package com.surf_sharing.surfsharingmobileapp.screens;
 
 
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -18,7 +17,7 @@ import android.widget.TimePicker;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.surf_sharing.surfsharingmobileapp.NavDrawer;
+import com.surf_sharing.surfsharingmobileapp.BackPressedInFragmentVisibleOnTopOfViewPager;
 import com.surf_sharing.surfsharingmobileapp.R;
 import com.surf_sharing.surfsharingmobileapp.TabActivity;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
@@ -42,6 +41,9 @@ public class OfferLift extends Fragment {
     private Button enterButton, pickTimeButton, pickDateButton;
 
     String userId, userEmail;
+
+    private BackPressedInFragmentVisibleOnTopOfViewPager mBackPressedInFragmentVisibleOnTopOfViewPager;
+
 
     //EditText dest;
 
@@ -114,7 +116,7 @@ public class OfferLift extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_offer_lift, container, false);
 
 
-        final NavDrawer nd = (NavDrawer) getActivity();
+        //final NavDrawer nd = (NavDrawer) getActivity();
 
         textViewTime = (TextView) view.findViewById(R.id.offerLiftTime);
         textViewDate = (TextView) view.findViewById(R.id.offerLiftDate);
@@ -242,16 +244,22 @@ public class OfferLift extends Fragment {
 
                     //User testDriver = new User(userId, "driver", userEmail);
 
-                    //Lift l = new Lift(testDriver, dest, Integer.parseInt(seats), "" + 1, time, date); //TODO: replace with real acount
+                    //Lift l = new Lift(testDriver, dest, Integer.parseInt(seats), "" + 1, time, date); //TODO: replace with real account
 
                     Database.postLift("", seats, dest, date, time);
 
                     //Display.popup(getActivity(), "You're lift offer has been created:\n"+l.toString());
 
                     // prev code
-                   /* Fragment liftsYouAreOffering = LiftsYouAreOffering.newInstance();
+                    /*Fragment liftsYouAreOffering = LiftsYouAreOffering.newInstance();
                     nd.replaceContent(liftsYouAreOffering);*/
-                    ((TabActivity)getActivity()).setCurrentItem(1,true);
+
+                    Display.popup(getActivity(),"Lift Submitted Successfully!");
+
+                    ((TabActivity)getActivity()).setCurrentItem(0,true);
+
+
+                    onDetach();
 
                 }
 
@@ -267,11 +275,13 @@ public class OfferLift extends Fragment {
 
 
 
+
     @Override
 
     public void onAttach(Context context) {
 
         super.onAttach(context);
+        mBackPressedInFragmentVisibleOnTopOfViewPager =(BackPressedInFragmentVisibleOnTopOfViewPager)getActivity();
 
     }
 
@@ -282,6 +292,17 @@ public class OfferLift extends Fragment {
     public void onDetach() {
 
         super.onDetach();
+
+        if(!getActivity().isFinishing())
+        {
+            boolean isLastFragment= true;
+            mBackPressedInFragmentVisibleOnTopOfViewPager.onBackPressedInFragmentVisibleOnTopOfViewPager(isLastFragment,"Profile");
+
+
+            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        }
+
+
 
     }
 }

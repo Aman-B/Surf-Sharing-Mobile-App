@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,11 +28,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.screens.AvailableLifts;
-import com.surf_sharing.surfsharingmobileapp.screens.LiftsYouAreOffering;
 import com.surf_sharing.surfsharingmobileapp.screens.LiftsYouAreOn;
 import com.surf_sharing.surfsharingmobileapp.screens.NewSelfProfileScreen;
 import com.surf_sharing.surfsharingmobileapp.screens.OfferLift;
-import com.surf_sharing.surfsharingmobileapp.screens.ProfileScreen;
 import com.surf_sharing.surfsharingmobileapp.utils.Display;
 
 public class TabActivity extends AppCompatActivity implements BackPressedInFragmentVisibleOnTopOfViewPager {
@@ -57,9 +56,19 @@ public class TabActivity extends AppCompatActivity implements BackPressedInFragm
     private Toolbar toolbar;
     private TabLayout tabLayout;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //read user type first, then set layout
+        if(getIntent().getStringExtra("userType")!=null)
+        {
+            USER_TYPE= getIntent().getStringExtra("userType");
+            Display.popup(this, "User type "+USER_TYPE);
+        }
+
         setContentView(R.layout.activity_tab);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -118,6 +127,7 @@ public class TabActivity extends AppCompatActivity implements BackPressedInFragm
 
             @Override
             public void onPageSelected(int position) {
+                Toast.makeText(getApplicationContext(),"Type "+USER_TYPE,Toast.LENGTH_SHORT).show();
 
                 if(USER_TYPE.equals("driver"))
                 {
@@ -236,12 +246,12 @@ public class TabActivity extends AppCompatActivity implements BackPressedInFragm
     }
 
     @Override
-    public void onBackPressedInFragmentVisibleOnTopOfViewPager(boolean isLastFragment) {
+    public void onBackPressedInFragmentVisibleOnTopOfViewPager(boolean isLastFragment,String toolbarTitle) {
         //hide the overlapping fragment and show main fragment from viewpager.
         if(isLastFragment)
         {
             mViewPager.setVisibility(View.VISIBLE);
-            this.setTitle(R.string.title_available_lift);
+            this.setTitle(toolbarTitle);
             getSupportActionBar().setDisplayShowHomeEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
@@ -307,13 +317,13 @@ public class TabActivity extends AppCompatActivity implements BackPressedInFragm
                 {
 
                     case 0:
-                        return OfferLift.newInstance();
+                        return AvailableLifts.newInstance();
 
                     case 1:
-                        return LiftsYouAreOffering.newInstance();
+                        return LiftsYouAreOn.newInstance();
 
                     case 2:
-                        return ProfileScreen.newInstance(mAuth.getCurrentUser().getUid());
+                        return NewSelfProfileScreen.newInstance(mAuth.getCurrentUser().getUid(),USER_TYPE);
 
                     default:
                         return OfferLift.newInstance();
@@ -332,7 +342,7 @@ public class TabActivity extends AppCompatActivity implements BackPressedInFragm
                         return LiftsYouAreOn.newInstance();
 
                     case 2:
-                        return NewSelfProfileScreen.newInstance(mAuth.getCurrentUser().getUid());
+                        return NewSelfProfileScreen.newInstance(mAuth.getCurrentUser().getUid(), USER_TYPE);
 
                     default:
                         return AvailableLifts.newInstance();
@@ -379,11 +389,11 @@ public class TabActivity extends AppCompatActivity implements BackPressedInFragm
                {
                    case 0:
 
-                       return "Offer Lift";
+                       return "Available Lifts";
 
                    case 1:
 
-                       return "Lifts You Are Offering";
+                       return "Lifts You Are On";
 
                    case 2:
                        return "Profile";
@@ -461,13 +471,16 @@ public class TabActivity extends AppCompatActivity implements BackPressedInFragm
         bundle.putString("u_email", u_email);
 
         fragment.setArguments(bundle);
+        if(mViewPager.getVisibility()== View.VISIBLE)
+            mViewPager.setVisibility(View.INVISIBLE);
+
         fragmentManager.beginTransaction()
-                .replace(R.id.container, fragment)
+                .replace(R.id.mainframe, fragment)
                 .addToBackStack(null)
                 .commit();
     }
 
-    public void showManageAccount(Fragment fragment) {
+    public void showThisFragmentOnTop(Fragment fragment) {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 

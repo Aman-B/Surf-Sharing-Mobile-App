@@ -1,7 +1,9 @@
 package com.surf_sharing.surfsharingmobileapp.screens;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.net.Uri;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,16 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.media.Image;
-import android.app.Dialog;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,20 +21,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
-import com.surf_sharing.surfsharingmobileapp.NavDrawer;
 import com.surf_sharing.surfsharingmobileapp.R;
-import com.surf_sharing.surfsharingmobileapp.RequestItemAdapter;
-import com.surf_sharing.surfsharingmobileapp.data.User;
-import com.surf_sharing.surfsharingmobileapp.data.Lift;
+import com.surf_sharing.surfsharingmobileapp.TabActivity;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
-import com.surf_sharing.surfsharingmobileapp.screens.LiftsYouAreOn;
+import com.surf_sharing.surfsharingmobileapp.data.User;
 import com.surf_sharing.surfsharingmobileapp.utils.CustomRequestPassengersAdapter;
 import com.surf_sharing.surfsharingmobileapp.utils.Display;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.surf_sharing.surfsharingmobileapp.data.Database.root;
@@ -70,7 +59,9 @@ public class RequestResponse extends Fragment {
     public static DatabaseReference liftRoot = root.child("lifts");
     private ValueEventListener liftListener;
     private CustomRequestPassengersAdapter customAdapter;
-    NavDrawer nd;
+    TabActivity mTabActivity;
+
+    ProgressDialog mProgressDialog;
 
     public RequestResponse() {
         // Required empty public constructor
@@ -103,7 +94,7 @@ public class RequestResponse extends Fragment {
             FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
             driverId = currentUser.getUid();
 
-            nd = (NavDrawer) getActivity();
+            mTabActivity = (TabActivity) getActivity();
 
         }
     }
@@ -117,6 +108,9 @@ public class RequestResponse extends Fragment {
 
         getActivity().setTitle(R.string.title_request_responce);
 
+        mProgressDialog= new ProgressDialog(getActivity());
+        mProgressDialog.setMessage("Loading Passengers..");
+        mProgressDialog.show();
 
         requestingUsersListView = (ListView) view.findViewById(R.id.passengerRequestList);
         //requesting_users_list = Database.getRequestingUsers();
@@ -156,6 +150,9 @@ public class RequestResponse extends Fragment {
 
                         Log.i("requestResponse id:", passengerId);
                         Log.i("req resp board len:", passengerBoardLength);
+
+
+
                        // DataSnapshot passengerRef = passengersRef.child(passengerId);
                       //  for (DataSnapshot passengerSnapshot : passengerRef.getChildren()) {
 
@@ -192,15 +189,19 @@ public class RequestResponse extends Fragment {
                             passenger.boardLength = passengerBoardLength;
                             requesting_users_list.add(passenger);
                         } else {
+
                         }
                   //   }
                     }
 
                     requestingUsersListView.setAdapter(customAdapter);
+                    if(mProgressDialog.isShowing())
+                        mProgressDialog.dismiss();
                 }
                 catch (Exception e)
                 {
-
+                    if(mProgressDialog.isShowing())
+                        mProgressDialog.dismiss();
                 }
             }
             @Override public void onCancelled(DatabaseError error) { }
@@ -210,13 +211,14 @@ public class RequestResponse extends Fragment {
 
 
 
+
         requestingUsersListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 final User requestingPassenger = (User) adapterView.getAdapter().getItem(i);
                 //show the requesting passenger's profile pic
-                NavDrawer nd = (NavDrawer) getActivity();
+                TabActivity nd = (TabActivity) getActivity();
                 nd.replaceContent(ProfileScreen.newInstance(requestingPassenger.getUserId()));
 
                 return true;
@@ -380,6 +382,7 @@ public class RequestResponse extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
     }
 
     @Override

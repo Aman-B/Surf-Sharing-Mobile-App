@@ -23,7 +23,7 @@ import com.surf_sharing.surfsharingmobileapp.utils.Display;
 
 import java.util.Calendar;
 
-public class RegisterPassengerSecondActivity extends AppCompatActivity {
+public class RegisterDriverSecondActivity extends AppCompatActivity {
 
     private Button buttonOK;
     private EditText editTextLocation;
@@ -32,25 +32,35 @@ public class RegisterPassengerSecondActivity extends AppCompatActivity {
     private RadioGroup genderRadioGroup;
     private Button buttonDateOfBirth;
     private ProgressDialog progressDialog;
+    private EditText editTextCarMakeModel;
+    private EditText editTextDriverReg;
+    private EditText editTextLicenceNo;
+    private EditText editTextMaxPassengers;
 
     private boolean hasError = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_passenger_second);
-
+        setContentView(R.layout.activity_register_driver_second);
         progressDialog = new ProgressDialog(this);
 
-         buttonOK = (Button) findViewById(R.id.ok_btn);
-         buttonDateOfBirth = (Button) findViewById(R.id.dateOfBirthButton);
 
-         editTextLocation = (EditText) findViewById(R.id.editTextLocation);
-         editTextPhoneNumber =   (EditText) findViewById(R.id.edit_text_phone);
+        buttonOK = (Button) findViewById(R.id.ok_btn);
+        buttonDateOfBirth = (Button) findViewById(R.id.driverDateOfBirthButton);
+
+        editTextLocation = (EditText) findViewById(R.id.editTextLocation);
+        editTextPhoneNumber =   (EditText) findViewById(R.id.edit_text_driver_phone);
 
 
-         textDateOfBirth = (TextView) findViewById(R.id.dateOfBirth);
-         genderRadioGroup = (RadioGroup) findViewById(R.id.genderRadioGroup);
+        textDateOfBirth = (TextView) findViewById(R.id.driverDateOfBirth);
+        genderRadioGroup = (RadioGroup) findViewById(R.id.genderRadioGroup);
+
+
+
+        editTextCarMakeModel = (EditText) findViewById(R.id.edit_text_car_make_model);
+        editTextDriverReg = (EditText) findViewById(R.id.edit_text_driver_registration);
+        editTextLicenceNo = (EditText) findViewById(R.id.edit_text_driver_licence);
+//        editTextMaxPassengers = (EditText) findViewById(R.id.edit_text_max_passengers);
 
 
 
@@ -62,7 +72,7 @@ public class RegisterPassengerSecondActivity extends AppCompatActivity {
                 int month = mcurrentDate.get(Calendar.MONTH);
                 int year = mcurrentDate.get(Calendar.YEAR);
                 DatePickerDialog mDatePicker;
-                mDatePicker = new DatePickerDialog(RegisterPassengerSecondActivity.this, new DatePickerDialog.OnDateSetListener() {
+                mDatePicker = new DatePickerDialog(RegisterDriverSecondActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -83,8 +93,6 @@ public class RegisterPassengerSecondActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     private void submitDetailsToFirebase() {
@@ -98,30 +106,56 @@ public class RegisterPassengerSecondActivity extends AppCompatActivity {
         RadioButton genderRadioButton = (RadioButton) findViewById(selectedId);
         String gender = genderRadioButton.getText().toString();
 
+        String carMakeModel = editTextCarMakeModel.getText().toString().trim();
+        String licenceNo = editTextLicenceNo.getText().toString().trim();
+        String driverReg = editTextDriverReg.getText().toString().trim();
+        //String maxPassengers = editTextMaxPassengers.getText().toString().trim();
+
 
         if(gender.isEmpty()) {
-            Display.popup(RegisterPassengerSecondActivity.this, "Please enter your Gender");
+            Display.popup(RegisterDriverSecondActivity.this, "Please enter your Gender");
             canSubmitDetails = false;
         }
         else if(age.isEmpty()) {
-            Display.popup(RegisterPassengerSecondActivity.this, "Please enter your Date Of Birth");
+            Display.popup(RegisterDriverSecondActivity.this, "Please enter your Date Of Birth");
             canSubmitDetails = false;
         }
         else if(phone.isEmpty()) {
-            Display.popup(RegisterPassengerSecondActivity.this, "Please enter your Phone Number");
+            Display.popup(RegisterDriverSecondActivity.this, "Please enter your Phone Number");
             canSubmitDetails = false;
         }
         else if(loc.isEmpty()){
-            Display.popup(RegisterPassengerSecondActivity.this, "Please enter your address");
+            Display.popup(RegisterDriverSecondActivity.this, "Please enter your address");
             canSubmitDetails = false;
 
         }
+
+
+
+        if (carMakeModel.isEmpty()) {
+            Display.popup(RegisterDriverSecondActivity.this, "Please enter your Car Make and Model");
+            canSubmitDetails = false;
+        }
+        else if (licenceNo.isEmpty()) {
+            Display.popup(RegisterDriverSecondActivity.this, "Please enter your Licence Number");
+            canSubmitDetails = false;
+        }
+        else if (driverReg.isEmpty()) {
+            Display.popup(RegisterDriverSecondActivity.this, "Please enter your Driver Registration");
+            canSubmitDetails = false;
+        }
+        /*else if (maxPassengers.isEmpty())
+        {
+            Display.popup(RegisterDriverSecondActivity.this, "Please enter the Maximum number of passengers you can take");
+            canSubmitDetails = false;
+        }*/
+
 //        else if(Integer.parseInt(getAge(age)) < 18){
 //            Display.popup(canSubmitDetailsPassengerSecondActitivity.this, "Must be over 18 to canSubmitDetails");
 //            canSubmitDetails = false;
 //        }
 
-        final AlertDialog alertDialog = new AlertDialog.Builder(RegisterPassengerSecondActivity.this).create();
+        final AlertDialog alertDialog = new AlertDialog.Builder(RegisterDriverSecondActivity.this).create();
         alertDialog.setTitle("Profile Created!");
         alertDialog.setMessage("Your profile has been created.");
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
@@ -157,8 +191,10 @@ public class RegisterPassengerSecondActivity extends AppCompatActivity {
             mDatabaseReference.child("users").child(currentUserID).child("age").setValue(age);
 
             mDatabaseReference.child("users").child(currentUserID).child("gender").setValue(gender);
-            mDatabaseReference.child("users").child(currentUserID).child("address").setValue(loc);
             mDatabaseReference.child("users").child(currentUserID).child("phone").setValue(phone);
+            mDatabaseReference.child("users").child(currentUserID).child("car").setValue(carMakeModel);
+            mDatabaseReference.child("users").child(currentUserID).child("driver registration").setValue(driverReg);
+            mDatabaseReference.child("users").child(currentUserID).child("licence number").setValue(licenceNo);
             mDatabaseReference.child("users").child(currentUserID).child("address").setValue(loc, new DatabaseReference.CompletionListener() {
                 @Override
                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
@@ -185,7 +221,7 @@ public class RegisterPassengerSecondActivity extends AppCompatActivity {
     }
     private void gotoMainTabActivity() {
 //        Intent intent = new Intent(RegisterActivity.this, NavDrawer.class);
-        Intent intent = new Intent(RegisterPassengerSecondActivity.this, TabActivity.class);
+        Intent intent = new Intent(RegisterDriverSecondActivity.this, TabActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();

@@ -1,44 +1,44 @@
     package com.surf_sharing.surfsharingmobileapp.screens;
 
     import android.app.AlertDialog;
-    import android.app.ProgressDialog;
-    import android.content.Context;
-    import android.content.DialogInterface;
-    import android.content.Intent;
-    import android.graphics.Bitmap;
-    import android.graphics.BitmapFactory;
-    import android.location.Address;
-    import android.location.Geocoder;
-    import android.net.Uri;
-    import android.os.AsyncTask;
-    import android.os.Bundle;
-    import android.support.v4.app.Fragment;
-    import android.support.v7.app.AppCompatActivity;
-    import android.util.Base64;
-    import android.util.Log;
-    import android.view.LayoutInflater;
-    import android.view.Menu;
-    import android.view.MenuInflater;
-    import android.view.View;
-    import android.view.ViewGroup;
-    import android.widget.ImageView;
-    import android.widget.TextView;
-    import android.widget.Toast;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-    import com.google.android.gms.maps.model.LatLng;
-    import com.google.firebase.auth.FirebaseAuth;
-    import com.google.firebase.database.DataSnapshot;
-    import com.google.firebase.database.DatabaseError;
-    import com.google.firebase.database.ValueEventListener;
-    import com.surf_sharing.surfsharingmobileapp.BackPressedInFragmentVisibleOnTopOfViewPager;
-    import com.surf_sharing.surfsharingmobileapp.MapsActivity;
-    import com.surf_sharing.surfsharingmobileapp.R;
-    import com.surf_sharing.surfsharingmobileapp.data.Database;
-    import com.surf_sharing.surfsharingmobileapp.data.User;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.surf_sharing.surfsharingmobileapp.BackPressedInFragmentVisibleOnTopOfViewPager;
+import com.surf_sharing.surfsharingmobileapp.MapsActivity;
+import com.surf_sharing.surfsharingmobileapp.R;
+import com.surf_sharing.surfsharingmobileapp.data.Database;
+import com.surf_sharing.surfsharingmobileapp.data.User;
 
-    import java.io.IOException;
-    import java.util.ArrayList;
-    import java.util.Calendar;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 // import com.pkmmte.view.CircularImageView;
 
@@ -209,8 +209,9 @@
 
                 Log.i("userName", userName);
 
+
                 if(ownProfile){
-                   // getActivity().setTitle(R.string.title_profile);
+                    getActivity().setTitle(R.string.title_profile);
 
                 }else{
                     getActivity().setTitle(userName + "'s profile");
@@ -219,6 +220,7 @@
 
 
                 if (userImage != null && !userImage.equals("")) {
+
                     Log.i("profile Image", userImage);
                     DownloadImageTask downloadImageTask = new DownloadImageTask();
                     Bitmap userBitmap = downloadImageTask.execute(userImage).get();
@@ -245,11 +247,16 @@
                 profileUser.name = userName;
                 profileUser.gender = userGender;
 
-                if(userDob != null){
-                    String userAge = getAge(userDob);
-                    System.out.print("age is:" + userAge);
-                    Log.i("profile age", userAge);
-                    profileUserAge.setText(userAge.replaceAll("\\s+",""));
+                if(userDob != null ){
+                    if(!userDob.equals("")){
+
+                        String userAge = getAge(userDob);
+                        System.out.print("age is:" + userAge);
+                        Log.i("profile age", userAge);
+                        profileUserAge.setText(userAge.replaceAll("\\s+",""));
+                    }
+                    profileUserAge.setText("");
+
 
                 }
                 //Toast.makeText(getContext(),"Here here"+userAdr,Toast.LENGTH_SHORT).show();
@@ -377,11 +384,16 @@
     @Override
     public void onDetach() {
         super.onDetach();
+        if(!getActivity().isFinishing())
+        {
+            //not the last fragment to show on top so pass false;
+            boolean isLastFragment=false;
+            mOnBackPressedInFragmentVisibleOnTopOfViewPager.onBackPressedInFragmentVisibleOnTopOfViewPager(isLastFragment,"");
+            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        }
 
-        //not the last fragment to show on top so pass false;
-        boolean isLastFragment=false;
-        mOnBackPressedInFragmentVisibleOnTopOfViewPager.onBackPressedInFragmentVisibleOnTopOfViewPager(isLastFragment);
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+
+
 
 
     }

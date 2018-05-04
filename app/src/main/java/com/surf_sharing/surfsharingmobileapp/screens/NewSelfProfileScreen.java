@@ -63,6 +63,10 @@ public class NewSelfProfileScreen extends Fragment {
 
     private BackPressedInFragmentVisibleOnTopOfViewPager mOnBackPressedInFragmentVisibleOnTopOfViewPager;
 
+    private String USER_TYPE = "passenger";
+    private ConstraintLayout submitLicenseRow;
+    private ConstraintLayout offerLiftRow;
+    private ConstraintLayout liftsYouAreOfferingRow;
 
     public NewSelfProfileScreen() {
         // Required empty public constructor
@@ -74,10 +78,11 @@ public class NewSelfProfileScreen extends Fragment {
      *
      * @return A new instance of fragment AvailableLifts.
      */
-    public static NewSelfProfileScreen newInstance(String userId) {
+    public static NewSelfProfileScreen newInstance(String userId, String userType) {
         NewSelfProfileScreen fragment = new NewSelfProfileScreen();
         Bundle args = new Bundle();
         args.putString("userId", userId);
+        args.putString("userType",userType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -112,6 +117,7 @@ public class NewSelfProfileScreen extends Fragment {
         if (getArguments() != null) {
             //get the user id to access info from firebase
             userId = getArguments().getString("userId");
+            USER_TYPE= getArguments().getString("userType");
             Log.i("userId", userId);
         }
 
@@ -129,6 +135,7 @@ public class NewSelfProfileScreen extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
 
 
+
         //for back arrow on top [END]
 
 
@@ -139,8 +146,15 @@ public class NewSelfProfileScreen extends Fragment {
         if(userId == FirebaseAuth.getInstance().getCurrentUser().getUid()){
             Toast.makeText(getContext(), "OWN PROFILE", Toast.LENGTH_SHORT).show();
 
+            int layoutResource= R.layout.fragment_new_self_profile_screen;
 
-            view =  inflater.inflate(R.layout.fragment_new_self_profile_screen, container, false);
+
+            if(USER_TYPE.equals("driver"))
+            {
+                layoutResource=R.layout.fragment_new_self_driver_profile_screen;
+
+            }
+            view =  inflater.inflate(layoutResource, container, false);
             ownProfile = true;
 
 
@@ -158,9 +172,38 @@ public class NewSelfProfileScreen extends Fragment {
         final TextView profileUserName = (TextView) view.findViewById(R.id.profileNameTextView);
         final ImageView profileImageView = (ImageView) view.findViewById(R.id.profileImageView);
 
-        ConstraintLayout manage_account = (ConstraintLayout) view.findViewById(R.id.manage_account_row);
+        ConstraintLayout manageAccountRow = (ConstraintLayout) view.findViewById(R.id.manage_account_row);
         //ConstraintLayout submit_license =(ConstraintLayout) view.findViewById(R.id.submit_license_row);
-        ConstraintLayout logout = (ConstraintLayout) view.findViewById(R.id.logout_row);
+        ConstraintLayout logoutRow = (ConstraintLayout) view.findViewById(R.id.logout_row);
+
+
+        if(USER_TYPE.equals("driver"))
+        {
+            //additional UI elements are there for driver
+
+            submitLicenseRow =(ConstraintLayout) view.findViewById(R.id.submit_license_row);
+            offerLiftRow=(ConstraintLayout) view.findViewById(R.id.offer_lift_row);
+            liftsYouAreOfferingRow= (ConstraintLayout) view.findViewById(R.id.lifts_you_are_offering_row);
+
+
+            offerLiftRow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TabActivity tabActivity = (TabActivity) getActivity();
+                    tabActivity.showThisFragmentOnTop(OfferLift.newInstance());
+                }
+            });
+
+            liftsYouAreOfferingRow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TabActivity tabActivity = (TabActivity) getActivity();
+                    tabActivity.showThisFragmentOnTop(LiftsYouAreOffering.newInstance());
+                }
+            });
+
+        }
+
 
 
 
@@ -172,7 +215,7 @@ public class NewSelfProfileScreen extends Fragment {
         dialog.show();
         dialog.setCanceledOnTouchOutside(true);
 
-        logout.setOnClickListener(new View.OnClickListener() {
+        logoutRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //show prompt dialog and confirm. Standard stuff.
@@ -184,11 +227,11 @@ public class NewSelfProfileScreen extends Fragment {
 
 
 
-        manage_account.setOnClickListener(new View.OnClickListener() {
+        manageAccountRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TabActivity tabActivity = (TabActivity) getActivity();
-                tabActivity.showManageAccount(ManageAccount.newInstance());
+                tabActivity.showThisFragmentOnTop(ManageAccount.newInstance());
             }
         });
 
@@ -202,7 +245,9 @@ public class NewSelfProfileScreen extends Fragment {
                 try {
                     DataSnapshot userRef = snapshot.child("users").child(userId);
 
+
                     userType = (String) userRef.child("type").getValue();
+
                     userName = (String) userRef.child("name").getValue();
                     userGender = (String) userRef.child("gender").getValue();
                     userEmail = (String) userRef.child("email").getValue();
@@ -250,7 +295,7 @@ public class NewSelfProfileScreen extends Fragment {
                     profileUser.name = userName;
                     profileUser.gender = userGender;
 
-                    if(userDob != null){
+                    if(userDob != null && !userDob.equals("")){
                         String userAge = getAge(userDob);
                         System.out.print("age is:" + userAge);
                         Log.i("profile age", userAge);
@@ -258,6 +303,7 @@ public class NewSelfProfileScreen extends Fragment {
                     }
                     //Toast.makeText(getContext(),"Here here"+userAdr,Toast.LENGTH_SHORT).show();
                     profileUserName.setText(userName);
+
 
 
 
@@ -332,7 +378,9 @@ public class NewSelfProfileScreen extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+/*
         mOnBackPressedInFragmentVisibleOnTopOfViewPager =(BackPressedInFragmentVisibleOnTopOfViewPager)getActivity();
+*/
 
 
     }
@@ -341,14 +389,14 @@ public class NewSelfProfileScreen extends Fragment {
     public void onDetach() {
         super.onDetach();
 
-        //not the last fragment to show on top so pass false;
+       /* //not the last fragment to show on top so pass false;
         boolean isLastFragment=false;
         mOnBackPressedInFragmentVisibleOnTopOfViewPager.onBackPressedInFragmentVisibleOnTopOfViewPager(isLastFragment);
 
         if(!(getActivity().isFinishing()))
         {
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-        }
+        }*/
 
     }
 

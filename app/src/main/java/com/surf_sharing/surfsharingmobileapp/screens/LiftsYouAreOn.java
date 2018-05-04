@@ -1,14 +1,18 @@
 package com.surf_sharing.surfsharingmobileapp.screens;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,6 +23,7 @@ import com.surf_sharing.surfsharingmobileapp.R;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.Lift;
 import com.surf_sharing.surfsharingmobileapp.data.User;
+import com.surf_sharing.surfsharingmobileapp.utils.Display;
 
 import java.util.ArrayList;
 
@@ -76,8 +81,24 @@ public class LiftsYouAreOn extends Fragment {
 
 
 
-        final ArrayAdapter<Lift> arrayAdapter = new ArrayAdapter<Lift>(getActivity(), android.R.layout.simple_list_item_1, lifts_on_list);
+        final ArrayAdapter<Lift> arrayAdapter = new ArrayAdapter<Lift>(getActivity(), android.R.layout.simple_list_item_1, lifts_on_list){
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+                View view =super.getView(position, convertView, parent);
+
+                TextView firstTV = (TextView) view.findViewById(android.R.id.text1);
+                firstTV.setTextColor(Color.WHITE);
+
+
+
+
+                return view;
+            }
+        };
         //liftRoot = FirebaseDatabase.getInstance().getReference("lifts");
+
 
         Database.root.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -85,6 +106,7 @@ public class LiftsYouAreOn extends Fragment {
 
                 try
                 {
+
                     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                     String userId = currentUser.getUid();
 
@@ -94,14 +116,17 @@ public class LiftsYouAreOn extends Fragment {
 
                     for (DataSnapshot liftSnapshot : liftsRef.getChildren()) {
 
+
                         String liftId = liftSnapshot.getKey();
                         String liftState = (String) liftSnapshot.getValue();
 
                         if (liftState.equals("passenger"))
                         {
+
                             DataSnapshot liftRef = snapshot.child("lifts").child(liftId);
 
                             String id = liftRef.getKey();
+
                             int seatsAvailable = Integer.parseInt((String) liftRef.child("seatsAvailable").getValue());
                             String car = (String) liftRef.child("car").getValue();
                             String destination = (String) liftRef.child("destination").getValue();
@@ -117,6 +142,7 @@ public class LiftsYouAreOn extends Fragment {
                             String driverType = (String) driverRef.child("type").getValue();
                             String driverPhone = (String) driverRef.child("phone").getValue();
                             String driverBio = (String) driverRef.child("bio").getValue();
+
 
                             User driver = new User(driverId, driverType, driverEmail);
                             driver.name = driverName;
@@ -134,18 +160,27 @@ public class LiftsYouAreOn extends Fragment {
 
                             for (DataSnapshot passengerSnapshot : passengersRef.getChildren()) {
 
-                                String passengerId = passengerSnapshot.getKey();
-                                String passengerState = (String) passengerSnapshot.getValue();
 
-                                if (passengerState.equals("pending"))
-                                {
-                                    lift.pendingPassengers.add(passengerId);
-                                }
-                                else
-                                {
-                                    lift.passengers.add(passengerId);
-                                }
+                                String passengerId = passengerSnapshot.getKey();
+
+                               // String passengerState = (String) passengerSnapshot.getValue();
+                               // Display.popup(getActivity(),"state"+passengerState);
+
+                                    String passengerState = (String) passengerSnapshot.child("status").getValue();
+                                    Display.popup(getActivity(),"state"+passengerState);
+                                    if (passengerState.equals("pending"))
+                                    {
+                                        lift.pendingPassengers.add(passengerId);
+                                    }
+                                    else
+                                    {
+                                        lift.passengers.add(passengerId);
+                                    }
+
+
+
                             }
+
 
                             lifts_on_list.add(lift);
                         }
