@@ -249,18 +249,18 @@
         </LinearLayout>
     </ScrollView>-->
 
-    <ScrollView
+    <!--<ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
         android:fillViewport="true"
-        android:paddingBottom="2dp">
+        android:paddingBottom="2dp">-->
 
 
 
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="352dp"
+            android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
@@ -273,7 +273,7 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profileImageView"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginLeft="8dp"
@@ -296,7 +296,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
                 />
-            <Button
+           <!-- <Button
                 android:id="@+id/upgrade_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -305,7 +305,7 @@
                 android:textColor="#FFFFFF"
                 android:text="Become a Driver"
                 android:textAllCaps="false"
-                android:textSize="12sp" />
+                android:textSize="12sp" />-->
 
             <include
                 layout="@layout/item_divider"
@@ -650,5 +650,5 @@
 
         </TableLayout>
 
-    </ScrollView>
+    <!--</ScrollView>-->
 </FrameLayout>

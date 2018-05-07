@@ -7,12 +7,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.surf_sharing.surfsharingmobileapp.utils.Display;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class RegisterDriverSecondActivity extends AppCompatActivity {
@@ -38,6 +42,8 @@ public class RegisterDriverSecondActivity extends AppCompatActivity {
     private EditText editTextMaxPassengers;
 
     private boolean hasError = false;
+    private Spinner genderSelectionSpinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,16 +59,34 @@ public class RegisterDriverSecondActivity extends AppCompatActivity {
 
 
         textDateOfBirth = (TextView) findViewById(R.id.driverDateOfBirth);
-        genderRadioGroup = (RadioGroup) findViewById(R.id.genderRadioGroup);
+        genderSelectionSpinner = (Spinner) findViewById(R.id.gender_selection_spinner);
 
+        ArrayList <String> genderTypes= new ArrayList<>();
+        genderTypes.add("Male");
+        genderTypes.add("Female");
+        genderTypes.add("Prefer not to say.");
 
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, genderTypes);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genderSelectionSpinner.setAdapter(dataAdapter);
 
         editTextCarMakeModel = (EditText) findViewById(R.id.edit_text_car_make_model);
         editTextDriverReg = (EditText) findViewById(R.id.edit_text_driver_registration);
-        editTextLicenceNo = (EditText) findViewById(R.id.edit_text_driver_licence);
+       // editTextLicenceNo = (EditText) findViewById(R.id.edit_text_driver_licence);
 //        editTextMaxPassengers = (EditText) findViewById(R.id.edit_text_max_passengers);
 
 
+        editTextDriverReg.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_DONE)
+                {
+
+                    buttonOK.performClick();
+                }
+                return  false;
+            }
+        });
 
         buttonDateOfBirth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +112,7 @@ public class RegisterDriverSecondActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //TODO : calling submit details on click;
+
                 progressDialog.show();
                 submitDetailsToFirebase();
 
@@ -102,12 +127,11 @@ public class RegisterDriverSecondActivity extends AppCompatActivity {
         String phone = editTextPhoneNumber.getText().toString().trim();
         String loc = editTextLocation.getText().toString().trim();
 
-        int selectedId = genderRadioGroup.getCheckedRadioButtonId();
-        RadioButton genderRadioButton = (RadioButton) findViewById(selectedId);
-        String gender = genderRadioButton.getText().toString();
+
+        String gender = genderSelectionSpinner.getSelectedItem().toString();
 
         String carMakeModel = editTextCarMakeModel.getText().toString().trim();
-        String licenceNo = editTextLicenceNo.getText().toString().trim();
+       // String licenceNo = editTextLicenceNo.getText().toString().trim();
         String driverReg = editTextDriverReg.getText().toString().trim();
         //String maxPassengers = editTextMaxPassengers.getText().toString().trim();
 
@@ -136,10 +160,10 @@ public class RegisterDriverSecondActivity extends AppCompatActivity {
             Display.popup(RegisterDriverSecondActivity.this, "Please enter your Car Make and Model");
             canSubmitDetails = false;
         }
-        else if (licenceNo.isEmpty()) {
+        /*else if (licenceNo.isEmpty()) {
             Display.popup(RegisterDriverSecondActivity.this, "Please enter your Licence Number");
             canSubmitDetails = false;
-        }
+        }*/
         else if (driverReg.isEmpty()) {
             Display.popup(RegisterDriverSecondActivity.this, "Please enter your Driver Registration");
             canSubmitDetails = false;
@@ -194,7 +218,6 @@ public class RegisterDriverSecondActivity extends AppCompatActivity {
             mDatabaseReference.child("users").child(currentUserID).child("phone").setValue(phone);
             mDatabaseReference.child("users").child(currentUserID).child("car").setValue(carMakeModel);
             mDatabaseReference.child("users").child(currentUserID).child("driver registration").setValue(driverReg);
-            mDatabaseReference.child("users").child(currentUserID).child("licence number").setValue(licenceNo);
             mDatabaseReference.child("users").child(currentUserID).child("address").setValue(loc, new DatabaseReference.CompletionListener() {
                 @Override
                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
@@ -215,6 +238,11 @@ public class RegisterDriverSecondActivity extends AppCompatActivity {
                 }
 
             });
+        }
+        else
+        {
+            if(progressDialog.isShowing())
+                progressDialog.dismiss();
         }
 
 

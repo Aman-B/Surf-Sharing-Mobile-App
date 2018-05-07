@@ -18,7 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textCapSentences"
-            android:hint="Name"/>
+            android:hint="Name"
+            android:nextFocusForward="@+id/edit_text_email"/>
 
         <!--<TableRow
             android:layout_width="match_parent"
@@ -102,6 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
+            android:nextFocusForward="@+id/editText4"
             android:hint="Email"/>
 
         <!--<EditText
@@ -117,6 +119,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPassword"
+            android:nextFocusForward="@+id/editText5"
             android:hint="Password" />
 
         <EditText
@@ -125,7 +128,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Password (confirm)"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:imeOptions="actionDone"
+            />
 
         <Button
             android:id="@+id/ok_btn"

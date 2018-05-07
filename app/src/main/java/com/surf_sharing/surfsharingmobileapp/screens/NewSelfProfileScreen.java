@@ -30,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.surf_sharing.surfsharingmobileapp.BackPressedInFragmentVisibleOnTopOfViewPager;
 import com.surf_sharing.surfsharingmobileapp.LoginActivity;
 import com.surf_sharing.surfsharingmobileapp.R;
+import com.surf_sharing.surfsharingmobileapp.SubmitLicenseActivity;
 import com.surf_sharing.surfsharingmobileapp.TabActivity;
 import com.surf_sharing.surfsharingmobileapp.data.Database;
 import com.surf_sharing.surfsharingmobileapp.data.User;
@@ -199,6 +200,16 @@ public class NewSelfProfileScreen extends Fragment {
                 public void onClick(View v) {
                     TabActivity tabActivity = (TabActivity) getActivity();
                     tabActivity.showThisFragmentOnTop(LiftsYouAreOffering.newInstance());
+                }
+            });
+
+
+            submitLicenseRow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(getActivity(), SubmitLicenseActivity.class);
+                    startActivity(intent);
                 }
             });
 

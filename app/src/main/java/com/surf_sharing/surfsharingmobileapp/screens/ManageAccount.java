@@ -400,7 +400,7 @@ public class ManageAccount extends Fragment {
                 }
             });
 
-            Button upgradeButton = (Button) view.findViewById(R.id.upgrade_btn);
+            /*Button upgradeButton = (Button) view.findViewById(R.id.upgrade_btn);
             upgradeButton.setOnClickListener(new View.OnClickListener() {
                @Override
                 public void onClick(View view) {
@@ -409,7 +409,7 @@ public class ManageAccount extends Fragment {
 
                    upgradeAccountToDriver();
                }
-            });
+            });*/
 
 
 

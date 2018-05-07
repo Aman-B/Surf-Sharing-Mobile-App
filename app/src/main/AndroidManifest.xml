@@ -74,7 +74,8 @@
             android:label="@string/title_activity_tab"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".RegisterPassengerSecondActivity" />
-        <activity android:name=".RegisterDriverSecondActivity"></activity>
+        <activity android:name=".RegisterDriverSecondActivity" />
+        <activity android:name=".SubmitLicenseActivity"></activity>
     </application>
 
 </manifest>

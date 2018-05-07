@@ -10,7 +10,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -57,6 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+    private String password,confirmPassword;
 
 
     private String getAge(String dateOfBirth){
@@ -135,12 +138,24 @@ public class RegisterActivity extends AppCompatActivity {
                         mDatePicker.show();
                 }
             });*/
+            editTextPassword2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if(actionId == EditorInfo.IME_ACTION_DONE)
+                    {
+
+                        buttonRegister.performClick();
+                    }
+                    return  false;
+                }
+            });
 
             View checkBoxView = View.inflate(this, R.layout.register_user_tos_dialog, null);
 
             final CheckBox checkBox = (CheckBox) checkBoxView.findViewById(R.id.checkbox);
 
             checkBox.setChecked(false);
+
 
 
 
@@ -157,10 +172,14 @@ public class RegisterActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     //calling register method on click
                    // registerUser();
-                    if(!areFieldsEmpty())
+                    if(!areFieldsEmpty() )
                     {
-                        mAlertDialog.show();
-
+                        if(ifPasswordsMatch()) {
+                            mAlertDialog.show();
+                        }
+                        else {
+                            Display.popup(RegisterActivity.this, "Passwords do not match");
+                        }
                     }
 
                 }
@@ -254,6 +273,21 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             });*/
 
+
+            editTextPassword2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if(actionId == EditorInfo.IME_ACTION_DONE)
+                    {
+
+                        buttonRegister.performClick();
+                    }
+                    return  false;
+                }
+            });
+
+
+
             View checkBoxView = View.inflate(this, R.layout.register_user_tos_dialog, null);
 
             final CheckBox checkBox = (CheckBox) checkBoxView.findViewById(R.id.checkbox);
@@ -275,10 +309,14 @@ public class RegisterActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     //calling register method on click
                     // registerUser();
-                    if(!areFieldsEmpty())
+                    if(!areFieldsEmpty() )
                     {
-                        mAlertDialog.show();
-
+                        if(ifPasswordsMatch()) {
+                            mAlertDialog.show();
+                        }
+                        else {
+                            Display.popup(RegisterActivity.this, "Passwords do not match");
+                        }
                     }
 
                 }
@@ -326,6 +364,13 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private boolean ifPasswordsMatch() {
+        password = editTextPassword.getText().toString();
+        confirmPassword=editTextPassword2.getText().toString();
+
+        return password.equals(confirmPassword);
     }
 
     private boolean areFieldsEmpty() {
@@ -510,6 +555,7 @@ public class RegisterActivity extends AppCompatActivity {
                         });
             } else
                 Display.popup(RegisterActivity.this, "Passwords do not match");
+
         }
 
     }
@@ -623,10 +669,10 @@ public class RegisterActivity extends AppCompatActivity {
             if (type.equals("driver")) {
                 type = "driver";
                 String carMakeModel = "";
-                String licenceNo = "";
+                //String licenceNo = "";
                 String driverReg = "";
                 int maxPassengers = 0;
-                Driver driver = new Driver(userId, type, email, carMakeModel, licenceNo, driverReg, maxPassengers);
+                Driver driver = new Driver(userId, type, email, carMakeModel, driverReg, maxPassengers);
 
                /* driver.setGender(gender);
                 driver.setAge(age);*/

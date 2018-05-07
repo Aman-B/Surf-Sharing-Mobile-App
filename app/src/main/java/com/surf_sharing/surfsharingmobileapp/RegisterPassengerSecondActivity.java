@@ -7,12 +7,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.surf_sharing.surfsharingmobileapp.utils.Display;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class RegisterPassengerSecondActivity extends AppCompatActivity {
@@ -34,6 +38,7 @@ public class RegisterPassengerSecondActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
 
     private boolean hasError = false;
+    private Spinner genderSelectionSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,17 +47,36 @@ public class RegisterPassengerSecondActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
 
-         buttonOK = (Button) findViewById(R.id.ok_btn);
-         buttonDateOfBirth = (Button) findViewById(R.id.dateOfBirthButton);
+        buttonOK = (Button) findViewById(R.id.ok_btn);
+        buttonDateOfBirth = (Button) findViewById(R.id.dateOfBirthButton);
 
-         editTextLocation = (EditText) findViewById(R.id.editTextLocation);
-         editTextPhoneNumber =   (EditText) findViewById(R.id.edit_text_phone);
-
-
-         textDateOfBirth = (TextView) findViewById(R.id.dateOfBirth);
-         genderRadioGroup = (RadioGroup) findViewById(R.id.genderRadioGroup);
+        editTextLocation = (EditText) findViewById(R.id.editTextLocation);
+        editTextPhoneNumber =   (EditText) findViewById(R.id.edit_text_phone);
 
 
+        textDateOfBirth = (TextView) findViewById(R.id.dateOfBirth);
+        genderSelectionSpinner = (Spinner) findViewById(R.id.gender_selection_spinner);
+
+        ArrayList<String> genderTypes= new ArrayList<>();
+        genderTypes.add("Male");
+        genderTypes.add("Female");
+        genderTypes.add("Prefer not to say.");
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, genderTypes);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genderSelectionSpinner.setAdapter(dataAdapter);
+
+        editTextLocation.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_DONE)
+                {
+
+                    buttonOK.performClick();
+                }
+                return  false;
+            }
+        });
 
         buttonDateOfBirth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +95,7 @@ public class RegisterPassengerSecondActivity extends AppCompatActivity {
 
                 }, year, month, dayOfMonth);
                 mDatePicker.show();
-            }
+             }
         });
 
         buttonOK.setOnClickListener(new View.OnClickListener() {
@@ -94,9 +118,7 @@ public class RegisterPassengerSecondActivity extends AppCompatActivity {
         String phone = editTextPhoneNumber.getText().toString().trim();
         String loc = editTextLocation.getText().toString().trim();
 
-        int selectedId = genderRadioGroup.getCheckedRadioButtonId();
-        RadioButton genderRadioButton = (RadioButton) findViewById(selectedId);
-        String gender = genderRadioButton.getText().toString();
+        String gender = genderSelectionSpinner.getSelectedItem().toString();
 
 
         if(gender.isEmpty()) {
@@ -179,6 +201,11 @@ public class RegisterPassengerSecondActivity extends AppCompatActivity {
                 }
 
             });
+        }
+        else
+        {
+            if(progressDialog.isShowing())
+                progressDialog.dismiss();
         }
 
 
